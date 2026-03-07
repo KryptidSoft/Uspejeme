@@ -1,63 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { BookOpen, ArrowLeft, Clock } from 'lucide-react';
 import { GlassCard } from './ui/GlassCard';
-
-// 1. DEFINICE TYPU (aby TypeScript věděl, co článek obsahuje)
-export interface Article {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  category: 'finance' | 'productivity' | 'strategy';
-  readTime: string;
-  date: string;
-}
-
-// 2. DATA ČLÁNKŮ (přímo zde v souboru)
-export const articles: Article[] = [
-  {
-    id: '0',
-    title: 'Vítejte na Rozhodni.cz!',
-    excerpt: 'OSVČ tvoří páteř ekonomiky, přesto většina z nás riskuje svou budoucnost špatným naceňováním.',
-    category: 'strategy',
-    readTime: '4 min',
-    date: '28. 02. 2026',
-    content: `V České republice jsou statisíce OSVČ. Jsme programátoři, řemeslníci, kreativci i konzultanti... (zde je váš dlouhý text)...`
-  },
-  {
-    id: '1',
-    title: 'Jak správně počítat ROI u digitálních projektů',
-    excerpt: 'Návratnost investice není jen o číslech, ale i o čase a riziku.',
-    content: 'Zde je detailní rozbor výpočtu ROI...',
-    category: 'finance',
-    readTime: '5 min',
-    date: '15. 02. 2026'
-  },
-  {
-    id: '2',
-    title: 'Hodinová sazba: Past na freelancery?',
-    excerpt: 'Proč fixace na hodinovou sazbu může brzdit váš růst.',
-    content: 'Prodávat svůj čas je nejjednodušší cesta...',
-    category: 'productivity',
-    readTime: '7 min',
-    date: '10. 02. 2026'
-  }
-];
+import { articles } from '../data/articles';
+import type { Article } from '../data/articles'; // <-- důležité: import typu
 
 export const ArticleSection: React.FC<{ initialArticleId?: string | null }> = ({ initialArticleId }) => {
-  
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(
-    initialArticleId ? articles.find(a => a.id === initialArticleId) || null : null
-  );
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
-  React.useEffect(() => {
+  // Pokud přijde initialArticleId, nastavíme detail článku
+  useEffect(() => {
     if (initialArticleId) {
-      const article = articles.find(a => a.id === initialArticleId);
-      if (article) setSelectedArticle(article);
+      const article = articles.find(a => a.id === initialArticleId) || null;
+      setSelectedArticle(article);
     }
   }, [initialArticleId]);
 
-  // Zobrazení detailu jednoho článku
+  // DETAIL ČLÁNKU
   if (selectedArticle) {
     return (
       <GlassCard className="article-detail" style={{ padding: '30px' }}>
@@ -79,10 +37,10 @@ export const ArticleSection: React.FC<{ initialArticleId?: string | null }> = ({
     );
   }
 
-  // Zobrazení mřížky všech článků
+  // SEZNAM ČLÁNKŮ
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-      {articles.map((article) => (
+      {articles.map(article => (
         <GlassCard 
           key={article.id} 
           onClick={() => setSelectedArticle(article)} 

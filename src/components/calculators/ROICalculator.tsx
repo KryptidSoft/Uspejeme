@@ -209,7 +209,7 @@ export const ROICalculator: React.FC = () => {
       </div>
       
       <div className="print-only" style={{ display: 'none', textAlign: 'center', fontSize: '0.8rem', opacity: 0.5, marginTop: '20px' }}>
-        Vygenerováno aplikací Rozhodni.cz | {new Date().toLocaleDateString('cs-CZ')}
+        Vygenerováno aplikací Uspejeme.cz | {new Date().toLocaleDateString('cs-CZ')}
       </div>
     </div>
   );

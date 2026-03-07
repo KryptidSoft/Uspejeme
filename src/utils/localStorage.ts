@@ -29,7 +29,7 @@ export const getFromStorage = <T>(key: string, defaultValue: T): T => {
 export const clearAppStorage = (): void => {
   try {
     Object.keys(localStorage)
-      .filter(key => key.startsWith('rozhodni_'))
+      .filter(key => key.startsWith('uspejeme_'))
       .forEach(key => localStorage.removeItem(key));
   } catch (error) {
     console.error("Chyba při mazání úložiště:", error);

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Target, ShieldAlert, PiggyBank, ArrowRight, Zap, LineChart, HelpCircle, Quote, Lightbulb, Calendar, FileText, Activity, TrendingUp, QrCode, Circle } from 'lucide-react';
 import { GlassCard } from './ui/GlassCard';
 import { DeadlineWidget } from './DeadlineWidget';
-import { ArticleSection, articles } from './ArticleSection';
+import { articles } from '../data/articles';
+import { ArticleSection } from './ArticleSection';
 
 type BusinessType = 'osvc_pausal' | 'osvc_hlavni' | 'sro' | 'vse' | 'platec_dph';
 
@@ -85,7 +86,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </h1>
         
         <p style={{ fontSize: '1.1rem', color: 'var(--text-dim)', maxWidth: '650px', margin: '0 auto 40px', lineHeight: '1.6' }}>
-          Rozhodni.cz není jen soubor kalkulaček. Je to váš osobní kompas ve světě financí na volné noze. 
+          Uspejeme.cz není jen soubor kalkulaček. Je to váš osobní kompas ve světě financí na volné noze. 
           Zjistěte, kolik si říct za práci a jak se nenechat zaskočit výpadky.
         </p>
       </section>
@@ -249,7 +250,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       <section style={{ padding: '80px 20px 40px', maxWidth: '800px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>Často se ptáte</h2>
-          <p style={{ color: 'var(--text-dim)' }}>Vše, co potřebujete vědět o Rozhodni.cz</p>
+          <p style={{ color: 'var(--text-dim)' }}>Vše, co potřebujete vědět o Uspejeme.cz</p>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -303,7 +304,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       {/* FOOTER POZNÁMKA */}
       <div style={{ textAlign: 'center', marginTop: '60px', opacity: 0.5, fontSize: '0.8rem', paddingBottom: '40px' }}>
         <LineChart size={20} style={{ marginBottom: '10px' }} />
-        <p>Všechna data zůstávají ve vašem prohlížeči. Rozhodni.cz nikoho nesleduje.</p>
+        <p>Všechna data zůstávají ve vašem prohlížeči. Uspejeme.cz nikoho nesleduje.</p>
       </div>
     </div>
   );

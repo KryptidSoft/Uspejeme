@@ -40,7 +40,7 @@ export const DisclaimerModal: React.FC<DisclaimerModalProps> = ({
         <h2>Právní upozornění</h2>
 
         <p>
-          Informace a výpočty na webu Rozhodni.cz mají pouze orientační a
+          Informace a výpočty na webu Uspejeme.cz mají pouze orientační a
           informativní charakter.
         </p>
 

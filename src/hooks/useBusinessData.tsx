@@ -16,7 +16,7 @@ interface BusinessContextType {
 const BusinessContext = createContext<BusinessContextType | undefined>(undefined);
 
 export const BusinessProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = usePersistentState<BusinessData>('rozhodni_global_data', {
+  const [data, setData] = usePersistentState<BusinessData>('uspejeme_global_data', {
     hourlyRate: 0,
     monthlyExpenses: 30000,
     desiredNetIncome: 60000,

@@ -22,8 +22,8 @@ export const Footer: React.FC<FooterProps> = ({ onShowDisclaimer }) => {
         <a href="#" className="social-icon-link" title="Facebook"><Facebook size={22} /></a>
         <a href="#" className="social-icon-link" title="Twitter"><Twitter size={22} /></a>
         <a href="#" className="social-icon-link" title="LinkedIn"><Linkedin size={22} /></a>
-        <a href="https://t.me/rozhodni" className="social-icon-link" title="Telegram"><Send size={22} /></a>
-        <a href="mailto:info@rozhodni.cz" className="social-icon-link" title="Email"><Mail size={22} /></a>
+        <a href="https://t.me/Uspejeme" className="social-icon-link" title="Telegram"><Send size={22} /></a>
+        <a href="uspejeme@gmail.com" className="social-icon-link" title="Email"><Mail size={22} /></a>
       </div>
 
       <div className="footer-actions">
@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ onShowDisclaimer }) => {
       </div>
 
       <p className="copy">
-        © 2026 Rozhodni.cz | Verze 1.1.0 – Navigátor pro moderní OSVČ
+        © 2026 Uspejeme.cz | Verze 1.1.0 – Navigátor pro moderní OSVČ
       </p>
     </footer>
   );

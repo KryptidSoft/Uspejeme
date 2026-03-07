@@ -1,4 +1,4 @@
-# 🚀 Rozhodni.cz (v1.0)
+# 🚀 Uspějeme.cz (v1.0)
 Moderní offline-first finanční asistent pro OSVČ a investory.
 
 Tato aplikace slouží k rychlému a bezpečnému výpočtu klíčových finančních metrik. Veškerá data zůstávají v prohlížeči uživatele, což zaručuje 100% soukromí.
@@ -54,4 +54,4 @@ Tato aplikace slouží k rychlému a bezpečnému výpočtu klíčových finanč
 │  └─ /hooks            # Custom hooks pro LocalStorage persistence
 └─ App.tsx              # Navigation Router & Global State
 
-© 2026 Rozhodni.cz | Vytvořeno pro komunitu svobodných profesionálů.
+© 2026 Uspejeme.cz | Vytvořeno pro komunitu svobodných profesionálů.
