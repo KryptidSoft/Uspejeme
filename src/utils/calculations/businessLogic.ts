@@ -64,8 +64,8 @@ export const calculateDashboardStats = (data: BusinessData) => {
     // Priorita: Pokud je runway < 3 měsíce, utrácíme 0 a vše sypeme do rezerv
     const savingsFocus = runway < 3 ? 0 : runway < 6 ? 0.5 : 1.0;
     
-    let spendingMultiplier = runway >= 6 ? 0.4 : runway >= 3 ? 0.2 : 0;
-    let investingMultiplier = runway >= 6 ? 0.3 : runway >= 3 ? 0.1 : 0;
+    const spendingMultiplier = runway >= 6 ? 0.4 : runway >= 3 ? 0.2 : 0;
+    const investingMultiplier = runway >= 6 ? 0.3 : runway >= 3 ? 0.1 : 0;
 
     safeToSpend = disposableNet * spendingMultiplier * savingsFocus;
     investAmount = disposableNet * investingMultiplier * savingsFocus;

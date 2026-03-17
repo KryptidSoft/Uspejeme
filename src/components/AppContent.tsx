@@ -19,9 +19,8 @@ import { EliteInvoice } from './generators/EliteInvoice';
 import { MiniCard } from './MiniCard';
 import { InflationCalculator } from "./calculators/InflationCalculator";
 import { 
-  FileText, Activity, TrendingUp, TrendingDown, Zap, 
-  Calendar as CalendarIcon, PiggyBank, ShieldAlert, 
-  Briefcase, Coins, QrCode, FileWarning, Target 
+  FileText, Activity, Zap, ShieldAlert, Briefcase, Coins, QrCode, FileWarning, Target, 
+  TrendingUp, TrendingDown, PiggyBank 
 } from 'lucide-react';
 
 // --- ROZCESTNÍKY (Musí být definovány mimo hlavní komponentu) ---

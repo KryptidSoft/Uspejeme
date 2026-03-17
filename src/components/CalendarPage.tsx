@@ -6,7 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 type BusinessType = 'osvc_pausal' | 'osvc_hlavni' | 'sro' | 'vse';
 
-export const CalendarPage: React.FC = () => {
+interface CalendarPageProps {
+  userType: 'osvc_pausal' | 'osvc_hlavni' | 'sro' | 'vse';
+}
+export const CalendarPage: React.FC<CalendarPageProps> = ({ userType }) => {
   const [activeYear, setActiveYear] = useState(2026);
   const navigate = useNavigate();
   const [filter, setFilter] = useState<BusinessType | 'all'>('all');
@@ -89,7 +92,8 @@ export const CalendarPage: React.FC = () => {
 
   return (
     <GlassCard 
-      key={item.id} 
+      key={item.id}
+className=""	  
       style={{ 
         padding: '16px', 
         // Pokud je v minulosti, linka je jemně zelená (symbol klidu), jinak barva kategorie

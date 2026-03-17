@@ -75,7 +75,7 @@ export const DuesGenerator: React.FC = () => {
         <h1 style={{ color: 'white', fontSize: '2.5rem', fontWeight: '900', marginBottom: '10px' }}>
           Hlídač <span style={{ color: 'var(--primary)' }}>Plateb</span>
         </h1>
-        <p style={{ color: 'var(--text-dim)' }}>Profesionální správa splatnosti a upomínek.</p>
+        <p style={{ color: 'var(--text-dim)' }}>Profesionální správa splatnosti a upomínek. Zadejte údaje o faktuře a vyberte tón upomínky. Text můžete okamžitě zkopírovat a poslat klientovi nebo použít jako připomenutí ve své evidenci. Nenechte své peníze čekat!</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>

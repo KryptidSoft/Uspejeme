@@ -23,33 +23,50 @@ import { useBusinessData } from '../../hooks/useBusinessData';
 
 export const ProjectProfitCalculator: React.FC = () => {
   const { data } = useBusinessData();
+  
+  // 1. SAZBA: Inicializace sazby přímo z globálního úložiště
+  // Pokud jste v HourlyRateCalculatoru vypočítali 1250 Kč, bude tady.
   const [hourlyRate, setHourlyRate] = useState(data.hourlyRate || 800);
 
   const [projects, setProjects] = useState<ProjectInput[]>([
     {
-      name: 'Ukázkový projekt', client: '', price: 50000, materialCosts: 2000, softwareCosts: 1000,
-      energyCosts: 0, otherCosts: 0, prepHours: 5, workHours: 30,
-      adminHours: 5, riskFactor: 0.1,
+      name: 'Ukázkový projekt', 
+      client: '', 
+      price: 50000, 
+      materialCosts: 2000, 
+      softwareCosts: 1000,
+      energyCosts: 0, 
+      otherCosts: 0, 
+      prepHours: 5, 
+      workHours: 30,
+      adminHours: 5, 
+      riskFactor: 0.1,
     },
   ]);
   const [results, setResults] = useState<ProjectResult[] | null>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
+  // 2. SYNCHRONIZACE: Sledujeme změnu globální sazby
+  // Pokud si v jiném tabu upravíte hodinovku, projekty zde se na to připraví
   useEffect(() => {
     if (data.hourlyRate > 0) {
       setHourlyRate(data.hourlyRate);
     }
   }, [data.hourlyRate]);
 
-  const handleCalculate = () => {
+  // 3. AUTOMATICKÝ PŘEPOČET: 
+  // Ve vašem původním kódu jste musel kliknout na tlačítko. 
+  // Je lepší, když se výsledky aktualizují samy, jakmile se změní sazba nebo data.
+  useEffect(() => {
     const calculatedResults = calculateProjectProfit(projects, hourlyRate);
     setResults(calculatedResults);
-  };
+  }, [projects, hourlyRate]);
 
-  const handleChange = (index: number, key: keyof ProjectInput, value: number | string) => {
-    const newProjects = [...projects];
-    newProjects[index] = { ...newProjects[index], [key]: value };
-    setProjects(newProjects);
+  const handleCalculate = () => {
+    // Ponecháno pro kompatibilitu s vaším tlačítkem, 
+    // ale useEffect výše to teď dělá reaktivně.
+    const calculatedResults = calculateProjectProfit(projects, hourlyRate);
+    setResults(calculatedResults);
   };
 
   const addProject = () => {

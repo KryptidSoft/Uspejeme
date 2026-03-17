@@ -10,12 +10,10 @@ import { calculateInflationValue, generateComparisonSeries } from "../../utils/c
 
 export const InflationCalculator: React.FC = () => {
   const [amount, setAmount] = useState(500000);
-  const [inflation, setInflation] = useState(4);
+  const [inflation, setInflation] = useState(3.5);
   const [years, setYears] = useState(10);
   const [selectedAssets, setSelectedAssets] = useState<string[]>([]);
 
-  const [realValue, setRealValue] = useState(0);
-  const [series, setSeries] = useState<any[]>([]);
 
   // Dynamická konfigurace aktiv na základě aktuální inflace
   const assetConfigs = useMemo(() => [
@@ -49,14 +47,10 @@ export const InflationCalculator: React.FC = () => {
     }
   ], [inflation]);
 
-  useEffect(() => {
-    // Filtrujeme pouze vybraná aktiva pro výpočet řady
-    const activeConfigs = assetConfigs.filter(a => selectedAssets.includes(a.id));
-    const data = generateComparisonSeries(amount, inflation, years, activeConfigs);
-
-    setRealValue(Math.round(calculateInflationValue(amount, inflation, years)));
-    setSeries(data);
-  }, [amount, inflation, years, selectedAssets, assetConfigs]);
+// VLOŽIT TOTO (místo smazaného useEffect):
+const activeConfigs = assetConfigs.filter(a => selectedAssets.includes(a.id));
+const series = generateComparisonSeries(amount, inflation, years, activeConfigs);
+const realValue = Math.round(calculateInflationValue(amount, inflation, years));
 
   const toggleAsset = (id: string) => {
     setSelectedAssets(prev => 

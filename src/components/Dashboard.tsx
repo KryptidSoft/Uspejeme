@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Shield, Target, Settings2, Activity, Wallet, HeartPulse, 
-  AlertTriangle, Printer, Share2 
+  AlertTriangle, Printer, Share2, HelpCircle 
 } from 'lucide-react';
 import { 
   PieChart, Pie, Cell, ResponsiveContainer, 
@@ -12,6 +12,8 @@ import {
 import { useBusinessData } from '../hooks/useBusinessData';
 import { formatCZK } from '../utils/calculations/mathHelpers';
 import { calculateDashboardStats } from '../utils/calculations/businessLogic';
+
+import { GuideModal } from './GuideModal';
 
 // --- TYPY A POMOCNÉ KOMPONENTY ---
 
@@ -47,16 +49,23 @@ const DashboardCharts = ({ stats }: { stats: any }) => {
   // Data pro prstencový graf (Měsíční distribuce)
   const revenueData = [
     { name: 'Čistý zisk', value: stats.disposableNet, color: '#22c55e' },
-    { name: 'Daně (odhad)', value: stats.taxLiability, color: '#ef4444' },
-    { name: 'Fixní náklady', value: stats.exp, color: '#3b82f6' },
+    { name: 'Daně', value: stats.taxLiability, color: '#ef4444' },
+    { name: 'Náklady', value: stats.exp, color: '#3b82f6' },
   ];
+  
+  const totalRevenue = revenueData.reduce((sum, item) => sum + item.value, 0);
+
+const revenueDataWithPercent = revenueData.map(item => ({
+  ...item,
+  percent: totalRevenue > 0 ? ((item.value / totalRevenue) * 100).toFixed(1) : "0"
+}));
 
   // Data pro horizontální bar (Pracovní zatížení)
   const workloadData = [
     { 
       name: 'Hodinová zátěž', 
       'Bod přežití': stats.survivalHours, 
-      'Cílový nájezd': stats.requiredHours 
+      'Cílový počet hodin': stats.requiredHours 
     }
   ];
 
@@ -64,35 +73,41 @@ const DashboardCharts = ({ stats }: { stats: any }) => {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '20px', marginBottom: '30px' }}>
       
       {/* Koláč: Kam tečou peníze */}
-      <div className="glass-card" style={{ padding: '25px', height: '320px', display: 'flex', flexDirection: 'column' }}>
+      <div className="glass-card" style={{ padding: '25px', minHeight: '320px', display: 'flex', flexDirection: 'column' }}>
         <h3 style={{ margin: '0 0 15px 0', fontSize: '0.9rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px' }}>Distribuce měsíčního příjmu</h3>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={230}>
           <PieChart>
             <Pie
-              data={revenueData}
+              data={revenueDataWithPercent}
               innerRadius={60}
               outerRadius={85}
               paddingAngle={8}
               dataKey="value"
+			  label={(entry) => `${entry.percent}%`}
+			  labelLine={false}
+			  labelPosition="inside"
             >
-              {revenueData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+              {revenueDataWithPercent.map((entry, index) => (
+                <Cell key={entry.name} fill={entry.color} stroke="none" />
               ))}
             </Pie>
             <Tooltip 
               contentStyle={{ background: '#111', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
               itemStyle={{ fontSize: '0.8rem' }}
-              formatter={(value: number) => formatCZK(value)}
+              formatter={(value: number, name: string, props: any) => {
+				  const percent = props?.payload?.percent ?? "0";
+				  return [`${formatCZK(value)} (${percent}%)`, name];
+				}}
             />
-            <Legend iconType="circle" wrapperStyle={{ fontSize: '0.75rem', paddingTop: '10px' }} />
+            <Legend iconType="circle" layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ fontSize: '1rem', paddingTop: '20px' }} />
           </PieChart>
         </ResponsiveContainer>
       </div>
 
       {/* Bar: Srovnání hodin */}
-      <div className="glass-card" style={{ padding: '25px', height: '320px', display: 'flex', flexDirection: 'column' }}>
+      <div className="glass-card" style={{ padding: '25px', minHeight: '320px', display: 'flex', flexDirection: 'column' }}>
         <h3 style={{ margin: '0 0 15px 0', fontSize: '0.9rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px' }}>Analýza časové investice</h3>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={230}>
           <BarChart data={workloadData} layout="vertical" margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
             <XAxis type="number" hide domain={[0, Math.max(stats.requiredHours, 160)]} />
             <YAxis type="category" dataKey="name" hide />
@@ -102,12 +117,12 @@ const DashboardCharts = ({ stats }: { stats: any }) => {
             />
             <Legend />
             <Bar dataKey="Bod přežití" fill="#ef4444" barSize={35} radius={[0, 4, 4, 0]} />
-            <Bar dataKey="Cílový nájezd" fill="#fbbf24" barSize={35} radius={[0, 4, 4, 0]} />
+            <Bar dataKey="Cílový počet hodin" fill="#fbbf24" barSize={35} radius={[0, 4, 4, 0]} />
             <ReferenceLine x={130} stroke="#444" strokeDasharray="3 3" label={{ position: 'top', value: 'Kapacita (130h)', fill: '#666', fontSize: 10 }} />
           </BarChart>
         </ResponsiveContainer>
         <div style={{ marginTop: 'auto', fontSize: '0.8rem', opacity: 0.5, textAlign: 'center' }}>
-          {stats.workload > 100 ? '⚠️ Jste nad udržitelnou kapacitou!' : 'Vše v normě udržitelnososti.'}
+          {stats.workload > 100 ? '⚠️ Jste nad udržitelnou kapacitou!' : 'Vše v normě udržitelnosti.'}
         </div>
       </div>
 
@@ -120,6 +135,7 @@ const DashboardCharts = ({ stats }: { stats: any }) => {
 export const Dashboard: React.FC = () => {
   const { data, updateData } = useBusinessData();
   const navigate = useNavigate();
+  const [isGuideOpen, setIsGuideOpen] = React.useState(false);
   const stats = useMemo(() => calculateDashboardStats(data), [data]);
 
   const getHealthColor = () => {
@@ -137,29 +153,70 @@ export const Dashboard: React.FC = () => {
         marginBottom: '30px', background: 'rgba(255,255,255,0.03)', 
         padding: '20px 30px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' 
       }}>
-        <div>
+        <div style={{ width: '420px' }}>
           <input 
             type="text"
-            value={data.companyName || "Strategický přehled"}
+			placeholder="Vaše jméno"
+            value={data.companyName ?? ""}
             onChange={(e) => updateData({ companyName: e.target.value })}
             style={{ 
-              background: 'transparent', border: 'none', color: 'white', 
-              fontSize: '1.5rem', fontWeight: 'bold', outline: 'none', width: '400px' 
-            }}
+  background: 'transparent',
+  border: 'none',
+  color: 'white',
+  fontSize: '1.5rem',
+  fontWeight: 'bold',
+  outline: 'none',
+  width: '100%'
+}}
           />
           <div style={{ fontSize: '0.7rem', opacity: 0.4, letterSpacing: '2px', marginTop: '5px' }}>OSVČ NAVIGÁTOR 2026</div>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button onClick={() => window.print()} className="util-btn"><Printer size={18} /> Tisk</button>
-          <button className="util-btn" style={{ background: '#fbbf24', color: 'black', border: 'none' }}><Share2 size={18} /> Sdílet</button>
-        </div>
+<div style={{ display: 'flex', gap: '10px' }}>
+  {/* Nápověda - Skleněná modrá */}
+  <button 
+    onClick={() => setIsGuideOpen(true)} 
+    className="util-btn"
+    style={{ 
+      background: 'rgba(59, 130, 246, 0.08)', 
+      border: '1px solid rgba(59, 130, 246, 0.2)',
+      color: '#60a5fa'
+    }}
+  >
+    <HelpCircle size={18} /> Nápověda
+  </button>
+
+  {/* Tisk - Skleněná zelená */}
+  <button 
+    onClick={() => window.print()} 
+    className="util-btn"
+    style={{ 
+      background: 'rgba(34, 197, 94, 0.08)', 
+      border: '1px solid rgba(34, 197, 94, 0.2)',
+      color: '#4ade80' 
+    }}
+  >
+    <Printer size={18} /> Tisk
+  </button>
+
+  {/* Sdílet - Skleněná zlatá */}
+  <button 
+    className="util-btn" 
+    style={{ 
+      background: 'rgba(251, 191, 36, 0.08)', 
+      border: '1px solid rgba(251, 191, 36, 0.3)',
+      color: '#fbbf24'
+    }}
+  >
+    <Share2 size={18} /> Sdílet
+  </button>
+</div>
       </header>
 
       {/* 2. HLAVNÍ METRIKY (Health Score atd.) */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '20px' }}>
         <div className="glass-card" style={{ padding: '30px', textAlign: 'center' }}>
           <HeartPulse size={48} color={getHealthColor()} style={{ marginBottom: '15px' }} />
-          <div style={{ opacity: 0.5, fontSize: '0.8rem', marginBottom: '5px' }}>HEALTH SCORE</div>
+          <div style={{ opacity: 0.5, fontSize: '0.8rem', marginBottom: '5px' }}>ZDRAVÍ PODNIKÁNÍ</div>
           <div style={{ fontSize: '3.5rem', fontWeight: '900', color: getHealthColor() }}>{Math.round(stats.healthScore)}%</div>
           <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>
             {stats.healthScore > 80 ? 'Systém je stabilní a profitabilní.' : 'Vyžaduje optimalizaci sazeb/času.'}
@@ -186,9 +243,9 @@ export const Dashboard: React.FC = () => {
             {stats.workload > 110 && <AlertTriangle color="#ef4444" size={24} />}
           </div>
           <div style={{ marginTop: '15px' }}>
-            <div style={{ opacity: 0.5, fontSize: '0.8rem' }}>AKTUÁLNÍ WORKLOAD</div>
+            <div style={{ opacity: 0.5, fontSize: '0.8rem' }}>PRACOVNÍ VYTÍŽENÍ</div>
             <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: stats.workload > 110 ? '#ef4444' : 'white' }}>{stats.workload}%</div>
-            <div style={{ opacity: 0.5, fontSize: '0.85rem' }}>Potřebujete {stats.requiredHours}h / měsíc</div>
+            <div style={{ opacity: 0.5, fontSize: '0.85rem' }}>K dosažení cíle musíte odpracovat {stats.requiredHours}h / měsíc</div>
           </div>
         </div>
       </div>
@@ -206,9 +263,8 @@ export const Dashboard: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <MetricRow label="Cílový obrat (Brutto)" value={formatCZK(stats.targetRevenue)} />
             <MetricRow label="Daňová povinnost" value={formatCZK(stats.taxLiability)} color="#ef4444" />
-            <MetricRow label="Čistý měsíční přebytek" value={formatCZK(stats.disposableNet)} color="#22c55e" />
-            <MetricRow label="Efektivní hod. sazba" value={formatCZK(stats.effectiveRate)} />
-            <MetricRow label="Marže čistého zisku" value={`${stats.profitMargin.toFixed(1)} %`} color={stats.profitMargin > 30 ? '#22c55e' : '#fbbf24'} />
+            <MetricRow label="Měsíční náklady" value={formatCZK(stats.exp)} link="/planner" />
+			<MetricRow label="Čistý měsíční přebytek" value={formatCZK(stats.disposableNet)} color="#22c55e" link="/investice" />
           </div>
         </div>
 
@@ -218,10 +274,9 @@ export const Dashboard: React.FC = () => {
             <h3 style={{ margin: 0 }}>Udržitelnost</h3>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <MetricRow label="Měsíční náklady (Fixní)" value={formatCZK(stats.exp)} />
+			<MetricRow label="Efektivní hod. sazba" value={formatCZK(stats.effectiveRate)} />
             <MetricRow label="Bod přežití (Break-even)" value={`${stats.survivalHours} h / měs.`} color="#ef4444" />
-            <MetricRow label="Závislost na hl. klientovi" value={`${stats.singleClientRisk} %`} color={stats.singleClientRisk > 50 ? '#ef4444' : '#fbbf24'} />
-            <MetricRow label="Safe-to-Spend (Radost)" value={formatCZK(stats.safeToSpend)} color="#10b981" />
+            <MetricRow label="Závislost na hl. klientovi" value={`${stats.singleClientRisk} %`} color={stats.singleClientRisk > 50 ? '#ef4444' : '#fbbf24'} link="/audit/rizika" />
             <MetricRow label="Měsíční investice (ROI)" value={formatCZK(stats.investAmount)} color="#ec4899" link="/investice" />
           </div>
         </div>
@@ -240,7 +295,8 @@ export const Dashboard: React.FC = () => {
           <div>
             <label style={{ display: 'block', fontSize: '0.8rem', opacity: 0.6, marginBottom: '10px' }}>Cílový čistý příjem: {formatCZK(data.desiredNetIncome)}</label>
             <input 
-              type="range" min="30000" max="300000" step="5000"
+              type="range" min="30000" max="300000"
+			  step="5000"
               value={data.desiredNetIncome}
               onChange={(e) => updateData({ desiredNetIncome: Number(e.target.value) })}
               style={{ width: '100%', accentColor: '#fbbf24' }}
@@ -258,7 +314,8 @@ export const Dashboard: React.FC = () => {
           <div>
             <label style={{ display: 'block', fontSize: '0.8rem', opacity: 0.6, marginBottom: '10px' }}>Aktuální rezerva: {formatCZK(data.reserves)}</label>
             <input 
-              type="range" min="0" max="2000000" step="10000"
+              type="range" min="0" max="3000000"
+			  step="30000"
               value={data.reserves}
               onChange={(e) => updateData({ reserves: Number(e.target.value) })}
               style={{ width: '100%', accentColor: '#22c55e' }}
@@ -267,42 +324,78 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <style>{`
-        .glass-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 24px;
-          transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-          background: rgba(255,255,255,0.05);
-          border-color: rgba(255,255,255,0.15);
-          transform: translateY(-2px);
-        }
-        .util-btn {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          color: white;
-          padding: 10px 18px;
-          border-radius: 12px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-weight: 600;
-          font-size: 0.85rem;
-          transition: 0.2s;
-        }
-        .util-btn:hover {
-          background: rgba(255,255,255,0.1);
-          transform: scale(1.02);
-        }
-        @media print {
-          .util-btn, .dashboard-wrapper > div:last-child { display: none !important; }
-          .dashboard-wrapper { background: white !important; color: black !important; padding: 0 !important; }
-          .glass-card { border: 1px solid #eee !important; color: black !important; box-shadow: none !important; background: transparent !important; }
-        }
-      `}</style>
+<style>{`
+  .glass-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+
+  .util-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.2s;
+  }
+
+  .util-btn:hover {
+    background: rgba(255,255,255,0.1);
+    transform: scale(1.02);
+  }
+
+  @media print {
+    /* Skryje všechny interaktivní prvky */
+    .util-btn,
+    .dashboard-wrapper > div:last-child { 
+      display: none !important; 
+    }
+
+    .dashboard-wrapper { 
+      background: white !important; 
+      color: black !important; 
+      padding: 0 !important; 
+      font-size: 12pt; /* vhodná velikost pro tisk */
+    }
+
+    .glass-card { 
+      border: 1px solid #ddd !important; 
+      color: black !important; 
+      box-shadow: none !important; 
+      background: transparent !important; 
+      page-break-inside: avoid; /* nedělá rozpad karet přes stránky */
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: black !important;
+    }
+
+    p, span, label, div {
+      color: black !important;
+    }
+  }
+`}</style>
+{/* ... tady končí váš simulátor a styly ... */}
+      
+      {/* VLOŽIT MODÁL PŘESNĚ SEM: */}
+      <GuideModal 
+        isOpen={isGuideOpen} 
+        onClose={() => setIsGuideOpen(false)} 
+      />
     </div>
   );
 };

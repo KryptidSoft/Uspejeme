@@ -78,9 +78,9 @@ export const EnergyCalculator: React.FC = () => {
   const toggleGasUnit = (toM3: boolean) => {
     if (gasInM3 === toM3) return;
     const KOEFICIENT = 10.55;
-    let newPrice = inputs.pricePerUnit * (toM3 ? KOEFICIENT : 1/KOEFICIENT);
-    let newLast = inputs.lastReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
-    let newCurr = inputs.currentReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
+    const newPrice = inputs.pricePerUnit * (toM3 ? KOEFICIENT : 1/KOEFICIENT);
+    const newLast = inputs.lastReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
+    const newCurr = inputs.currentReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
     
     setGasInM3(toM3);
     setInputs(prev => ({ 
@@ -104,7 +104,7 @@ export const EnergyCalculator: React.FC = () => {
         </p>
       </div>
 
-      <GlassCard>
+      <GlassCard className="">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ color: currentProfile.color }}>

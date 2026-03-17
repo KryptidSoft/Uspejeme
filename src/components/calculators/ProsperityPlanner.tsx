@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'; 
+import React, { useState, useMemo } from 'react'; 
 import { 
   Target, Save, AlertCircle, Share2, FileText, Lightbulb, 
   TrendingUp, Check, Zap, BookOpen, ShieldCheck, PieChart, 
@@ -14,101 +14,94 @@ export const ProsperityPlanner: React.FC = () => {
   const { data: globalData, updateData } = useBusinessData();
   const [saved, setSaved] = useState(false);
 
-  const [data, setData] = useState({
-    monthlyExpenses: globalData.monthlyExpenses || 40000,
-    desiredSavings: 15000,
-    billableHours: 100,
-    safetyBufferMonths: 6,
-    taxMode: 'pausal_dan',
-    customTaxRate: 25,
-    pausalAmount: 8916,
-  });
-
-  useEffect(() => {
+  // STAV: Musí být uvnitř ProsperityPlanner, aby viděl na globalData
+  const [data, setData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.has('exp')) {
-      setData({
+      return {
         monthlyExpenses: Number(params.get('exp')),
         desiredSavings: Number(params.get('sav')),
         billableHours: Number(params.get('hrs')),
         safetyBufferMonths: Number(params.get('buf')),
         taxMode: params.get('tax') || 'pausal_dan',
         customTaxRate: Number(params.get('rate')) || 25,
-        pausalAmount: Number(params.get('pamt')) || 8916,
-      });
-    } else {
-      const savedLocal = localStorage.getItem('last_planner_data');
-      if (savedLocal) {
-        try { setData(JSON.parse(savedLocal)); } catch (e) { console.error(e); }
-      }
+        pausalAmount: Number(params.get('pamt')) || 9984,
+      };
     }
-  }, []);
 
-const analysis = useMemo(() => {
-  // 1. Příprava čísel
-  const monthlyExpenses = Number(data.monthlyExpenses || 0);
-  const desiredSavings = Number(data.desiredSavings || 0);
-  const billableHours = Number(data.billableHours || 1);
-  const safetyBufferMonths = Number(data.safetyBufferMonths || 0);
-  const customTaxRate = Number(data.customTaxRate || 0);
-  const pausalAmount = Number(data.pausalAmount || 8916);
+    const savedLocal = localStorage.getItem('last_planner_data');
+    if (savedLocal) {
+      try { return JSON.parse(savedLocal); } catch (e) { console.error(e); }
+    }
 
-  // 2. Výpočet
-  const netNeeded = monthlyExpenses + desiredSavings;
-  const grossNeeded = calculateGrossFromNet(
-    netNeeded, 
-    data.taxMode, 
-    customTaxRate, 
-    pausalAmount
-  );
+    return {
+      monthlyExpenses: globalData.monthlyExpenses || 40000,
+      desiredSavings: 15000,
+      billableHours: 100,
+      safetyBufferMonths: 6,
+      taxMode: 'pausal_dan',
+      customTaxRate: 25,
+      pausalAmount: 9984,
+    };
+  });
 
-  // 3. Textová poznámka
-  const taxNote = data.taxMode === 'pausal_dan' 
-    ? `Včetně paušálu ${formatCZK(pausalAmount)}` 
-    : data.taxMode === 'vydaje_60' 
-      ? "Odhad odvodů při 60% paušálu" 
-      : "Dle vašeho odhadu zdanění";
+  const analysis = useMemo(() => {
+    const monthlyExpenses = Number(data.monthlyExpenses || globalData.monthlyExpenses || 0);
+    const desiredSavings = Number(data.desiredSavings || 0);
+    const billableHours = Number(data.billableHours || 1);
+    const safetyBufferMonths = Number(data.safetyBufferMonths || 0);
+    
+    const netNeeded = monthlyExpenses + desiredSavings;
+    const grossNeeded = calculateGrossFromNet(
+      netNeeded, 
+      data.taxMode as any, 
+      Number(data.customTaxRate), 
+      Number(data.pausalAmount)
+    );
 
-  const hourlyRate = Math.ceil(grossNeeded / billableHours);
-  const totalReserveGoal = monthlyExpenses * safetyBufferMonths;
+    const hourlyRate = Math.ceil(grossNeeded / billableHours);
+    const totalReserveGoal = monthlyExpenses * safetyBufferMonths;
 
-  // 4. VRÁCENÍ VÝSLEDKŮ (Tohle v kódu chybělo)
-  return { 
-    hourlyRate, 
-    grossNeeded, 
-    totalReserveGoal, 
-    taxNote, 
-    netNeeded 
+    return { 
+      hourlyRate, 
+      grossNeeded, 
+      totalReserveGoal, 
+      netNeeded,
+      taxNote: data.taxMode === 'pausal_dan' 
+        ? `Včetně paušálu ${formatCZK(data.pausalAmount)}` 
+        : data.taxMode === 'vydaje_60' 
+          ? "Odhad odvodů při 60% paušálu" 
+          : "Dle vašeho odhadu zdanění"
+    };
+  }, [data, globalData]);
+
+  const handleSave = () => {
+    localStorage.setItem('last_planner_data', JSON.stringify(data));
+    updateData({
+      hourlyRate: analysis.hourlyRate,
+      monthlyExpenses: Number(data.monthlyExpenses),
+      desiredNetIncome: analysis.netNeeded,
+      taxReservePercent: Number(data.customTaxRate),
+      taxMode: data.taxMode as any,
+      reserves: analysis.totalReserveGoal
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
-}, [data]); // Ukončení useMemo
 
-const handleSave = () => {
-  localStorage.setItem('last_planner_data', JSON.stringify(data));
-  updateData({
-    hourlyRate: analysis.hourlyRate,
-    monthlyExpenses: Number(data.monthlyExpenses),
-    desiredNetIncome: analysis.netNeeded,
-    taxReservePercent: Number(data.customTaxRate),
-	taxMode: data.taxMode as any, // PŘIDÁNO: propisujeme i režim daní
-	reserves: analysis.totalReserveGoal // PŘIDÁNO: propisujeme vypočítanou cílovou rezervu
-  });
-  setSaved(true);
-  setTimeout(() => setSaved(false), 2000);
-};
-
-const handleShare = () => {
-  const params = new URLSearchParams({
-    exp: data.monthlyExpenses.toString(),
-    sav: data.desiredSavings.toString(),
-    hrs: data.billableHours.toString(),
-    buf: data.safetyBufferMonths.toString(),
-    tax: data.taxMode,
-    rate: data.customTaxRate.toString(),
-    pamt: data.pausalAmount.toString(),
-  });
-  const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-  navigator.clipboard.writeText(shareUrl).then(() => alert("Odkaz zkopírován!"));
-};
+  const handleShare = () => {
+    const params = new URLSearchParams({
+      exp: data.monthlyExpenses.toString(),
+      sav: data.desiredSavings.toString(),
+      hrs: data.billableHours.toString(),
+      buf: data.safetyBufferMonths.toString(),
+      tax: data.taxMode,
+      rate: data.customTaxRate.toString(),
+      pamt: data.pausalAmount.toString(),
+    });
+    const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    navigator.clipboard.writeText(shareUrl).then(() => alert("Odkaz zkopírován!"));
+  };
 
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '25px', maxWidth: '1100px', margin: '0 auto' }}>

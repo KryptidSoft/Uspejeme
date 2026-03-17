@@ -57,9 +57,13 @@ export const QRGenerator: React.FC = () => {
     <div className="fade-in" style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <h1 style={{ color: 'white', fontSize: '2.5rem', fontWeight: '900', marginBottom: '10px' }}>
-          Smart <span style={{ color: 'var(--primary)' }}>QR Pay</span>
+          Smart <span style={{ color: 'var(--primary)' }}>QR Pay</span> (CZ)
         </h1>
         <p style={{ color: 'var(--text-dim)' }}>Bleskové platby bez překlepů. Standard 2026 pro moderní OSVČ.</p>
+		  <p style={{ color: 'var(--text-dim)', fontSize: '0.95rem', maxWidth: '700px', margin: '0 auto', lineHeight: '1.5' }}>
+    QR kód se generuje okamžitě v reálném čase, jakmile zadáte všechny platné údaje - stačí zadat číslo účtu a požadovanou částku. Poté ho stačí zkopírovat a rovnou poslat klientovi nebo kamarádovi. 
+    Platí pro platby v ČR.
+  </p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '25px' }}>

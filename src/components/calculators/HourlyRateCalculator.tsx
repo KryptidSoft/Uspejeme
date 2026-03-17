@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Clock, 
   ShieldAlert, 
@@ -21,33 +21,36 @@ import { useBusinessData } from '../../hooks/useBusinessData';
 
 export const HourlyRateCalculator: React.FC = () => {
   const { data: globalData, updateData } = useBusinessData();
+  
   const [inputs, setInputs] = useState({
-	  grossIncome: globalData.desiredNetIncome || 60000,
-    billableHours: 100,
-    vacationWeeks: 4,
-    bufferDays: 10,
+    // Přidáme || s výchozí hodnotou, aby políčko nebylo prázdné/NaN
+    grossIncome: globalData.desiredNetIncome || 60000, 
+    billableHours: globalData.billableHours || 100,
+    vacationWeeks: globalData.vacationWeeks || 4,
+    bufferDays: globalData.bufferDays || 10,
     costs: {
-      taxes: globalData.taxMode === 'pausal_dan' ? (globalData.pausalAmount || 8916) : 15000,
+      // Tady to máte logicky správně, jen přidáme fallback pro overhead
+      taxes: globalData.taxMode === 'pausal_dan' ? (globalData.pausalAmount || 9984) : 15000,
       overhead: globalData.monthlyExpenses || 30000
     }
   });
+
   const [results, setResults] = useState<any>(null);
 
-  // SEM VLOŽÍTE TU NOVOU FUNKCI:
-const handleCalculate = () => {
-  // 'inputs' musí odpovídat rozhraní HourlyInputs, které máte v helperu
-  const res = calculateHourlyRate(inputs); 
-  setResults(res);
 
-  updateData({
-    hourlyRate: res.rate,
-    monthlyExpenses: inputs.costs.overhead + inputs.costs.taxes,
-    desiredNetIncome: inputs.grossIncome,
-    // Tyto hodnoty dashboard využije pro analýzu stability
-    vacationWeeks: inputs.vacationWeeks,
-    bufferDays: inputs.bufferDays
-  });
-};
+  const handleCalculate = () => {
+    const res = calculateHourlyRate(inputs); 
+    setResults(res);
+
+    updateData({
+      hourlyRate: res.rate,
+      desiredNetIncome: inputs.grossIncome,
+      billableHours: inputs.billableHours,
+      vacationWeeks: inputs.vacationWeeks,
+      bufferDays: inputs.bufferDays,
+      monthlyExpenses: inputs.costs.overhead 
+    });
+  };
 
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '25px', maxWidth: '1000px', margin: '0 auto' }}>

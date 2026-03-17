@@ -10,13 +10,12 @@ export const DisclaimerModal: React.FC<DisclaimerModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  // Pokud modal není otevřený, nic se nezobrazí
   if (!isOpen) return null;
 
   return (
     <div
       className="modal-overlay"
-      onClick={onClose} // klik mimo card zavře modal
+      onClick={onClose}
       style={{
         position: "fixed",
         top: 0,
@@ -31,38 +30,40 @@ export const DisclaimerModal: React.FC<DisclaimerModalProps> = ({
         padding: "20px",
       }}
     >
-      {/* Kliknutí na GlassCard nezavře modal */}
       <GlassCard
         className="fade-in"
         style={{ maxWidth: "600px", width: "100%", margin: "auto" }}
         onClick={() => {}}
       >
-        <h2>Právní upozornění</h2>
+        <h2>Právní upozornění a omezení odpovědnosti</h2>
 
         <p>
-          Informace a výpočty na webu Uspejeme.cz mají pouze orientační a
-          informativní charakter.
+          Tento web poskytuje kalkulačky, nástroje a informace primárně pro
+          osoby samostatně výdělečně činné (OSVČ). Výsledky mají pouze
+          orientační a informativní charakter.
         </p>
 
         <p>
-          Výsledky vycházejí ze zjednodušených matematických modelů a
-          uživatelských vstupů. Nejedná se o daňové, účetní ani investiční
-          poradenství.
+          Výpočty jsou založeny na zjednodušených modelech a údajích zadaných
+          uživatelem. Skutečné výsledky se mohou lišit v závislosti na individuálních
+          podmínkách.
         </p>
 
         <p>
-          Daňové zákony se mohou měnit a individuální podmínky mohou výsledky
-          ovlivnit.
+          Tento obsah není náhradou za odborné daňové, účetní nebo investiční
+          poradenství. Pro konkrétní rozhodnutí doporučujeme konzultaci s
+          kvalifikovaným odborníkem.
         </p>
 
         <p>
-          Pro konkrétní rozhodnutí doporučujeme konzultaci s kvalifikovaným
-          odborníkem (např. účetním nebo daňovým poradcem).
+          Uživatel nese plnou odpovědnost za použití těchto nástrojů. Provozovatel
+          nenese odpovědnost za případné škody vzniklé z použití výpočtů nebo
+          informací.
         </p>
 
-        <p>
-          Provozovatel nenese odpovědnost za případné škody vzniklé použitím
-          těchto nástrojů.
+        <p style={{ fontSize: "0.8rem", opacity: 0.6 }}>
+          Daňové a účetní předpisy se mohou měnit. Aktuální legislativní stav
+          je vždy rozhodující.
         </p>
 
         <div style={{ textAlign: "right", marginTop: "20px" }}>

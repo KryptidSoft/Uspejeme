@@ -1,9 +1,8 @@
 import './index.css';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import { 
-  Home, FileText, TrendingUp, Zap, Activity, 
-  Coins, Target, Briefcase, PiggyBank, ShieldAlert, Circle, Calendar, GraduationCap
+  Home, FileText, Activity, Coins, Target, ShieldAlert, Circle, Calendar, GraduationCap
 } from 'lucide-react';
 
 import { BusinessProvider } from './hooks/useBusinessData';
@@ -31,7 +30,7 @@ export const App = () => {
       <Router>
         <div className="app-container">
           {/* --- HEADER --- */}
-          <Header onLogoClick={() => window.location.href = '/'} />
+          <Header onLogoClick={() => window.history.pushState({}, '', '/')} />
 
           {/* --- NAV MENU --- */}
           <NavMenu />

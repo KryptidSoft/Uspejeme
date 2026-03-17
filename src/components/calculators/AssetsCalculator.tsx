@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Coins, 
   Info, 
@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
-import { RATES } from '../../utils/calculations/assets';
+import { RATES, convertFiatToAssets } from '../../utils/calculations/assets';
 
 type AssetKey = 'gold' | 'silver' | 'btc' | 'chf';
 
@@ -32,20 +32,9 @@ const assets: Record<AssetKey, Asset> = {
 export const AssetsCalculator: React.FC = () => {
   const [fiatAmount, setFiatAmount] = useState<number>(10000);
   const [selectedAsset, setSelectedAsset] = useState<AssetKey>('gold');
-  const [results, setResults] = useState<any>(null);
-
-  useEffect(() => {
-    if (fiatAmount <= 0) return;
-    const asset = assets[selectedAsset];
-    const amount = fiatAmount / asset.price;
-
-    setResults({
-      amount: selectedAsset === 'btc' ? amount.toFixed(8) :
-              selectedAsset === 'chf' ? amount.toFixed(2) : amount.toFixed(3),
-      unit: asset.unit,
-      assetName: asset.label
-    });
-  }, [fiatAmount, selectedAsset]);
+  const allAssetsResults = convertFiatToAssets(fiatAmount);
+  const currentAmount = allAssetsResults[selectedAsset];
+  const asset = assets[selectedAsset]; // Pomocná proměnná pro barvu a label
 
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '25px', maxWidth: '1000px', margin: '0 auto' }}>
@@ -115,10 +104,10 @@ export const AssetsCalculator: React.FC = () => {
               height: '100%'
             }}>
               <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>Aktuální protihodnota:</span>
-              {results && (
+              {fiatAmount > 0 && (
                 <div style={{ margin: '20px 0' }}>
                   <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: assets[selectedAsset].color }}>
-                    {results.amount}
+                    {currentAmount}
                   </div>
                   <div style={{ fontSize: '1.2rem', fontWeight: '500', color: 'var(--text)' }}>
                     {results.unit} {results.assetName}

@@ -26,7 +26,7 @@ export const ReservesCalculator: React.FC = () => {
   
   const [inputs, setInputs] = useState({
     monthlyExpenses: data.monthlyExpenses || 40000,
-    targetMonths: 6,
+    targetMonths: data.safetyBufferMonths || 6,
     savingMonths: 12
   });
 
@@ -34,31 +34,29 @@ export const ReservesCalculator: React.FC = () => {
 
   // SYNCHRONIZACE: Reakce na změnu nákladů v globálním stavu
   useEffect(() => {
-    if (data.monthlyExpenses) {
+    if (data.monthlyExpenses && data.monthlyExpenses !== inputs.monthlyExpenses) {
       setInputs(prev => ({ ...prev, monthlyExpenses: data.monthlyExpenses }));
     }
   }, [data.monthlyExpenses]);
 
-  // Automatický první výpočet a aktualizace při změně vstupů
-  
+  // Automatický výpočet a aktualizace globálního stavu
   useEffect(() => {
-  if (results) {
-    updateData({
-      reservesMonths: results.currentMonths ?? 0,
-      reservesTarget: results.totalTarget ?? 0
-    });
-  }
-}, [results]);
+    if (results) {
+      updateData({
+        reserves: results.totalTarget,
+        safetyBufferMonths: inputs.targetMonths
+      });
+    }
+  }, [results?.totalTarget, inputs.targetMonths]);
 
   const handleCalculate = () => {
     const res = calculateReserves(inputs);
     setResults(res);
   };
   
-    useEffect(() => {
+  useEffect(() => {
     handleCalculate();
   }, [inputs]);
-  
 
   const handleShare = () => {
     const baseUrl = window.location.origin + window.location.pathname;
