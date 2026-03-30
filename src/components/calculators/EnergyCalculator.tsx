@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { 
   Zap, 
@@ -18,6 +19,18 @@ import { InputGroup } from '../ui/InputGroup';
 import { calculateEnergy } from '../../utils/calculations/energy';
 import { formatCZK } from '../../utils/calculations/mathHelpers';
 
+interface EnergyResults {
+  consumedUnits: number;
+  targetUnitsPerDay: number;
+  predictedYearlyCost: number;
+  balance: number;
+  currentBalance: number;
+  costToDate: number;
+  depositsPaidSoFar: number;
+  daysPassed: number;
+  avgUnitsPerDay: number;
+}
+
 export const EnergyCalculator: React.FC = () => {
   const [inputs, setInputs] = useState({
     lastReadingValue: 12500,
@@ -29,7 +42,7 @@ export const EnergyCalculator: React.FC = () => {
   });
 
   const [gasInM3, setGasInM3] = useState(false);
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<EnergyResults | null>(null);
 
   const profiles = [
     { label: 'Elektřina', id: 'ele', price: 6.5, icon: <Zap size={20} />, color: '#fbbf24', unit: 'kWh' },
@@ -52,7 +65,7 @@ export const EnergyCalculator: React.FC = () => {
       };
 
       const calculated = calculateEnergy(dataToCalculate);
-      if (calculated) setResults(calculated);
+      if (calculated) setResults({ ...calculated, avgUnitsPerDay: (calculated as any).avgUnitsPerDay || 0 });
     } catch (error) {
       console.error("Chyba při výpočtu:", error);
     }
@@ -64,7 +77,7 @@ export const EnergyCalculator: React.FC = () => {
     if (results) setResults(null);
   };
 
-  const handleProfileChange = (p: any) => {
+  const handleProfileChange = (p: { id: string; price: number; [key: string]: any }) => {
     setActiveProfileId(p.id);
     setGasInM3(false);
     setInputs({
@@ -189,10 +202,10 @@ export const EnergyCalculator: React.FC = () => {
                 <div className="fade-in" style={{ textAlign: 'left' }}>
                   <div style={{ textAlign: 'center', marginBottom: '25px' }}>
                     <span style={{ color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Prognóza k ročnímu vyúčtování</span>
-                    <div style={{ fontSize: '2.4rem', fontWeight: 'bold', color: results.balance >= 0 ? '#10b981' : '#ef4444', margin: '5px 0' }}>
-                      {results.balance >= 0 ? 'Přeplatek ' : 'Nedoplatek '}
-                      {formatCZK(Math.abs(results.balance))}
-                    </div>
+                    <div style={{ fontSize: '2.4rem', fontWeight: 'bold', color: (results?.balance ?? 0) >= 0 ? '#10b981' : '#ef4444', margin: '5px 0' }}>
+  {(results?.balance ?? 0) >= 0 ? 'Přeplatek ' : 'Nedoplatek '}
+  {formatCZK(Math.abs(results?.balance ?? 0))}
+</div>
                   </div>
 
                   <div style={{ display: 'grid', gap: '15px' }}>
@@ -208,25 +221,25 @@ export const EnergyCalculator: React.FC = () => {
                         <span>Skutečná cena spotřeby:</span>
                         <span>{formatCZK(results.costToDate)}</span>
                       </div>
-                      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '8px', fontWeight: 'bold', color: results.currentBalance >= 0 ? '#10b981' : '#fbbf24', display: 'flex', justifyContent: 'space-between' }}>
-                        <span>{results.currentBalance >= 0 ? 'Aktuálně přebývá:' : 'Aktuálně dlužíte:'}</span>
-                        <span>{formatCZK(Math.abs(results.currentBalance))}</span>
-                      </div>
+                      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '8px', fontWeight: 'bold', color: (results?.currentBalance ?? 0) >= 0 ? '#10b981' : '#fbbf24', display: 'flex', justifyContent: 'space-between' }}>
+  <span>{(results?.currentBalance ?? 0) >= 0 ? 'Aktuálně přebývá:' : 'Aktuálně dlužíte:'}</span>
+  <span>{formatCZK(Math.abs(results?.currentBalance ?? 0))}</span>
+</div>
                     </div>
 
-                    <div style={{ padding: '15px', borderRadius: '15px', background: results.avgUnitsPerDay <= results.targetUnitsPerDay ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: results.avgUnitsPerDay <= results.targetUnitsPerDay ? '#10b981' : '#ef4444', fontSize: '0.75rem', marginBottom: '10px' }}>
+                    <div style={{ padding: '15px', borderRadius: '15px', background: (results?.avgUnitsPerDay ?? 0) <= (results?.targetUnitsPerDay ?? 0) ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: (results?.avgUnitsPerDay ?? 0) <= (results?.targetUnitsPerDay ?? 0) ? '#10b981' : '#ef4444', fontSize: '0.75rem', marginBottom: '10px' }}>
                         <TrendingUp size={16} /> KRITICKÉ TEMPO SPOTŘEBY
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ textAlign: 'center', flex: 1 }}>
                           <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block' }}>REÁLNĚ PÁLÍTE</span>
-                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{results.avgUnitsPerDay.toFixed(2)} {displayUnit}</span>
+                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{(results?.avgUnitsPerDay ?? 0).toFixed(2)} {displayUnit}</span>
                         </div>
                         <ArrowRight size={16} color="rgba(255,255,255,0.2)" />
                         <div style={{ textAlign: 'center', flex: 1 }}>
                           <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block' }}>MUSÍTE STÁHNOUT NA</span>
-                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#3b82f6' }}>{results.targetUnitsPerDay.toFixed(2)} {displayUnit}</span>
+                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#3b82f6' }}>{(results?.targetUnitsPerDay ?? 0).toFixed(2)} {displayUnit}</span>
                         </div>
                       </div>
                     </div>

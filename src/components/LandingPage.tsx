@@ -18,7 +18,7 @@ const MAIN_STATS = [
   { label: 'Roční přínos státu', value: '148 mld.', sub: 'odvedeno na daních a pojistném', change: +4.5, color: '#f59e0b' }
 ];
 
-export const testimonials = [
+const testimonials = [
   {
     name: "Petr Šeda",
     role: "Full-stack Developer",

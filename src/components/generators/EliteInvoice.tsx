@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
 import { QRCodeSVG } from 'qrcode.react';
@@ -82,9 +82,9 @@ const [invoice, setInvoice] = useState<InvoiceData>(() => {
 
     return {
       number: '20260001',
-      variableSymbol: '20260001',
+      variableSymbol: '',
       issueDate: new Date().toISOString().split('T')[0],
-      dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      dueDate: '',
       duzp: new Date().toISOString().split('T')[0],
       supplier: defaultSupplier,
       client: { name: '', street: '', city: '', zip: '', ico: '', dic: '' },
@@ -93,6 +93,22 @@ const [invoice, setInvoice] = useState<InvoiceData>(() => {
       ] as InvoiceItem[]
     };
   });
+  
+  // --- TENTO BLOK VLOŽ SEM ---
+  // Vypočítá Variabilní symbol z čísla faktury (odstraní písmena)
+  const calculatedVS = useMemo(() => {
+    return invoice.number.replace(/\D/g, '');
+  }, [invoice.number]);
+
+  // Vypočítá Datum splatnosti (Datum vystavení + dny splatnosti)
+const calculatedDueDate = useMemo(() => {
+    const date = new Date(invoice.issueDate);
+    if (isNaN(date.getTime())) return invoice.issueDate;
+    // Přidáváme Number(), aby TypeScript věděl, že sčítáme čísla
+    date.setDate(date.getDate() + (Number(dueDays) || 0));
+    return date.toISOString().split('T')[0];
+  }, [invoice.issueDate, dueDays]);
+  // --- KONEC BLOKU ---
  
  useEffect(() => {
     // Uloží údaje dodavatele do prohlížeče
@@ -104,17 +120,6 @@ const [invoice, setInvoice] = useState<InvoiceData>(() => {
     }
   }, [invoice.supplier]);
 
-  // Automatické nastavení VS podle čísla faktury
-  useEffect(() => {
-    setInvoice(prev => ({ ...prev, variableSymbol: prev.number.replace(/\D/g, '') }));
-  }, [invoice.number]);
-  
-  useEffect(() => {
-    const issue = new Date(invoice.issueDate);
-    issue.setDate(issue.getDate() + dueDays);
-    setInvoice(prev => ({ ...prev, dueDate: issue.toISOString().split('T')[0] }));
-  }, [invoice.issueDate, dueDays]);
-
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -123,10 +128,10 @@ const [invoice, setInvoice] = useState<InvoiceData>(() => {
     }).format(date);
   };
 
-  const updateItem = (id: string, field: keyof InvoiceItem, value: any) => {
+  const updateItem = (id: string, field: keyof InvoiceItem, value: string) => {
     setInvoice({
       ...invoice,
-      items: invoice.items.map(i => i.id === id ? { ...i, [field]: (field === 'quantity' || field === 'pricePerUnit' ? Math.max(0, value) : value) } : i)
+      items: invoice.items.map(i => i.id === id ? { ...i, [field]: (field === 'quantity' || field === 'pricePerUnit' ? Math.max(0, Number(value) || 0) : value) } : i)
     });
   };
   
@@ -136,17 +141,38 @@ const subtotal = round(invoice.items.reduce((sum, item) => sum + (item.quantity 
   const vatAmount = isVatPayer ? round((subtotal * vatRate) / 100) : 0;
   const total = round(subtotal + vatAmount);
   
- const handlePdfExport = () => {
-    // Teď už funkce vidí 'invoice', 'isVatPayer' i 'total', protože je uvnitř komponenty
-    const filename = `Faktura_${invoice.number}`;
-    const title = isVatPayer ? (isForeign ? 'TAX INVOICE' : 'FAKTURA - DAŇOVÝ DOKLAD') : (isForeign ? 'INVOICE' : 'FAKTURA');
-	
-  // Definujeme hlavičky podle jazyka
+const handlePdfExport = () => {
+  const filename = `Faktura_${invoice.number}`;
+  const title = isVatPayer 
+    ? (isForeign ? 'TAX INVOICE' : 'FAKTURA - DAŇOVÝ DOKLAD') 
+    : (isForeign ? 'INVOICE' : 'FAKTURA');
+  
+  // 1. ZÍSKÁNÍ QR KÓDU Z DOM (pokud se má zobrazit)
+  let qrBase64 = "";
+  if (showQR) {
+    // Hledáme SVG uvnitř kontejneru, kde se QR kód vykresluje
+    const svgElement = document.querySelector('.invoice-paper svg'); 
+    if (svgElement) {
+      const xml = new XMLSerializer().serializeToString(svgElement);
+      const svg64 = btoa(unescape(encodeURIComponent(xml)));
+      qrBase64 = `data:image/svg+xml;base64,${svg64}`;
+    }
+  }
+
+  // 2. PŘÍPRAVA DAT (vypočítané hodnoty)
+  const exportData = {
+    ...invoice,
+    variableSymbol: calculatedVS,           // Použije vyčištěné VS
+    dueDate: formatDate(calculatedDueDate),  // Použije vypočítané datum
+    isForeign,
+    isVatPayer
+  };
+
+  // 3. PŘÍPRAVA TABULKY
   const tableHead = isForeign 
     ? ["Description", "Qty", "Unit", "Price/Unit", "Total"]
     : ["Popis položky", "Mn.", "Jedn.", "Cena/j.", "Celkem"];
 
-  // Převedeme položky faktury na řádky tabulky
   const tableRows = invoice.items.map(item => [
     item.description,
     item.quantity.toString(),
@@ -155,22 +181,30 @@ const subtotal = round(invoice.items.reduce((sum, item) => sum + (item.quantity 
     `${(item.quantity * item.pricePerUnit).toLocaleString()} ${currency}`
   ]);
 
-  // Přidáme patičku se součtem přímo do tabulky (volitelné)
+  // Přidáme řádek s celkovou sumou na konec tabulky
   tableRows.push([
     "", "", "", 
     isForeign ? "TOTAL:" : "CELKEM:", 
     `${total.toLocaleString()} ${currency}`
   ]);
 
-  // VOLÁME TVŮJ STROJ!
-  exportToPDF(filename, `${title} #${invoice.number}`, tableRows, tableHead);
+  // 4. VOLÁNÍ EXPORTU
+  // Posíláme: název, titulek, řádky, hlavičku, extra data a QR kód
+  exportToPDF(
+    filename, 
+    `${title} #${invoice.number}`, 
+    tableRows, 
+    tableHead, 
+    exportData, 
+    qrBase64
+  );
 };
 
 // --- VÝPOČET QR KÓDU ---
   const cleanAcc = invoice.supplier.account.replace(/\s/g, '').replace('/', '');
   const qrAmount = total.toFixed(2);
-  const qrVS = invoice.variableSymbol.replace(/\D/g, '');
-  const qrValue = `SPD*1.0*ACC:${cleanAcc}*AM:${qrAmount}*CUR:CZK*VS:${qrVS}`;
+  // Teď používáme přímo calculatedVS, který už máš vypočítaný nahoře přes useMemo
+  const qrValue = `SPD*1.0*ACC:${cleanAcc}*AM:${qrAmount}*CUR:CZK*VS:${calculatedVS}`;
   
   // Ukážeme QR jen když je měna Kč a účet má lomítko
   const showQR = currency === 'Kč' && invoice.supplier.account.includes('/') && total > 0;
@@ -281,11 +315,11 @@ return (
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>#{invoice.number}</p>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <p style={{ margin: 0, fontWeight: 700 }}>{isForeign ? 'Variable Symbol' : 'Variabilní symbol'}</p>
-              <p style={{ margin: 0, fontSize: '18px' }}>{invoice.variableSymbol}</p>
-            </div>
-          </div>
-
+  <p style={{ margin: 0, fontWeight: 700 }}>{isForeign ? 'Variable Symbol' : 'Variabilní symbol'}</p>
+  {/* Tady změň invoice.variableSymbol na calculatedVS */}
+  <p style={{ margin: 0, fontSize: '18px' }}>{calculatedVS}</p> 
+</div>
+</div>
           {/* Adresy */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', marginBottom: '40px' }}>
             <div style={{ padding: '20px', background: '#f9f9f9', borderRadius: '8px' }}>
@@ -322,7 +356,7 @@ return (
             <div style={{ borderTop: '1px solid #eee', paddingTop: '15px' }}>
               <p style={{ display: 'flex', justifyContent: 'space-between' }}><span>{isForeign ? 'Issue Date' : 'Datum vystavení'}:</span> <strong>{formatDate(invoice.issueDate)}</strong></p>
               {isVatPayer && <p style={{ display: 'flex', justifyContent: 'space-between' }}><span>DUZP:</span> <strong>{formatDate(invoice.duzp)}</strong></p>}
-              <p style={{ display: 'flex', justifyContent: 'space-between', color: '#2563eb' }}><span><strong>{isForeign ? 'Due Date' : 'Splatnost'}:</strong></span> <strong>{formatDate(invoice.dueDate)}</strong></p>
+              <p style={{ display: 'flex', justifyContent: 'space-between', color: '#2563eb' }}><span><strong>{isForeign ? 'Due Date' : 'Splatnost'}:</strong></span> <strong>{formatDate(calculatedDueDate)}</strong></p>
             </div>
           </div>
 
@@ -419,7 +453,7 @@ return (
 	  label="Číslo faktury" 
 	  type="text" 
 	  value={invoice.number} 
-	  onChange={val => setInvoice({...invoice, number: val})} 
+	  onChange={(val: string) => setInvoice({...invoice, number: val})} 
 	/>
 
     {/* První pole je vždy Datum vystavení */}
@@ -427,7 +461,7 @@ return (
       label="Datum vystavení" 
       type="date" 
       value={invoice.issueDate} 
-      onChange={val => setInvoice({...invoice, issueDate: val})} 
+      onChange={(val: string) => setInvoice({...invoice, issueDate: val})} 
     />
 
     {/* Pokud je plátce, dej vedle něj DUZP. Pokud NEJENÍ plátce, dej vedle něj Splatnost */}
@@ -436,7 +470,7 @@ return (
         label="DUZP" 
         type="date" 
         value={invoice.duzp} 
-        onChange={val => setInvoice({...invoice, duzp: val})} 
+        onChange={(val: string) => setInvoice({...invoice, duzp: val})}
       />
     ) : (
       <InputGroup 
@@ -464,7 +498,7 @@ return (
     label="Bankovní účet (1234567890/0100)" 
     type="text" 
     value={invoice.supplier.account} 
-    onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, account: val}})} 
+    onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, account: val}})} 
   />
 
   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '10px' }}>
@@ -472,57 +506,57 @@ return (
       label="IBAN" 
       type="text" 
       value={invoice.supplier.iban} 
-      onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, iban: val}})} 
+      onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, iban: val}})} 
     />
     <InputGroup 
       label="SWIFT/BIC" 
       type="text" 
       value={invoice.supplier.swift} 
-      onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, swift: val}})} 
+      onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, swift: val}})} 
     />
   </div>
 </details>
 
               <details>
                 <summary style={{ color: '#3b82f6', cursor: 'pointer', fontWeight: 700 }}>Dodavatel (Já)</summary>
-                <InputGroup label="Jméno / Firma" type="text" value={invoice.supplier.name} onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, name: val}})} />
-				<InputGroup label="Registrace (Doplňte kde, např. v Brně)" type="text" value={invoice.supplier.registration} onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, registration: val}})} />
+                <InputGroup label="Jméno / Firma" type="text" value={invoice.supplier.name} onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, name: val}})} />
+				<InputGroup label="Registrace (Doplňte kde, např. v Brně)" type="text" value={invoice.supplier.registration} onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, registration: val}})} />
 				<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px', marginTop: '10px' }}>
   <InputGroup 
     label="E-mail" 
     type="email" 
     value={invoice.supplier.email} 
-    onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, email: val}})} 
+    onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, email: val}})} 
   />
   <InputGroup 
     label="Telefon" 
     type="text" 
     value={invoice.supplier.phone} 
-    onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, phone: val}})} 
+    onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, phone: val}})} 
   />
 </div>
-                <InputGroup label="Ulice" type="text" value={invoice.supplier.street} onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, street: val}})} />
+                <InputGroup label="Ulice" type="text" value={invoice.supplier.street} onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, street: val}})} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '5px' }}>
-                  <InputGroup label="PSČ" type="text" value={invoice.supplier.zip} onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, zip: val}})} />
-                  <InputGroup label="Město" type="text" value={invoice.supplier.city} onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, city: val}})} />
+                  <InputGroup label="PSČ" type="text" value={invoice.supplier.zip} onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, zip: val}})} />
+                  <InputGroup label="Město" type="text" value={invoice.supplier.city} onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, city: val}})} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
-                  <InputGroup label="IČO" type="text" value={invoice.supplier.ico} onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, ico: val}})} />
-                  {isVatPayer && <InputGroup label="DIČ" type="text" value={invoice.supplier.dic} onChange={val => setInvoice({...invoice, supplier: {...invoice.supplier, dic: val}})} />}
+                  <InputGroup label="IČO" type="text" value={invoice.supplier.ico} onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, ico: val}})} />
+                  {isVatPayer && <InputGroup label="DIČ" type="text" value={invoice.supplier.dic} onChange={(val: string) => setInvoice({...invoice, supplier: {...invoice.supplier, dic: val}})} />}
                 </div>
               </details>
 
               <details>
                 <summary style={{ color: '#3b82f6', cursor: 'pointer', fontWeight: 700 }}>Odběratel (Klient)</summary>
-                <InputGroup label="Jméno klienta" type="text" value={invoice.client.name} onChange={val => setInvoice({...invoice, client: {...invoice.client, name: val}})} />
-                <InputGroup label="Ulice" type="text" value={invoice.client.street} onChange={val => setInvoice({...invoice, client: {...invoice.client, street: val}})} />
+                <InputGroup label="Jméno klienta" type="text" value={invoice.client.name} onChange={(val: string) => setInvoice({...invoice, client: {...invoice.client, name: val}})} />
+                <InputGroup label="Ulice" type="text" value={invoice.client.street} onChange={(val: string) => setInvoice({...invoice, client: {...invoice.client, street: val}})} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '5px' }}>
-                  <InputGroup label="PSČ" type="text" value={invoice.client.zip} onChange={val => setInvoice({...invoice, client: {...invoice.client, zip: val}})} />
-                  <InputGroup label="Město" type="text" value={invoice.client.city} onChange={val => setInvoice({...invoice, client: {...invoice.client, city: val}})} />
+                  <InputGroup label="PSČ" type="text" value={invoice.client.zip} onChange={(val: string) => setInvoice({...invoice, client: {...invoice.client, zip: val}})} />
+                  <InputGroup label="Město" type="text" value={invoice.client.city} onChange={(val: string) => setInvoice({...invoice, client: {...invoice.client, city: val}})} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
-                  <InputGroup label="IČO" type="text" value={invoice.client.ico} onChange={val => setInvoice({...invoice, client: {...invoice.client, ico: val}})} />
-                  <InputGroup label="DIČ" type="text" value={invoice.client.dic} onChange={val => setInvoice({...invoice, client: {...invoice.client, dic: val}})} />
+                  <InputGroup label="IČO" type="text" value={invoice.client.ico} onChange={(val: string) => setInvoice({...invoice, client: {...invoice.client, ico: val}})} />
+                  <InputGroup label="DIČ" type="text" value={invoice.client.dic} onChange={(val: string) => setInvoice({...invoice, client: {...invoice.client, dic: val}})} />
                 </div>
               </details>
 
@@ -531,35 +565,58 @@ return (
                 {invoice.items.map((item) => (
                   <div key={item.id} style={{ background: 'rgba(255,255,255,0.05)', padding: '10px', borderRadius: '8px', marginBottom: '10px', position: 'relative' }}>
 				  <button 
-  onClick={() => removeItem(item.id)}
-  style={{ 
-    position: 'absolute', 
-    top: '5px', 
-    right: '5px', 
-    background: 'rgba(239, 68, 68, 0.15)', 
-    border: 'none', 
-    color: '#ef4444', 
-    cursor: 'pointer', 
-    padding: '4px',
-    borderRadius: '4px',
-    zIndex: 10,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }}
-  title="Smazat položku"
->
-  <Trash2 size={14} />
-</button>
-                    <InputGroup label="Popis" type="text" value={item.description} onChange={val => updateItem(item.id, 'description', val)} />
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.5fr', gap: '5px', marginTop: '5px' }}>
-                      <InputGroup label="Mn." type="number" value={item.quantity} onChange={val => updateItem(item.id, 'quantity', Number(val))} />
-                      <InputGroup label="Jedn." type="text" value={item.unit} onChange={val => updateItem(item.id, 'unit', val)} />
-                      <InputGroup label="Cena/j." type="number" value={item.pricePerUnit} onChange={val => updateItem(item.id, 'pricePerUnit', Number(val))} />
-                    </div>
-                  </div>
-                ))}
-                <button onClick={() => setInvoice({...invoice, items: [...invoice.items, { id: Math.random().toString(), description: '', quantity: 1, unit: 'hod', pricePerUnit: 0 }]})} style={{ width: '100%', padding: '10px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '8px', marginTop: '10px' }}>
+onClick={() => removeItem(item.id)}
+          style={{ 
+            position: 'absolute', 
+            top: '5px', 
+            right: '5px', 
+            background: 'rgba(239, 68, 68, 0.15)', 
+            border: 'none', 
+            color: '#ef4444', 
+            cursor: 'pointer', 
+            padding: '4px',
+            borderRadius: '4px',
+            zIndex: 10,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          title="Smazat položku"
+        >
+          <Trash2 size={14} />
+        </button>
+        <InputGroup 
+          label="Popis" 
+          type="text" 
+          value={item.description} 
+          onChange={(val: string) => updateItem(item.id, 'description', val)} 
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.5fr', gap: '5px', marginTop: '5px' }}>
+          <InputGroup 
+            label="Mn." 
+            type="number" 
+            value={item.quantity} 
+            onChange={(val: string) => updateItem(item.id, 'quantity', val as any)} // OPRAVENO: přidána )
+          />
+          <InputGroup 
+            label="Jedn." 
+            type="text" 
+            value={item.unit} 
+            onChange={(val: string) => updateItem(item.id, 'unit', val)} 
+          />
+          <InputGroup 
+            label="Cena/j." 
+            type="number" 
+            value={item.pricePerUnit} 
+            onChange={(val: string) => updateItem(item.id, 'pricePerUnit', val as any)} // OPRAVENO: přidána )
+          />
+        </div>
+      </div>
+    ))}
+<button 
+                  onClick={() => setInvoice({...invoice, items: [...invoice.items, { id: Math.random().toString(), description: '', quantity: 1, unit: 'hod', pricePerUnit: 0 }]})} 
+                  style={{ width: '100%', padding: '10px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '8px', marginTop: '10px' }}
+                >
                   + Přidat položku
                 </button>
               </div>
@@ -570,3 +627,5 @@ return (
     </div>
   );
 };
+
+export default EliteInvoice;

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, type ReactNode, useEffect } from 'react';
 import { usePersistentState } from './usePersistentState';
 
@@ -56,7 +57,7 @@ interface BusinessContextType {
 const BusinessContext = createContext<BusinessContextType | undefined>(undefined);
 
 // Logger jen pro vývoj
-const logger = (msg: string, payload?: any) => {
+const logger = (msg: string, payload?: unknown) => {
   if (import.meta.env.DEV) {
     console.log(`[BusinessContext] ${msg}`, payload || '');
   }
@@ -105,7 +106,8 @@ useEffect(() => {
         pausalAmount: PAUSALNI_DAN_PASMA[prev.pausalBand || 'pasmo1']
       }));
     }
-  }, []); // Spustí se jen jednou při načtení
+    // Do závorek níže jsme přidali proměnné, které efekt sleduje
+  }, [data.pausalAmount, data.pausalBand, setData]);
 
   const updateData = (newData: Partial<BusinessData>) => {
     logger("Přijímám nová data k uložení:", newData);

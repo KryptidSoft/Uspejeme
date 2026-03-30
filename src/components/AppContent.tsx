@@ -25,6 +25,7 @@ import { Contact } from './Contact'; // Přidat
 import { SafeBuyCalculator } from './calculators/SafeBuyCalculator';
 import { ScrollToTop } from './ScrollToTop'; // Import hooku
 import { NotFound } from './NotFound'; // Import fallbacku
+import QuizPage from './QuizPage';
 import { 
   FileText, Activity, Zap, ShieldAlert, Briefcase, Coins, QrCode, FileWarning, Target, 
   TrendingUp, TrendingDown, PiggyBank 
@@ -94,7 +95,8 @@ export const AppContent = () => {
       kalendar: '/calendar',
       faktury: '/faktury',
       strategie: '/strategie',
-      investice: '/investice'
+      investice: '/investice',
+	  archetyp: '/archetyp'
     };
     const targetPath = routes[view] || view;
     navigate(articleId ? `${targetPath}/${articleId}` : targetPath);
@@ -138,13 +140,14 @@ export const AppContent = () => {
       <Route path="/calendar" element={<CalendarPage userType="vse" />} />
       <Route path="/articles" element={<ArticleSection />} />
       <Route path="/articles/:id" element={<ArticleSection />} />
+	  <Route path="/archetyp" element={<QuizPage />} />
 	  
 {/* --- Footer & Info --- */}
       <Route path="/about" element={<AboutUs />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsOfService />} />
-<Route path="/sitemap" element={<Sitemap />} />
+      <Route path="/sitemap" element={<Sitemap />} />
       
       {/* Catch-all route musí být POSLEDNÍ uvnitř <Routes> */}
       <Route path="*" element={<NotFound />} />

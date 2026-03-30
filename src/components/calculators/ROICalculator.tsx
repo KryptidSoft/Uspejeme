@@ -6,32 +6,27 @@ import { calculateROI } from "../../utils/calculations/roi";
 import { useBusinessData } from "../../hooks/useBusinessData";
 
 export const ROICalculator: React.FC = () => {
-  const [investment, setInvestment] = useState<number>(100000);
-  const [initialCosts, setInitialCosts] = useState<number>(0);
-  const [monthlyBenefit, setMonthlyBenefit] = useState<number>(10000);
-  const [discountRate, setDiscountRate] = useState<number>(8);
-  const [months, setMonths] = useState<number>(12);
-  const [notes, setNotes] = useState<string>("");
   const { updateData } = useBusinessData();
-
-  useEffect(() => {
+  
+  // Pomocná funkce pro bezpečné načtení z URL hned při startu
+  const getParam = (key: string, fallback: number) => {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('inv')) {
-      setInvestment(Number(params.get('inv')) || 100000);
-      setInitialCosts(Number(params.get('ic')) || 0);
-      setMonthlyBenefit(Number(params.get('ben')) || 10000);
-      setDiscountRate(Number(params.get('dis')) || 8);
-      setMonths(Number(params.get('m')) || 12);
-    }
-    const savedNotes = localStorage.getItem('roi_notes');
-    if (savedNotes) setNotes(savedNotes);
-  }, []);
+    return params.has(key) ? Number(params.get(key)) : fallback;
+  };
+
+  const [investment, setInvestment] = useState<number>(() => getParam('inv', 100000));
+  const [initialCosts, setInitialCosts] = useState<number>(() => getParam('ic', 0));
+  const [monthlyBenefit, setMonthlyBenefit] = useState<number>(() => getParam('ben', 10000));
+  const [discountRate, setDiscountRate] = useState<number>(() => getParam('dis', 8));
+  const [months, setMonths] = useState<number>(() => getParam('m', 12));
+  
+  const [notes, setNotes] = useState<string>(() => localStorage.getItem('roi_notes') || "");
 
   useEffect(() => {
     localStorage.setItem('roi_notes', notes);
   }, [notes]);
 
-  const handleShare = () => {
+const handleShare = () => {
     const params = new URLSearchParams({
       inv: investment.toString(),
       ic: initialCosts.toString(),
@@ -40,12 +35,16 @@ export const ROICalculator: React.FC = () => {
       m: months.toString()
     });
     const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    
+    // Bonus: Aktualizace URL v adresním řádku bez reloadu
+    window.history.replaceState({}, '', shareUrl);
+    
     navigator.clipboard.writeText(shareUrl).then(() => alert("Odkaz na ROI analýzu zkopírován!"));
   };
 
   const handlePrint = () => window.print();
 
-  const result = useMemo(() => {
+const result = useMemo(() => {
     try {
       return calculateROI({ 
         investment: Number(investment), 
@@ -54,16 +53,19 @@ export const ROICalculator: React.FC = () => {
         discountRate: Number(discountRate), 
         months: Number(months) 
       });
-    } catch (e) {
+    } catch {
       return { npv: 0, roiPercent: 0, discountedPaybackMonths: null };
     }
   }, [investment, initialCosts, monthlyBenefit, discountRate, months]);
-  
+
+  // Volitelné: Pokud chcete automatické uložení, použijte debouncing, 
+  // nebo to nechte jen v useMemo a updateData volejte jen v handleShare/handlePrint.
   useEffect(() => {
-  if (result) {
-    updateData({ roi: result.roiPercent ?? 0 });
-  }
-}, [result?.roiPercent]);
+    const timer = setTimeout(() => {
+      updateData({ roi: result.roiPercent ?? 0 });
+    }, 1000); // Aktualizuje globální data až po vteřině nečinnosti
+    return () => clearTimeout(timer);
+  }, [result.roiPercent, updateData]);
 
   return (
     <div className="fade-in app-container">

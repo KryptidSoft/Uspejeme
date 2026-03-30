@@ -21,6 +21,13 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+// 1. Přidáme interface, aby TypeScript věděl, co kalkulačka vrací (řeší chybu 'any')
+interface ReservesResult {
+  totalTarget: number;
+  monthlySavingNeeded: number;
+  currentStatus?: string;
+}
+
 export const ReservesCalculator: React.FC = () => {
   const { data, updateData } = useBusinessData(); 
   
@@ -30,33 +37,33 @@ export const ReservesCalculator: React.FC = () => {
     savingMonths: 12
   });
 
-  const [results, setResults] = useState<any>(null);
-
-  // SYNCHRONIZACE: Reakce na změnu nákladů v globálním stavu
-  useEffect(() => {
-    if (data.monthlyExpenses && data.monthlyExpenses !== inputs.monthlyExpenses) {
-      setInputs(prev => ({ ...prev, monthlyExpenses: data.monthlyExpenses }));
-    }
-  }, [data.monthlyExpenses]);
-
-  // Automatický výpočet a aktualizace globálního stavu
-useEffect(() => {
-  if (results && (data.reserves !== results.totalTarget || data.safetyBufferMonths !== inputs.targetMonths)) {
-    updateData({
-      reserves: results.totalTarget,
-      safetyBufferMonths: inputs.targetMonths
-    });
+  // --- 1. SYNCHRONIZACE BEZ EFFECTU ---
+  // Pokud se změní globální data, "přetlačíme" lokální stav přímo při renderu.
+  // To je legální React pattern pro synchronizaci props -> state.
+  const [prevGlobalExpenses, setPrevGlobalExpenses] = useState(data.monthlyExpenses);
+  if (data.monthlyExpenses !== prevGlobalExpenses) {
+    setPrevGlobalExpenses(data.monthlyExpenses);
+    setInputs(prev => ({ ...prev, monthlyExpenses: data.monthlyExpenses }));
   }
-}, [results?.totalTarget, inputs.targetMonths, data.reserves, data.safetyBufferMonths]);
 
-  const handleCalculate = () => {
-    const res = calculateReserves(inputs);
-    setResults(res);
-  };
-  
-  useEffect(() => {
-    handleCalculate();
+  // --- 2. VÝPOČET PŘES useMemo (místo useState + useEffect) ---
+  // Tímto zmizí chyba na řádku 55 (setResults uvnitř efektu).
+  const results = useMemo<ReservesResult>(() => {
+    return calculateReserves(inputs);
   }, [inputs]);
+
+  // --- 3. JEDINÝ EFEKT PRO ZÁPIS DO PROFILU ---
+  // Efekty mají sloužit pro zápis ven (do DB/LocalStorage/Globálního stavu), ne pro vnitřní výpočty.
+  useEffect(() => {
+    if (results.totalTarget !== data.reserves || inputs.targetMonths !== data.safetyBufferMonths) {
+      updateData({
+        reserves: results.totalTarget,
+        safetyBufferMonths: inputs.targetMonths
+      });
+    }
+  }, [results.totalTarget, inputs.targetMonths, data.reserves, data.safetyBufferMonths, updateData]);
+
+  // ... handleShare a zbytek return zůstává stejný ...
 
   const handleShare = () => {
     const baseUrl = window.location.origin + window.location.pathname;
@@ -70,10 +77,12 @@ useEffect(() => {
     });
   };
 
-  const chartData = useMemo(() => {
+const chartData = useMemo(() => {
     if (!results) return null;
+    
     const baseSafety = inputs.monthlyExpenses * Math.min(inputs.targetMonths, 3);
-    const extraSafety = Math.max(0, results.totalTarget - baseSafety);
+    const extraSafety = Math.max(0, (results?.totalTarget || 0) - baseSafety);
+    
     return {
       labels: ['Základní přežití (3m)', 'Bezpečnostní polštář'],
       datasets: [{
@@ -85,7 +94,7 @@ useEffect(() => {
         borderRadius: 5,
       }],
     };
-  }, [results, inputs]);
+  }, [results, inputs.monthlyExpenses, inputs.targetMonths]);
 
   return (
     <div className="fade-in app-container">

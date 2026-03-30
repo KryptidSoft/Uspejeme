@@ -18,12 +18,14 @@ import { calculateStability } from '../../utils/calculations/stability';
 import { useBusinessData } from '../../hooks/useBusinessData';
 
 // 1. Texty pro nápovědu (Tooltips)
-const HELP_TEXTS = {
+const HELP_TEXTS: Record<string, string> = {
   reserves: "Kolik měsíců přežijete bez příjmů? Počítejte s nájmem, jídlem i splátkami.",
   sustainability: "Kolik % vašich příjmů tvoří stálí klienti nebo paušály (ne jednorázovky)?",
   workload: "100 % = standardní pracovní týden. Nad 100 % už pracujete po večerech a o víkendem.",
   roi: "Jak dobře jste zaplaceni za svůj čas? Skalární ROI znamená, že vyděláváte, i když nespíte."
 };
+
+type InputKeys = 'reservesMonths' | 'incomeSustainability' | 'workload' | 'roiEfficiency' | 'expenseStability';
 
 const STAGE_DATA = {
   reserves: [
@@ -65,15 +67,15 @@ export const StabilityCalculator: React.FC = () => {
     expenseStability: 90
   });
   
-  const { updateData } = useBusinessData();
+const { updateData } = useBusinessData();
 
   const results = useMemo(() => calculateStability(inputs), [inputs]);
   
   useEffect(() => {
-  if (results) {
-    updateData({ stability: results.score ?? 0 });
-  }
-}, [results?.score]);
+    if (results && typeof results.score === 'number') {
+      updateData({ stability: results.score });
+    }
+  }, [results, updateData]); // Přidáno updateData, aby byl linter spokojený
 
   const getInfo = (val: number, key: keyof typeof STAGE_DATA) => {
     const stages = STAGE_DATA[key];
@@ -88,7 +90,7 @@ export const StabilityCalculator: React.FC = () => {
   };
 
   const verdict = useMemo(() => {
-    const score = results.score;
+    const score = results?.score ?? 0;
     if (score >= 85) return { 
         title: "Pevnost", icon: <Trophy color="#fbbf24" size={42} />, 
         comparison: "Gratulujeme! Jste v horních 5 % ČR.",
@@ -157,10 +159,10 @@ export const StabilityCalculator: React.FC = () => {
           <div style={{ background: 'rgba(255,255,255,0.02)', padding: 'clamp(10px, 2vw, 25px)', borderRadius: '16px', border: '1px solid var(--border)' }}>
             <div style={{ display: 'grid', gap: '25px' }}>
               {(Object.keys(STAGE_DATA) as Array<keyof typeof STAGE_DATA>).map((key) => {
-                  const stateKey = key === 'reserves' ? 'reservesMonths' : 
+                  const stateKey = (key === 'reserves' ? 'reservesMonths' : 
                                    key === 'sustainability' ? 'incomeSustainability' :
-                                   key === 'roi' ? 'roiEfficiency' : 'workload';
-                  const currentVal = (inputs as any)[stateKey];
+                                   key === 'roi' ? 'roiEfficiency' : 'workload') as InputKeys;
+                  const currentVal = inputs[stateKey as keyof typeof inputs];
                   const info = getInfo(currentVal, key);
 
                   return (

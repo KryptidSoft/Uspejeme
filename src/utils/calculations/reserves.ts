@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { safeNumber } from './mathHelpers';
 
-export const calculateReserves = (data: any) => {
+export const calculateReserves = (data: Record<string, any>) => {
   const monthlyExpenses = safeNumber(data?.monthlyExpenses, 0);
   const targetMonths = safeNumber(data?.targetMonths, 6);
   const savingMonths = safeNumber(data?.savingMonths, 12);

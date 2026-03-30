@@ -10,12 +10,24 @@ import { formatCZK } from '../../utils/calculations/mathHelpers';
 import { useBusinessData } from '../../hooks/useBusinessData';
 import { calculateGrossFromNet } from '../../utils/calculations/businessLogic';
 
+type TaxMode = 'pausal_dan' | 'vydaje_60' | 'realne_vydaje';
+
+interface PlannerData {
+  monthlyExpenses: number;
+  desiredSavings: number;
+  billableHours: number;
+  safetyBufferMonths: number;
+  taxMode: TaxMode;
+  customTaxRate: number;
+  pausalAmount: number;
+}
+
 export const ProsperityPlanner: React.FC = () => {
   const { data: globalData, updateData } = useBusinessData();
   const [saved, setSaved] = useState(false);
 
   // STAV: Musí být uvnitř ProsperityPlanner, aby viděl na globalData
-  const [data, setData] = useState(() => {
+  const [data, setData] = useState<PlannerData>(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.has('exp')) {
       return {
@@ -54,7 +66,7 @@ export const ProsperityPlanner: React.FC = () => {
     const netNeeded = monthlyExpenses + desiredSavings;
     const grossNeeded = calculateGrossFromNet(
       netNeeded, 
-      data.taxMode as any, 
+      data.taxMode, 
       Number(data.customTaxRate), 
       Number(data.pausalAmount)
     );
@@ -82,7 +94,7 @@ export const ProsperityPlanner: React.FC = () => {
       monthlyExpenses: Number(data.monthlyExpenses),
       desiredNetIncome: analysis.netNeeded,
       taxReservePercent: Number(data.customTaxRate),
-      taxMode: data.taxMode as any,
+      taxMode: data.taxMode === 'realne_vydaje' ? 'skutecne_vydaje' : (data.taxMode as any),
       reserves: analysis.totalReserveGoal
     });
     setSaved(true);
@@ -161,7 +173,7 @@ export const ProsperityPlanner: React.FC = () => {
                 </h3>
                 <select 
                   value={data.taxMode} 
-                  onChange={(e) => setData({...data, taxMode: e.target.value as any})}
+                  onChange={(e) => setData({...data, taxMode: e.target.value as TaxMode})}
                   style={{ width: '100%', padding: '12px', background: '#1e293b', color: 'white', borderRadius: '8px', border: '1px solid var(--border)', marginBottom: '20px', outline: 'none' }}
                 >
                   <option value="pausal_dan">Paušální daň (1. pásmo)</option>

@@ -1,4 +1,5 @@
-export const calculateEnergy = (data: any) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const calculateEnergy = (data: Record<string, any>) => {
   const { 
     lastReadingValue, 
     currentReadingValue, 

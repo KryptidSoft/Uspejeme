@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
-import { calculateProjectProfit, type ProjectInput, type ProjectResult } from '../../utils/calculations/projectProfit';
+import { calculateProjectProfit, type ProjectInput } from '../../utils/calculations/projectProfit';
 import { getProfitColor, formatCZK } from '../../utils/calculations/mathHelpers';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
@@ -23,9 +23,17 @@ import { useBusinessData } from '../../hooks/useBusinessData';
 export const ProjectProfitCalculator: React.FC = () => {
   const { data } = useBusinessData();
   
-  // 1. SAZBA: Inicializace sazby přímo z globálního úložiště
-  // Pokud jste v HourlyRateCalculatoru vypočítali 1250 Kč, bude tady.
-  const [hourlyRate, setHourlyRate] = useState(data.hourlyRate || 800);
+  // 1. SAZBA: Lokální stav pro možnost testování jiné sazby
+  const [hourlyRate, setHourlyRate] = useState<number>(data.hourlyRate || 0);
+
+  // --- OPRAVA LINTERU (Synchronizace bez useEffectu) ---
+  // Tento vzor "prevProp" je doporučený Reactem pro synchronizaci props do state
+  // bez vyvolání kaskádových renderů (error 55:5 v linteru)
+  const [prevGlobalRate, setPrevGlobalRate] = useState(data.hourlyRate);
+  if (data.hourlyRate !== prevGlobalRate) {
+    setPrevGlobalRate(data.hourlyRate);
+    setHourlyRate(data.hourlyRate);
+  }
 
   const [projects, setProjects] = useState<ProjectInput[]>([
     {
@@ -42,30 +50,18 @@ export const ProjectProfitCalculator: React.FC = () => {
       riskFactor: 0.1,
     },
   ]);
-  const [results, setResults] = useState<ProjectResult[] | null>(null);
+
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
-  // 2. SYNCHRONIZACE: Sledujeme změnu globální sazby
-  // Pokud si v jiném tabu upravíte hodinovku, projekty zde se na to připraví
-  useEffect(() => {
-    if (data.hourlyRate > 0) {
-      setHourlyRate(data.hourlyRate);
-    }
-  }, [data.hourlyRate]);
-
-  // 3. AUTOMATICKÝ PŘEPOČET: 
-  // Ve vašem původním kódu jste musel kliknout na tlačítko. 
-  // Je lepší, když se výsledky aktualizují samy, jakmile se změní sazba nebo data.
-  useEffect(() => {
-    const calculatedResults = calculateProjectProfit(projects, hourlyRate);
-    setResults(calculatedResults);
+  // AUTOMATICKÝ PŘEPOČET
+  // useMemo je čisté, linteru nevadí a počítá okamžitě
+  const results = useMemo(() => {
+    return calculateProjectProfit(projects, hourlyRate);
   }, [projects, hourlyRate]);
 
+  // Funkce handleCalculate už jen preventivně existuje, pokud je na ni vázané tlačítko
   const handleCalculate = () => {
-    // Ponecháno pro kompatibilitu s vaším tlačítkem, 
-    // ale useEffect výše to teď dělá reaktivně.
-    const calculatedResults = calculateProjectProfit(projects, hourlyRate);
-    setResults(calculatedResults);
+    // Výpočet už běží automaticky v useMemo výše
   };
 
   const addProject = () => {
@@ -84,25 +80,32 @@ export const ProjectProfitCalculator: React.FC = () => {
     if (expandedIndex === index) setExpandedIndex(null);
   };
   
-  const handleChange = (index: number, field: keyof ProjectInput, value: any) => {
+  const handleChange = (index: number, field: keyof ProjectInput, value: string | number) => {
     const newProjects = [...projects];
-    newProjects[index] = { ...newProjects[index], [field]: value };
+    newProjects[index] = { 
+      ...newProjects[index], 
+      [field]: value 
+    } as ProjectInput;
     setProjects(newProjects);
   };
 
-  const chartData = results ? {
-    labels: results.map((r) => r.name || 'Projekt'),
-    datasets: [
-      {
-        label: 'Čistý zisk po zaplacení vaší mzdy (Kč)',
-        data: results.map((r) => r.adjustedProfit),
-        backgroundColor: results.map((r) => getProfitColor(r.adjustedProfit, 0.6)),
-        borderColor: results.map((r) => getProfitColor(r.adjustedProfit, 1)),
-        borderWidth: 2,
-        borderRadius: 8,
-      },
-    ],
-  } : null;
+  const chartData = useMemo(() => {
+    if (!results || results.length === 0) return null;
+
+    return {
+      labels: results.map((r) => r.name || 'Projekt'),
+      datasets: [
+        {
+          label: 'Čistý zisk po zaplacení vaší mzdy (Kč)',
+          data: results.map((r) => r.adjustedProfit),
+          backgroundColor: results.map((r) => getProfitColor(r.adjustedProfit, 0.6)),
+          borderColor: results.map((r) => getProfitColor(r.adjustedProfit, 1)),
+          borderWidth: 2,
+          borderRadius: 8,
+        },
+      ],
+    };
+  }, [results]);
 
   return (
     <div className="fade-in app-container" style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
@@ -236,7 +239,7 @@ export const ProjectProfitCalculator: React.FC = () => {
                     y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
                     x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
                   }
-                } as any} 
+                } as const} 
               />
             </div>
           </div>

@@ -64,7 +64,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = () => {
               {[{ id: 'all', label: 'Vše' }, { id: 'osvc_pausal', label: 'Paušál' }, { id: 'osvc_hlavni', label: 'OSVČ' }, { id: 'sro', label: 'Firmy' }].map(f => (
                 <button 
                   key={f.id} 
-                  onClick={() => setFilter(f.id as any)} 
+                  onClick={() => setFilter(f.id as BusinessType | 'all')} 
                   style={{ padding: '6px 15px', borderRadius: '8px', border: 'none', background: filter === f.id ? 'rgba(255,255,255,0.1)' : 'transparent', color: filter === f.id ? '#f59e0b' : '#888', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer' }}
                 >
                   {f.label}
@@ -77,11 +77,11 @@ export const CalendarPage: React.FC<CalendarPageProps> = () => {
       </div>
 
       {/* KALENDÁŘ - MŘÍŽKA MĚSÍCŮ */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))', gap: '25px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))', gap: '25px' }}>
         {months.map((monthName, monthIdx) => {
           const items = ALL_DEADLINES.filter(d => {
             const dDate = new Date(d.date);
-            return dDate.getFullYear() === activeYear && dDate.getMonth() === monthIdx && (filter === 'all' || d.for.includes(filter as any) || d.for.includes('vse'));
+            return dDate.getFullYear() === activeYear && dDate.getMonth() === monthIdx && (filter === 'all' || d.for.includes(filter as BusinessType) || d.for.includes('vse'));
           }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
           if (items.length === 0) return null;
@@ -101,7 +101,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = () => {
   return (
     <GlassCard 
       key={item.id}
-className=""	  
+className=""
       style={{ 
         padding: '16px', 
         // Pokud je v minulosti, linka je jemně zelená (symbol klidu), jinak barva kategorie
@@ -176,7 +176,7 @@ className=""
         textAlign: 'center'
       }}>
         <p style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <strong>Poznámka k termínům:</strong> Termíny mají informativní charakter. 
+          <strong>Poznámka k termínům:</strong> Termíny mají informativní charakter.
           V případě, že konec lhůty připadá na sobotu, neděli nebo svátek, je podle českého daňového řádu 
           posledním dnem lhůty nejbližší příští pracovní den. Doporučujeme však plnit povinnosti s předstihem.
         </p>

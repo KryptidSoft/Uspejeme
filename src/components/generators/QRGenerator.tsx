@@ -1,41 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
 import { QrCode, Copy, CheckCircle2, AlertCircle, Wallet } from 'lucide-react';
 
 export const QRGenerator: React.FC = () => {
-  const [data, setData] = useState({
-    account: '',
-    amount: '',
-    variableSymbol: '',
-    message: '',
+  // 1. STAV: Načtení z localStorage uděláme přímo při startu (lazy inicializace)
+  const [data, setData] = useState(() => {
+    const savedAccount = localStorage.getItem('user_account_number');
+    return {
+      account: savedAccount || '',
+      amount: '',
+      variableSymbol: '',
+      message: '',
+    };
   });
-  
-  // useRef je nejefektivnější cesta: drží si původní hodnotu pro výpočet DPH
-  // aniž by způsoboval zbytečné překreslování (re-rendery) jako useState.
+
   const originalAmount = useRef('');
   const [copied, setCopied] = useState(false);
-  const [isValidAccount, setIsValidAccount] = useState(false);
 
-useEffect(() => {
-    const savedAccount = localStorage.getItem('user_account_number');
-    if (savedAccount) {
-      setData(prev => ({ ...prev, account: savedAccount }));
-    }
-  }, []);
+  // 2. LOGIKA: Validaci účtu nepotřebujeme v useEffectu, spočítáme ji "on the fly"
+  const accountRegex = /^(\d{0,6}-)?\d{1,10}\/\d{4}$/;
+  const isValidAccount = accountRegex.test(data.account);
 
-  useEffect(() => {
-    const accountRegex = /^(\d{0,6}-)?\d{1,10}\/\d{4}$/;
-    setIsValidAccount(accountRegex.test(data.account));
-  }, [data.account]);
-  
-  useEffect(() => {
-    if (data.account) {
-      localStorage.setItem('user_account_number', data.account);
-    }
-  }, [data.account]);
-  
+  // ... zbytek returnu zůstává, jen u InputGroup pro účet změň onChange
 
   const addTax = (percentage: number) => {
     // Pokud originalAmount ještě není nastaven, vezmeme aktuální hodnotu
@@ -96,11 +84,14 @@ useEffect(() => {
             
             <div style={{ position: 'relative' }}>
               <InputGroup 
-                label="Číslo účtu / včetně kódu banky (vzor 1234567890/1234)" 
-                placeholder="např. 123456789/0100"
-                value={data.account}
-                onChange={(val) => setData({...data, account: val})}
-                type="text" 
+  label="Číslo účtu / včetně kódu banky (vzor 1234567890/1234)" 
+  placeholder="např. 123456789/0100"
+  value={data.account}
+  onChange={(val) => {
+    setData(prev => ({ ...prev, account: val }));
+    if (val) localStorage.setItem('user_account_number', val);
+  }}
+  type="text"
               />
               {data.account.length > 5 && (
                 <div style={{ position: 'absolute', right: '12px', top: '38px' }}>
@@ -123,20 +114,24 @@ useEffect(() => {
                 </div>
               </div>
               <InputGroup 
-                label="Var. symbol" 
-                value={data.variableSymbol}
-                onChange={(val) => setData({...data, variableSymbol: val})}
-                type="text"
-              />
-            </div>
+            label="Var. symbol" 
+            value={data.variableSymbol}
+            // Změna: používáme 'prev' místo 'data'
+            onChange={(val) => setData(prev => ({ ...prev, variableSymbol: val }))}
+            type="text"
+          />
+        </div>
 
-            <InputGroup 
-              label="Zpráva pro příjemce (text max. 60 znaků)" 
-              value={data.message}
-              onChange={(val) => {
-                if (val.length <= 60) setData({...data, message: val});
-              }}
-              type="text" 
+        <InputGroup 
+          label="Zpráva pro příjemce (text max. 60 znaků)" 
+          value={data.message}
+          onChange={(val) => {
+            // Změna: kontrola délky a funkcionální update
+            if (val.length <= 60) {
+              setData(prev => ({ ...prev, message: val }));
+            }
+          }}
+          type="text" 
             />
           </GlassCard>
         </div>

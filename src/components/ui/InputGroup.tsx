@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Info } from 'lucide-react';
 
 interface InputGroupProps {
@@ -24,43 +24,53 @@ export const InputGroup: React.FC<InputGroupProps> = ({
   tooltip,
   step,
   min,
-  max
+  max,
+  placeholder,
+  className = ""
 }) => {
-  // Zajistíme, že hodnota nebude null nebo undefined pro input
+  // Vygeneruje unikátní ID pro propojení labelu a inputu
+  const inputId = useId();
   const inputValue = value ?? "";
 
   return (
-    <div className="input-group" style={{ marginBottom: '15px' }}>
-      <div className="label-wrapper" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.9rem', fontWeight: 500 }}>
+    <div className={`input-group ${className}`} style={{ marginBottom: '15px' }}>
+      <div className="label-wrapper" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', alignItems: 'center' }}>
+        <label 
+          htmlFor={inputId} // Propojení s inputem
+          style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem', fontWeight: 500, cursor: 'pointer' }}
+        >
           {label}
           
-          {/* BEZPEČNÁ ÚPRAVA TOOLTIPU */}
           {tooltip && (
-            <span className="custom-tooltip">
+            <span className="custom-tooltip" style={{ display: 'inline-flex', alignItems: 'center' }}>
               <Info size={14} style={{ opacity: 0.6 }} />
               <span className="tooltip-text">{tooltip}</span>
             </span>
           )}
         </label>
-        {unit && <span className="unit-badge" style={{ fontSize: '0.75rem', opacity: 0.7 }}>{unit}</span>}
+        {unit && <span className="unit-badge" style={{ fontSize: '0.75rem', opacity: 0.7, fontWeight: 600 }}>{unit}</span>}
       </div>
+      
       <input
+        id={inputId} // Unikátní ID
         type={type}
         value={inputValue}
         onChange={(e) => onChange(e.target.value)}
-        className="text-input"
+        placeholder={placeholder}
+        className={`text-input ${type === 'range' ? 'range-input' : ''}`}
         step={step}
         min={min}
         max={max}
         style={{
           width: '100%',
-          padding: '10px',
+          padding: type === 'range' ? '5px 0' : '10px',
           borderRadius: '8px',
-          border: '1px solid var(--border)',
-          background: 'rgba(255, 255, 255, 0.05)',
+          border: type === 'range' ? 'none' : '1px solid var(--border)',
+          background: type === 'range' ? 'transparent' : 'rgba(255, 255, 255, 0.05)',
           color: 'white',
-          outline: 'none'
+          outline: 'none',
+          transition: 'border-color 0.2s, background 0.2s',
+          cursor: type === 'range' ? 'pointer' : 'text'
         }}
       />
     </div>

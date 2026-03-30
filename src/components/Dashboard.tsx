@@ -54,7 +54,7 @@ const MetricRow: React.FC<MetricRowProps> = ({ label, value, color, link }) => {
 };
 
 interface DashboardChartsProps {
-  stats: any; // sem můžeš dát konkrétnější typ, pokud máš
+  stats: Record<string, number | string | boolean | null | undefined>;
 }
 
 export const DashboardCharts: React.FC<DashboardChartsProps> = ({ stats }) => {
@@ -77,11 +77,11 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ stats }) => {
     { name: 'Náklady', value: stats.exp, color: '#3b82f6' },
   ];
 
-  const totalRevenue = revenueData.reduce((sum, item) => sum + item.value, 0);
-  const revenueDataWithPercent = revenueData.map(item => ({
-    ...item,
-    percent: totalRevenue > 0 ? (item.value / totalRevenue) : 0
-  }));
+  const totalRevenue = revenueData.reduce((sum, item) => sum + Number(item.value || 0), 0);
+ const revenueDataWithPercent = revenueData.map(item => ({
+  ...item,
+  percent: totalRevenue > 0 ? (Number(item.value || 0) / totalRevenue) : 0
+ }));
 
   // --- DATA PRO BAR GRAF ---
   const workloadData = [
@@ -125,7 +125,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ stats }) => {
                 trigger="click"
                 contentStyle={{ background: '#111', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
                 itemStyle={{ fontSize: '0.8rem' }}
-                formatter={(value: any) => [`${Number(value).toLocaleString()} Kč`, "Částka"]}
+                formatter={(value: any) => [`${Number(value || 0).toLocaleString()} Kč`, "Částka"]}
               />
               <Legend 
                 iconType="circle" 
@@ -147,7 +147,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ stats }) => {
         <div style={{ flex: 1, minHeight: 0 }}>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={workloadData} layout="vertical" margin={{ top: 20, right: 30, left: 10, bottom: 5 }}>
-              <XAxis type="number" hide domain={[0, Math.max(stats.requiredHours, 160)]} />
+              <XAxis type="number" hide domain={[0, Math.max(Number(stats.requiredHours || 0), 160)]} />
               <YAxis type="category" dataKey="name" hide />
               <Tooltip 
                 cursor={{ fill: 'rgba(255,255,255,0.05)' }}
@@ -166,7 +166,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ stats }) => {
           </ResponsiveContainer>
         </div>
         <div style={{ marginTop: 'auto', fontSize: '0.8rem', opacity: 0.5, textAlign: 'center' }}>
-          {stats.workload > 100 ? '⚠️ Jste nad udržitelnou kapacitou!' : 'Vše v normě udržitelnosti.'}
+          {Number(stats.workload || 0) > 100 ? '⚠️ Jste nad udržitelnou kapacitou!' : 'Vše v normě udržitelnosti.'}
         </div>
       </div>
 
@@ -178,7 +178,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ stats }) => {
 
 export const Dashboard: React.FC = () => {
   const { data, updateData } = useBusinessData();
-  const [_, setIsGuideOpen] = React.useState(false);
+  const [, setIsGuideOpen] = React.useState(false);
   const stats = useMemo(() => calculateDashboardStats(data), [data]);
   const handlePdfExport = () => {
     const filename = `Report_${data.companyName || 'OSVC'}_2026`;

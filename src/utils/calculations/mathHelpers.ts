@@ -2,8 +2,8 @@
  * Zajišťuje, že hodnota je vždy platné číslo. 
  * Pokud není (např. prázdný řetězec nebo text), vrátí 0 nebo definované minimum.
  */
-export const safeNumber = (value: any, min: number = 0): number => {
-  const num = parseFloat(value);
+export const safeNumber = (value: string | number | null | undefined, min: number = 0): number => {
+  const num = parseFloat(String(value || '0'));
   return isNaN(num) ? min : num;
 };
 

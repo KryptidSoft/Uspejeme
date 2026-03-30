@@ -2,7 +2,7 @@ import './index.css';
 import { useState } from 'react';
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import { 
-  Home, FileText, Activity, Coins, Target, ShieldAlert, Circle, Calendar, GraduationCap
+  Home, FileText, Activity, Coins, Target, ShieldAlert, Circle, Calendar, GraduationCap, type LucideIcon 
 } from 'lucide-react';
 
 import { BusinessProvider } from './hooks/useBusinessData';
@@ -11,7 +11,16 @@ import { Footer } from './components/Footer';
 import { DisclaimerModal } from './components/DisclaimerModal';
 import { AppContent } from './components/AppContent';
 
-const TOOLS_REGISTRY = [
+// Definice typu pro nástroje v menu, aby TS znal vlastnost 'disabled'
+interface ToolItem {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  path: string;
+  disabled?: boolean;
+}
+
+const TOOLS_REGISTRY: ToolItem[] = [
   { id: 'dashboard', label: 'Můj panel', icon: Activity, path: '/dashboard' },
   { id: 'finance', label: 'Faktury & platby', icon: FileText, path: '/faktury' },
   { id: 'stability', label: 'Audit stability', icon: ShieldAlert, path: '/audit' },
@@ -19,7 +28,7 @@ const TOOLS_REGISTRY = [
   { id: 'investice', label: 'Investice & ROI', icon: Coins, path: '/investice' },
   { id: 'calendar', label: 'Termíny 2026', icon: Calendar, path: '/calendar' },
   { id: 'articles', label: 'Vzdělávání', icon: GraduationCap, path: '/articles' },
-  { id: 'slot9', label: 'Připravujeme...', icon: Circle, disabled: true },
+  { id: 'archetyp', label: 'Poznej se', icon: Circle, path: "/archetyp" },
 ];
 
 export const App = () => {
@@ -70,7 +79,7 @@ const NavMenu = () => {
             opacity: tool.disabled ? 0.3 : 1,
             cursor: tool.disabled ? 'default' : 'pointer'
           }}
-          onClick={() => !tool.disabled && navigate(tool.path!)}
+          onClick={() => !tool.disabled && navigate(tool.path)}
         >
           <tool.icon size={18} />
           <span>{tool.label}</span>

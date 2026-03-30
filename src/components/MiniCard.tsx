@@ -1,10 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+// Přidáváme import typu pro ikony
+import type { LucideIcon } from "lucide-react";
 
 interface MiniCardProps {
   title: string;
   desc: string;
-  icon: any;
+  // Teď už TypeScript bude vědět, co LucideIcon znamená
+  icon: LucideIcon;
   to?: string;
   style?: React.CSSProperties;
 }
@@ -25,6 +28,7 @@ export const MiniCard: React.FC<MiniCardProps> = ({ title, desc, icon: Icon, to,
         ...style
       }}
     >
+      {/* Tady se Icon použije jako komponenta, což je díky správnému typu v pořádku */}
       <Icon size={24} style={{ marginBottom: "10px", color: "#60a5fa" }} />
 
       <h3 style={{ fontSize: "1rem", marginBottom: "5px" }}>
