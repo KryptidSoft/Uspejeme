@@ -1,8 +1,8 @@
 import './index.css';
 import { useState } from 'react';
-import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { 
-  Home, FileText, Activity, Coins, Target, ShieldAlert, Circle, Calendar, GraduationCap, type LucideIcon 
+  Activity, FileText, Target, Coins, ShieldAlert, GraduationCap, type LucideIcon 
 } from 'lucide-react';
 
 import { BusinessProvider } from './hooks/useBusinessData';
@@ -11,13 +11,11 @@ import { Footer } from './components/Footer';
 import { DisclaimerModal } from './components/DisclaimerModal';
 import { AppContent } from './components/AppContent';
 
-// Definice typu pro nástroje v menu, aby TS znal vlastnost 'disabled'
 interface ToolItem {
   id: string;
   label: string;
   icon: LucideIcon;
   path: string;
-  disabled?: boolean;
 }
 
 const TOOLS_REGISTRY: ToolItem[] = [
@@ -26,66 +24,73 @@ const TOOLS_REGISTRY: ToolItem[] = [
   { id: 'stability', label: 'Audit stability', icon: ShieldAlert, path: '/audit' },
   { id: 'strategie', label: 'Strategie & růst', icon: Target, path: '/strategie' },
   { id: 'investice', label: 'Investice & ROI', icon: Coins, path: '/investice' },
-  { id: 'calendar', label: 'Termíny 2026', icon: Calendar, path: '/calendar' },
-  { id: 'articles', label: 'Vzdělávání', icon: GraduationCap, path: '/articles' },
-  { id: 'archetyp', label: 'Poznej se', icon: Circle, path: "/archetyp" },
+  { id: 'vzdelavani', label: 'Vzdělávání', icon: GraduationCap, path: '#' }, 
 ];
 
-export const App = () => {
+const SUB_ITEMS: Record<string, { label: string, path: string }[]> = {
+  'finance': [
+    { label: 'Faktura', path: '/faktury/invoice' },
+    { label: 'QR Platba', path: '/faktury/qr' },
+    { label: 'Splatnost', path: '/faktury/dues' },
+  ],
+  'stability': [
+    { label: 'Index stability', path: '/audit/stability' },
+    { label: 'Rezerva', path: '/audit/reserves' },
+    { label: 'Rizika', path: '/audit/rizika' },
+    { label: 'Energie', path: '/energy' },
+  ],
+  'strategie': [
+    { label: 'Plánovač', path: '/planner' },
+    { label: 'Hodinovka', path: '/strategie/hourly' },
+    { label: 'Zakázky', path: '/strategie/projects' },
+  ],
+  'investice': [
+    { label: 'Návratnost', path: '/investice/roi_calc' },
+    { label: 'Inflace', path: '/investice/inflation' },
+    { label: 'Aktiva', path: '/investice/gold' },
+    { label: 'Nákupy', path: '/safe-buy' },
+  ],
+  'vzdelavani': [
+    { label: 'Články', path: '/articles' },
+    { label: 'Termíny 2026', path: '/calendar' },
+    { label: 'Poznej se', path: '/archetyp' },
+  ]
+};
+
+// Vnitřní komponenta, která už má přístup k Routeru (díky tomu funguje location)
+const AppInner = () => {
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   return (
-    <BusinessProvider>
-      <Router>
-        <div className="app-container">
-          {/* --- HEADER --- */}
-          <Header onLogoClick={() => window.history.pushState({}, '', '/')} />
+    <div className="app-container">
+      <Header 
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        tools={TOOLS_REGISTRY}
+        subItems={SUB_ITEMS}
+      />
 
-          {/* --- NAV MENU --- */}
-          <NavMenu />
+      {/* KEY={location.pathname} je lék na to zamrzání kalkulaček */}
+      <main className="main-content" key={location.pathname}>
+        <AppContent />
+      </main>
 
-          {/* --- MAIN CONTENT --- */}
-          <main style={{ marginTop: '40px' }}>
-            <AppContent />
-          </main>
-
-          {/* --- FOOTER & MODAL --- */}
-          <Footer onShowDisclaimer={() => setIsDisclaimerOpen(true)} />
-          <DisclaimerModal isOpen={isDisclaimerOpen} onClose={() => setIsDisclaimerOpen(false)} />
-        </div>
-      </Router>
-    </BusinessProvider>
+      <Footer onShowDisclaimer={() => setIsDisclaimerOpen(true)} />
+      <DisclaimerModal isOpen={isDisclaimerOpen} onClose={() => setIsDisclaimerOpen(false)} />
+    </div>
   );
 };
 
-// --- NAV MENU jako samostatná komponenta ---
-const NavMenu = () => {
-  const navigate = useNavigate();
-
+// Hlavní export, který vše obaluje
+export const App = () => {
   return (
-    <nav className="main-nav">
-      <button className="nav-item" onClick={() => navigate('/')}>
-        <Home size={20} />
-      </button>
-
-      <div className="nav-separator" style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '10px 0' }} />
-
-      {TOOLS_REGISTRY.map((tool) => (
-        <button
-          key={tool.id}
-          disabled={tool.disabled}
-          className="nav-item"
-          style={{
-            opacity: tool.disabled ? 0.3 : 1,
-            cursor: tool.disabled ? 'default' : 'pointer'
-          }}
-          onClick={() => !tool.disabled && navigate(tool.path)}
-        >
-          <tool.icon size={18} />
-          <span>{tool.label}</span>
-        </button>
-      ))}
-    </nav>
+    <BusinessProvider>
+      <Router>
+        <AppInner />
+      </Router>
+    </BusinessProvider>
   );
 };
 

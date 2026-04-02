@@ -67,15 +67,18 @@ export const StabilityCalculator: React.FC = () => {
     expenseStability: 90
   });
   
-const { updateData } = useBusinessData();
+const { data, updateData } = useBusinessData();
 
   const results = useMemo(() => calculateStability(inputs), [inputs]);
   
   useEffect(() => {
     if (results && typeof results.score === 'number') {
+    // KLÍČOVÁ ZMĚNA: Aktualizuj jen pokud se hodnota skutečně liší
+    if (data.stability !== results.score) {
       updateData({ stability: results.score });
     }
-  }, [results, updateData]); // Přidáno updateData, aby byl linter spokojený
+  }
+}, [results.score, data.stability, updateData]);
 
   const getInfo = (val: number, key: keyof typeof STAGE_DATA) => {
     const stages = STAGE_DATA[key];

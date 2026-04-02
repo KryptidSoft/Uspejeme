@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, type ReactNode, useEffect } from 'react';
+import { createContext, useContext, type ReactNode, useEffect, useCallback } from 'react';
 import { usePersistentState } from './usePersistentState';
 
 export type BusinessType = 'hlavni' | 'vedlejsi' | 'vse' | 'all' | 'platec_dph';
@@ -56,13 +56,6 @@ interface BusinessContextType {
 
 const BusinessContext = createContext<BusinessContextType | undefined>(undefined);
 
-// Logger jen pro vývoj
-const logger = (msg: string, payload?: unknown) => {
-  if (import.meta.env.DEV) {
-    console.log(`[BusinessContext] ${msg}`, payload || '');
-  }
-};
-
 // Paušální daň 2026 podle pásma
 export const PAUSALNI_DAN_PASMA = {
   pasmo1: 9984,
@@ -76,64 +69,66 @@ export const OSVC_MINIMALNI_ODVOZY = {
 };
 
 export const BusinessProvider = ({ children }: { children: ReactNode }) => {
-const [data, setData] = usePersistentState<BusinessData>('uspejeme_global_data', {
-  hourlyRate: 0,
-  monthlyExpenses: 30000,
-  desiredNetIncome: 60000,
-  reserves: 0,
-  taxMode: 'pausal_dan',
-  pausalBand: 'pasmo1',
-  pausalAmount: 9984,
-  vatMode: 'neplatce',
-  businessType: 'hlavni',
-  socialMin: 6723,
-  healthMin: 3161,
-  topClientShare: 0,
-  incomeStability: 100,
-  taxReservePercent: 25,
-  hasContracts: false,
-  hasDeposits: false,
-  hasBackup: false,
-  safetyBufferMonths: 6
-});
+  const [data, setData] = usePersistentState<BusinessData>('uspejeme_global_data', {
+    hourlyRate: 0,
+    monthlyExpenses: 30000,
+    desiredNetIncome: 60000,
+    reserves: 0,
+    taxMode: 'pausal_dan',
+    pausalBand: 'pasmo1',
+    pausalAmount: 9984,
+    vatMode: 'neplatce',
+    businessType: 'hlavni',
+    socialMin: 6723,
+    healthMin: 3161,
+    topClientShare: 0,
+    incomeStability: 100,
+    taxReservePercent: 25,
+    hasContracts: false,
+    hasDeposits: false,
+    hasBackup: false,
+    safetyBufferMonths: 6
+  });
 
-useEffect(() => {
-    // Kontrola na staré částky z roku 2025
-    if (data.pausalAmount === 8916 || data.pausalAmount === 8914) {
-      // Místo updateData to zapište přímo do setData, aby to bylo okamžité
-      setData(prev => ({
-        ...prev,
-        pausalAmount: PAUSALNI_DAN_PASMA[prev.pausalBand || 'pasmo1']
-      }));
-    }
-    // Do závorek níže jsme přidali proměnné, které efekt sleduje
-  }, [data.pausalAmount, data.pausalBand, setData]);
-
-  const updateData = (newData: Partial<BusinessData>) => {
-    logger("Přijímám nová data k uložení:", newData);
+  // Stabilní funkce pro aktualizaci dat
+  const updateData = useCallback((newData: Partial<BusinessData>) => {
     setData(prev => {
       const updated = { ...prev, ...newData };
 
-      // 1. Pokud se mění pásmo, automaticky nastavíme správnou částku
+      // Automatické přepočty při změně režimů
       if (newData.pausalBand) {
         updated.pausalAmount = PAUSALNI_DAN_PASMA[newData.pausalBand];
       }
 
-      // 2. Pokud se mění taxMode na paušál, zajistíme, že tam není stará hodnota
       if (newData.taxMode === 'pausal_dan') {
-        updated.pausalAmount = PAUSALNI_DAN_PASMA[updated.pausalBand];
+        updated.pausalAmount = PAUSALNI_DAN_PASMA[updated.pausalBand || 'pasmo1'];
       }
 
-      // 3. Zajištění minimálních odvodů 2026 pro výpočty mimo paušál
       if (updated.businessType === 'hlavni') {
         updated.socialMin = OSVC_MINIMALNI_ODVOZY.social;
         updated.healthMin = OSVC_MINIMALNI_ODVOZY.health;
       }
 
-      return updated;
-    });
-  };
+      // KLÍČOVÁ KONTROLA: Změnilo se reálně něco?
+      const hasChanged = Object.keys(updated).some(
+        key => updated[key as keyof BusinessData] !== prev[key as keyof BusinessData]
+      );
 
+      return hasChanged ? updated : prev;
+    });
+  }, [setData]);
+
+  // JEDNORÁZOVÁ MIGRACE (z roku 2025 na 2026)
+  useEffect(() => {
+    const isOldAmount = data.pausalAmount === 8916 || data.pausalAmount === 8914;
+    if (isOldAmount) {
+      updateData({ 
+        pausalAmount: PAUSALNI_DAN_PASMA[data.pausalBand || 'pasmo1'] 
+      });
+    }
+  }, [data.pausalAmount, data.pausalBand, updateData]);
+
+  // Debug logování v dev režimu
   useEffect(() => {
     if (import.meta.env.DEV) {
       console.log("Aktuální stav BusinessContext:", data);
