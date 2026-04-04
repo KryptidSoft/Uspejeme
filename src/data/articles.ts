@@ -70,7 +70,7 @@ id: '1',
     <p>Tento nástroj tu není od toho, aby vám sčítal účtenky. Je tu od toho, aby vám dal strategický nadhled a odvahu říct si o férovou odměnu za vaši práci.</p>
 
     <div style="margin-top: 40px; padding: 20px; background: rgba(251,191,36,0.1); border-radius: 12px; text-align: center;">
-      <a href="/dashboard" class="cta-link" style="color: #fbbf24; font-weight: bold; text-decoration: none; font-size: 1.1rem;">
+      <a href="/panel" class="cta-link" style="color: #fbbf24; font-weight: bold; text-decoration: none; font-size: 1.1rem;">
   >>> 🚀 Vyzkoušejte si svůj finanční rentgen na hlavním panelu <<<
 </a>
     </div>

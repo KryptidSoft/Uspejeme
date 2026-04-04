@@ -40,9 +40,7 @@ export const AssetsCalculator: React.FC = () => {
       
       {/* --- STRATEGICKÝ ÚVOD --- */}
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h1 style={{ color: 'white', fontWeight: '800', marginBottom: '10px' }}>
-          Převodník na proti-inflační aktiva
-        </h1>
+	  <h1 style={{ color: 'white', fontSize: '2.5rem', marginBottom: '15px', fontWeight: '800' }}>Převodník na proti-inflační aktiva</h1>
         <p style={{ color: 'var(--text-dim)', fontSize: '1.1rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
           Jako OSVČ nesete veškeré riziko na svých bedrech. Tato kalkulačka vám pomůže vizualizovat, kolik <strong>skutečné hodnoty</strong> si kupujete za své vydělané peníze v "bezpečných přístavech".
         </p>
@@ -73,24 +71,32 @@ export const AssetsCalculator: React.FC = () => {
                 Zvolte cílové aktivum:
               </label>
               {/* Používáme tvůj grid pro tlačítka, který se na mobilu naskládá */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
-                {Object.entries(assets).map(([key, a]) => (
-                  <button
-                    key={key}
-                    onClick={() => setSelectedAsset(key as AssetKey)}
-                    className={`nav-item ${selectedAsset === key ? 'active' : ''}`}
-                    style={{
-                      justifyContent: 'center',
-                      background: selectedAsset === key ? a.color : 'rgba(255,255,255,0.05)',
-                      color: selectedAsset === key ? '#000' : '#fff',
-                      border: '1px solid var(--border)',
-                      opacity: selectedAsset === key ? 1 : 0.7
-                    }}
-                  >
-                    {a.label}
-                  </button>
-                ))}
-              </div>
+              <div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', 
+  gap: '12px' 
+}}>
+  {Object.entries(assets).map(([key, a]) => {
+    const isActive = selectedAsset === key;
+    return (
+      <button
+        key={key}
+        onClick={() => setSelectedAsset(key as AssetKey)}
+        className="btn"
+        style={{
+          background: isActive ? a.color : 'rgba(255,255,255,0.05)',
+          color: isActive ? (key === 'silver' ? '#000' : 'white') : 'var(--text-dim)',
+          border: isActive ? `2px solid white` : '1px solid rgba(255,255,255,0.1)',
+          boxShadow: isActive ? `0 0 20px ${a.color}44` : 'none',
+          opacity: isActive ? 1 : 0.7,
+          fontSize: '0.9rem'
+        }}
+      >
+        {a.label}
+      </button>
+    );
+  })}
+</div>
             </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>
               {asset.desc}
@@ -145,7 +151,7 @@ export const AssetsCalculator: React.FC = () => {
         </div>
       </GlassCard>
 
-      {/* --- EDUKATIVNÍ SEKCE --- */}
+{/* --- EDUKATIVNÍ SEKCE --- */}
       <div className="no-print">
         <GlassCard>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '30px' }}>
@@ -153,10 +159,11 @@ export const AssetsCalculator: React.FC = () => {
             <h2 style={{ margin: 0 }}>Proč budovat "Bezpečný přístav"?</h2>
           </div>
 
-          {/* Tady používáme grid, který se na mobilu naskládá pod sebe */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '15px', border: '1px solid var(--glass-border)' }}>
-              <h4 style={{ color: 'white', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Používáme třídu info-grid, kterou definujeme v index.css pro lepší mobilní zobrazení */}
+          <div className="info-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
+            
+            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '15px', border: '1px solid var(--glass-border)', minWidth: 0 }}>
+              <h4 style={{ color: 'white', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                 <Briefcase size={18} color="#fbbf24" /> Diverzifikace příjmů
               </h4>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', lineHeight: '1.6' }}>
@@ -164,8 +171,8 @@ export const AssetsCalculator: React.FC = () => {
               </p>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '15px', border: '1px solid var(--glass-border)' }}>
-              <h4 style={{ color: 'white', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '15px', border: '1px solid var(--glass-border)', minWidth: 0 }}>
+              <h4 style={{ color: 'white', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                 <TrendingDown size={18} color="#ef4444" /> Ochrana před devalvací
               </h4>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', lineHeight: '1.6' }}>
@@ -173,8 +180,8 @@ export const AssetsCalculator: React.FC = () => {
               </p>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '15px', border: '1px solid var(--glass-border)' }}>
-              <h4 style={{ color: 'white', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '15px', border: '1px solid var(--glass-border)', minWidth: 0 }}>
+              <h4 style={{ color: 'white', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                 <Lock size={18} color="#10b981" /> Psychologický klid
               </h4>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', lineHeight: '1.6' }}>

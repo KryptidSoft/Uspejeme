@@ -1,14 +1,26 @@
 import React from "react";
 import { GlassCard } from "./ui/GlassCard"; // Opraveno podle stromu
+import { useState, useEffect } from "react";
 import { HeartPulse, Shield, Settings2, Info, Activity } from 'lucide-react';
 
 interface GuideModalProps {
   isOpen: boolean;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onClose: () => void;
 }
 
 export const GuideModal: React.FC<GuideModalProps> = ({ isOpen, onClose }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   if (!isOpen) return null;
+
   return (
     <div
       className="modal-overlay"
@@ -21,7 +33,7 @@ export const GuideModal: React.FC<GuideModalProps> = ({ isOpen, onClose }) => {
         height: "100%",
         backgroundColor: "rgba(0,0,0,0.7)", // Trochu tmavší pro lepší soustředění
         display: "flex",
-        alignItems: "center",
+        alignItems: isMobile ? "flex-start" : "center",
         justifyContent: "center",
         zIndex: 1100, // Vyšší než zbytek webu
         padding: "20px",
@@ -31,12 +43,19 @@ export const GuideModal: React.FC<GuideModalProps> = ({ isOpen, onClose }) => {
     >
       <GlassCard
         className="fade-in"
-        style={{ maxWidth: "700px", width: "100%", margin: "auto", padding: '30px', maxHeight: "90vh", overflowY: "auto", }}
-        onClick={() => {}}
+        style={{ 
+          maxWidth: "700px", 
+          width: "100%", 
+          margin: isMobile ? "0 auto" : "auto", 
+          padding: isMobile ? '16px' : '30px', // Responzivní padding
+          maxHeight: isMobile ? "none" : "90vh", 
+          overflowY: "auto", 
+        }}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         <h2 style={{ color: '#fbbf24', marginTop: 0 }}>OSVČ Navigátor – Jak to funguje?</h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '12px' : '20px', marginTop: '20px' }}>
           
           <section style={{ display: 'flex', gap: '15px' }}>
             <div style={{ color: '#fbbf24' }}><HeartPulse size={24} /></div>
@@ -138,12 +157,14 @@ export const GuideModal: React.FC<GuideModalProps> = ({ isOpen, onClose }) => {
           <button 
             onClick={onClose}
             style={{
-              padding: '10px 25px',
+              padding: '12px 25px',
               borderRadius: '10px',
               background: '#fbbf24',
               border: 'none',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              width: isMobile ? '100%' : 'auto', // Tlačítko přes celý displej
+              fontSize: isMobile ? '1rem' : '0.9rem'
             }}
           >
             Rozumím, jdeme na to

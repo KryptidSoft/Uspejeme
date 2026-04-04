@@ -142,9 +142,14 @@ React.useEffect(() => {
               placeholder="např. Jan Novák - Design"
             />
             
-            <button onClick={downloadIcs} style={{ width: '100%', marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', borderRadius: '8px', cursor: 'pointer', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid var(--border)' }}>
-              <Download size={16} /> Uložit termín do kalendáře
-            </button>
+            <button 
+  onClick={downloadIcs} 
+  className="btn" 
+  style={{ width: '100%', marginTop: '10px' }}
+>
+  <Download size={20} /> 
+  <span>Uložit termín do kalendáře</span>
+</button>
           </GlassCard>
 
           <div style={{ padding: '25px', background: 'linear-gradient(135deg, #3b82f622, #1d4ed822)', borderRadius: '15px', border: '1px solid #3b82f644', textAlign: 'center' }}>
@@ -161,18 +166,31 @@ React.useEffect(() => {
               <BellRing size={20} color="#fbbf24" /> Generátor upomínky
             </h3>
             
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-              {(['friendly', 'formal', 'urgent'] as Tone[]).map((t) => (
-                <button 
-                  key={t}
-                  onClick={() => setTone(t)}
-                  style={{
-                    flex: 1, padding: '10px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '800',
-                    background: tone === t ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                    color: tone === t ? 'white' : '#999',
-                    transition: 'all 0.2s'
-                  }}
-                >
+<div style={{ 
+  display: 'flex', 
+  gap: '5px',        // Zmenšeno z 10px na 5px, aby bylo víc místa pro text
+  marginBottom: '20px',
+  width: '100%'      // Pojistka, aby kontejner nebyl širší než karta
+}}>
+  {(['friendly', 'formal', 'urgent'] as Tone[]).map((t) => (
+    <button 
+      key={t}
+      onClick={() => setTone(t)}
+      style={{
+        flex: 1,           // Každé tlačítko dostane přesně 1/3 místa
+        padding: '10px 2px', // Minimální boční padding, aby text mohl ke kraji
+        borderRadius: '8px', 
+        border: 'none', 
+        cursor: 'pointer', 
+        fontSize: '0.65rem', // Zmenšeno z 0.75rem na 0.65rem (klíčové pro mobil)
+        fontWeight: '800',
+        background: tone === t ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+        color: tone === t ? 'white' : '#999',
+        transition: 'all 0.2s',
+        overflow: 'hidden',   // Jistota, že nic nevyleze
+        whiteSpace: 'nowrap'  // Text zůstane v jedné lince
+      }}
+    >
                   {t === 'friendly' ? 'PŘÁTELSKÁ' : t === 'formal' ? 'FORMÁLNÍ' : 'DŮRAZNÁ'}
                 </button>
               ))}

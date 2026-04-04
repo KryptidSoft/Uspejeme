@@ -37,9 +37,9 @@ const FakturyNav = () => (
   <div className="nav-container">
     <h2>Faktury & platby</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: '15px' }}>
-      <MiniCard title="Faktura" desc="Vytvořit novou" icon={FileText} to="/faktury/invoice" />
+      <MiniCard title="Faktura" desc="Vytvořit novou" icon={FileText} to="/faktury/faktura" />
       <MiniCard title="QR Platba" desc="Generátor kódu" icon={QrCode} to="/faktury/qr" />
-      <MiniCard title="Splatnost" desc="Hlídač termínů" icon={FileWarning} to="/faktury/dues" />
+      <MiniCard title="Splatnost" desc="Hlídač termínů" icon={FileWarning} to="/faktury/upominky" />
     </div>
   </div>
 );
@@ -48,10 +48,10 @@ const AuditNav = () => (
   <div className="nav-container">
     <h2>Audit stability</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: '15px' }}>
-      <MiniCard title="Index stability" desc="Celková diagnostika" icon={Activity} to="/audit/stability" />
-      <MiniCard title="Rezerva" desc="Finanční polštář" icon={PiggyBank} to="/audit/reserves" />
+      <MiniCard title="Index stability" desc="Celková diagnostika" icon={Activity} to="/audit/stabilita" />
+      <MiniCard title="Rezerva" desc="Finanční polštář" icon={PiggyBank} to="/audit/rezerva" />
       <MiniCard title="Rizika" desc="Analýza hrozeb" icon={ShieldAlert} to="/audit/rizika" />
-      <MiniCard title="Energie" desc="Hlídač nákladů" icon={Zap} to="/energy" />
+      <MiniCard title="Energie" desc="Hlídač nákladů" icon={Zap} to="/audit/energie" />
     </div>
   </div>
 );
@@ -60,9 +60,9 @@ const StrategieNav = () => (
   <div className="nav-container">
     <h2>Strategie & růst</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: '15px' }}>
-      <MiniCard title="Plánovač" desc="Kalkulačka prosperity" icon={Target} to="/planner" />
-      <MiniCard title="Hodinovka" desc="Ideální sazba" icon={Coins} to="/strategie/hourly" />
-      <MiniCard title="Zakázky" desc="Ziskovost projektů" icon={Briefcase} to="/strategie/projects" />
+      <MiniCard title="Plánovač" desc="Kalkulačka prosperity" icon={Target} to="/planovac" />
+      <MiniCard title="Hodinovka" desc="Ideální sazba" icon={Coins} to="/strategie/hodinovka" />
+      <MiniCard title="Zakázky" desc="Ziskovost projektů" icon={Briefcase} to="/strategie/projekt" />
     </div>
   </div>
 );
@@ -71,10 +71,10 @@ const InvesticeNav = () => (
   <div className="nav-container">
     <h2>Investice & ROI</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: '15px' }}>
-      <MiniCard title="Návratnost" desc="Kalkulačka ROI" icon={TrendingUp} to="/investice/roi_calc" />
-      <MiniCard title="Inflace" desc="Znehodnocení úspor" icon={TrendingDown} to="/investice/inflation" />
-      <MiniCard title="Aktiva" desc="Zlato a drahé kovy" icon={Coins} to="/investice/gold" />
-	  <MiniCard title="Nákupy" desc="Dobrá investice" icon={Coins} to="/safe-buy" />
+      <MiniCard title="Návratnost" desc="Kalkulačka ROI" icon={TrendingUp} to="/investice/roi" />
+      <MiniCard title="Inflace" desc="Znehodnocení úspor" icon={TrendingDown} to="/investice/inflace" />
+      <MiniCard title="Aktiva" desc="Zlato a drahé kovy" icon={Coins} to="/investice/aktiva" />
+	  <MiniCard title="Nákupy" desc="Dobrá investice" icon={Coins} to="/investice/nakupy" />
     </div>
   </div>
 );
@@ -86,13 +86,13 @@ export const AppContent = () => {
 
   const handleNavigate = (view: string, articleId?: string) => {
     const routes: Record<string, string> = {
-      dashboard: '/dashboard',
-	  prosperita: '/planner',
-      rezerva: '/audit/reserves',
+      dashboard: '/panel',
+	  prosperita: '/planovac',
+      rezerva: '/audit/rezerva',
       rizika: '/audit/rizika',
-      hodinovka: '/strategie/hourly',
-      clanky: '/articles',
-      kalendar: '/calendar',
+      hodinovka: '/strategie/hodinovka',
+      clanky: '/clanky',
+      kalendar: '/kalendar',
       faktury: '/faktury',
       strategie: '/strategie',
       investice: '/investice',
@@ -108,46 +108,46 @@ export const AppContent = () => {
       <ScrollToTop />
     <Routes>
       <Route path="/" element={<LandingPage onNavigate={handleNavigate} />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-	  <Route path="/planner" element={<ProsperityPlanner />} />
+      <Route path="/panel" element={<Dashboard />} />
 
       {/* 1. Faktury & platby */}
       <Route path="/faktury" element={<FakturyNav />} />
-      <Route path="/faktury/invoice" element={<EliteInvoice />} />
+      <Route path="/faktury/faktura" element={<EliteInvoice />} />
       <Route path="/faktury/qr" element={<QRGenerator />} />
-      <Route path="/faktury/dues" element={<DuesGenerator />} />
+      <Route path="/faktury/upominky" element={<DuesGenerator />} />
 
       {/* 2. Audit stability */}
       <Route path="/audit" element={<AuditNav />} />
-      <Route path="/audit/stability" element={<StabilityCalculator />} />
-      <Route path="/audit/reserves" element={<ReservesCalculator />} />
+      <Route path="/audit/stabilita" element={<StabilityCalculator />} />
+      <Route path="/audit/rezerva" element={<ReservesCalculator />} />
       <Route path="/audit/rizika" element={<RiskAssessment />} />
+	  <Route path="/audit/energie" element={<EnergyCalculator />} />
 
       {/* 3. Strategie & růst */}
       <Route path="/strategie" element={<StrategieNav />} />
-      <Route path="/strategie/hourly" element={<HourlyRateCalculator />} />
-      <Route path="/strategie/projects" element={<ProjectProfitCalculator />} />
+	  <Route path="/planovac" element={<ProsperityPlanner />} />
+      <Route path="/strategie/hodinovka" element={<HourlyRateCalculator />} />
+      <Route path="/strategie/projekt" element={<ProjectProfitCalculator />} />
 
       {/* 4. Investice & ROI */}
       <Route path="/investice" element={<InvesticeNav />} />
-      <Route path="/investice/roi_calc" element={<ROICalculator />} />
-      <Route path="/investice/inflation" element={<InflationCalculator />} />
-      <Route path="/investice/gold" element={<AssetsCalculator />} />
-	  <Route path="/safe-buy" element={<SafeBuyCalculator />} />
+      <Route path="/investice/roi" element={<ROICalculator />} />
+      <Route path="/investice/inflace" element={<InflationCalculator />} />
+      <Route path="/investice/aktiva" element={<AssetsCalculator />} />
+	  <Route path="/investice/nakupy" element={<SafeBuyCalculator />} />
 
       {/* Ostatní */}
-      <Route path="/energy" element={<EnergyCalculator />} />
-      <Route path="/calendar" element={<CalendarPage userType="vse" />} />
-      <Route path="/articles" element={<ArticleSection />} />
-      <Route path="/articles/:id" element={<ArticleSection />} />
+      <Route path="/kalendar" element={<CalendarPage userType="vse" />} />
+      <Route path="/clanky" element={<ArticleSection />} />
+      <Route path="/clanky/:id" element={<ArticleSection />} />
 	  <Route path="/archetyp" element={<QuizPage />} />
 	  
 {/* --- Footer & Info --- */}
-      <Route path="/about" element={<AboutUs />} />
-      <Route path="/contact" element={<Contact />} />
+      <Route path="/o-nas" element={<AboutUs />} />
+      <Route path="/kontakt" element={<Contact />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsOfService />} />
-      <Route path="/sitemap" element={<Sitemap />} />
+      <Route path="/mapa-stranek" element={<Sitemap />} />
       
       {/* Catch-all route musí být POSLEDNÍ uvnitř <Routes> */}
       <Route path="*" element={<NotFound />} />

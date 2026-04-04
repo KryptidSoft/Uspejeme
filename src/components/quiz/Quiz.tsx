@@ -1,46 +1,58 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { quizQuestions, quizResults } from "./quizData";
 import { usePersistentState } from "../../hooks/usePersistentState";
+import { Link } from "react-router-dom";
 
-// KOMPONENTA RADAROVÉHO GRAFU (SVG)
+// --- Sub-components ---
+
 const RadarChart: React.FC<{ scores: Record<string, number> }> = ({ scores }) => {
-  const keys = Object.keys(scores); // Změněno z quizResults na scores
-  
-  const size = 300;
+  const keys = Object.keys(scores);
+  if (keys.length === 0) return null;
+
+  const size = 320;
   const center = size / 2;
   const radius = size * 0.35;
   const angleStep = (Math.PI * 2) / keys.length;
 
-  // Body pro polygon
-  const points = keys.map((key, i) => {
-    const val = (scores[key] || 0) / 15; // Normalizace
-    const r = radius * (0.2 + val * 0.8);
-    const x = center + r * Math.cos(i * angleStep - Math.PI / 2);
-    const y = center + r * Math.sin(i * angleStep - Math.PI / 2);
-    return `${x},${y}`;
-  }).join(" ");
+  // Memoize points to prevent recalculation unless scores change
+  const points = useMemo(() => {
+    return keys.map((key, i) => {
+      // Normalize value: assuming 15 is the max possible score per category
+      const val = Math.min((scores[key] || 0) / 15, 1); 
+      const r = radius * (0.2 + val * 0.8);
+      const x = center + r * Math.cos(i * angleStep - Math.PI / 2);
+      const y = center + r * Math.sin(i * angleStep - Math.PI / 2);
+      return `${x},${y}`;
+    }).join(" ");
+  }, [scores, keys.length]);
 
   return (
-    <div style={{ margin: "20px 0", display: "flex", justifyContent: "center" }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        {/* Pozadí - soustředné kruhy */}
-        {[0.5, 1].map((m) => (
-          <circle key={m} cx={center} cy={center} r={radius * m} fill="none" stroke="var(--glass-border)" strokeDasharray="4" />
+    <div className="radar-container" aria-hidden="true">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="radar-svg">
+        <defs>
+          <radialGradient id="radarGrad">
+            <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.1" />
+          </radialGradient>
+        </defs>
+        {/* Background Grid */}
+        {[0.2, 0.4, 0.6, 0.8, 1].map((m) => (
+          <circle key={m} cx={center} cy={center} r={radius * m} fill="none" stroke="var(--glass-border)" strokeWidth="1" strokeDasharray="4 4" />
         ))}
-        {/* Paprsky */}
+        {/* Axis Lines */}
         {keys.map((_, i) => {
           const x = center + radius * Math.cos(i * angleStep - Math.PI / 2);
           const y = center + radius * Math.sin(i * angleStep - Math.PI / 2);
           return <line key={i} x1={center} y1={center} x2={x} y2={y} stroke="var(--glass-border)" />;
         })}
-        {/* Samotný graf */}
-        <polygon points={points} fill="var(--primary)" fillOpacity="0.4" stroke="var(--primary)" strokeWidth="3" />
-        {/* Štítky */}
+        {/* Data Shape */}
+        <polygon points={points} fill="url(#radarGrad)" stroke="var(--primary)" strokeWidth="3" className="radar-polygon" />
+        {/* Labels */}
         {keys.map((key, i) => {
-          const x = center + (radius + 25) * Math.cos(i * angleStep - Math.PI / 2);
-          const y = center + (radius + 20) * Math.sin(i * angleStep - Math.PI / 2);
+          const x = center + (radius + 35) * Math.cos(i * angleStep - Math.PI / 2);
+          const y = center + (radius + 25) * Math.sin(i * angleStep - Math.PI / 2);
           return (
-            <text key={key} x={x} y={y} fill="var(--text-dim)" fontSize="10" textAnchor="middle" style={{ textTransform: 'capitalize' }}>
+            <text key={key} x={x} y={y} className="radar-label" textAnchor="middle">
               {quizResults[key]?.type.split(' ')[0] || key}
             </text>
           );
@@ -49,6 +61,8 @@ const RadarChart: React.FC<{ scores: Record<string, number> }> = ({ scores }) =>
     </div>
   );
 };
+
+// --- Main Component ---
 
 const Quiz: React.FC = () => {
   const [current, setCurrent] = usePersistentState<number>("quiz_step", 0);
@@ -60,113 +74,128 @@ const Quiz: React.FC = () => {
     Object.entries(weights).forEach(([type, val]) => {
       nextScores[type] = (nextScores[type] || 0) + val;
     });
+    
     setScores(nextScores);
-
+    
     if (current + 1 < quizQuestions.length) {
       setCurrent(current + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // UX: Scroll to top on next question
     } else {
       setFinished(true);
-    }
-  };
-
-  const getWinnerKey = () => {
-    const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-    return sorted.length > 0 ? sorted[0][0] : "chaotic";
-  };
-
-  const handleShare = (isFeedbackShare = false) => {
-    const res = quizResults[getWinnerKey()];
-    const text = isFeedbackShare 
-      ? `Vyšel mi podnikatelský typ: ${res.type}. Sedí to na mě? Zjisti svůj typ taky:`
-      : `Můj podnikatelský typ je: ${res.type}! Zjisti ten svůj na Uspejeme.cz:`;
-    
-    if (navigator.share) {
-      navigator.share({ title: "Kvíz pro OSVČ", text, url: window.location.href });
-    } else {
-      navigator.clipboard.writeText(`${text} ${window.location.href}`);
-      alert("Zkopírováno do schránky!");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const reset = () => {
-    setCurrent(0);
-    setScores({});
-    setFinished(false);
+    if (window.confirm("Opravdu chcete začít znovu? Váš pokrok bude ztracen.")) {
+      setCurrent(0);
+      setScores({});
+      setFinished(false);
+    }
   };
 
-  if (finished) {
+  const getWinnerKey = () => {
+    const entries = Object.entries(scores);
+    if (entries.length === 0) return "chaotic"; 
+    return entries.sort((a, b) => b[1] - a[1])[0][0];
+  };
+
+  const handleShare = async (isFeedbackShare = false) => {
     const res = quizResults[getWinnerKey()];
+    const text = isFeedbackShare 
+      ? `Vyšel mi podnikatelský typ: ${res.type}. Sedí to na mě?` 
+      : `Můj podnikatelský typ je: ${res.type}! Zjisti ten svůj:`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "Podnikatelský Kvíz", text, url: window.location.href });
+      } catch (err) {
+        console.log("Share failed", err);
+      }
+    } else {
+      navigator.clipboard.writeText(`${text} ${window.location.href}`);
+      alert("Odkaz zkopírován do schránky!");
+    }
+  };
+
+  // 1. Result View
+  if (finished) {
+    const res = quizResults[getWinnerKey()] || quizResults["chaotic"];
+    
     return (
-      <div className="glass-card fade-in" style={{ padding: '30px', textAlign: 'center' }}>
-        <p style={{ color: 'var(--primary)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>Tvůj hlavní archetyp je:</p>
-        <h2 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>{res.type}</h2>
+      <div className="quiz-result-card glass-card fade-in">
+        <header className="result-header">
+          <span className="result-badge">Tvůj hlavní archetyp</span>
+          <h2 className="result-title">{res.type}</h2>
+        </header>
         
         <RadarChart scores={scores} />
 
-        <p style={{ color: 'var(--text-main)', marginBottom: '25px', fontSize: '1.1rem' }}>{res.description}</p>
+        <p className="result-desc">{res.description}</p>
         
-        {/* SEKCE CO TEĎ? */}
-        <div className="glass-card" style={{ textAlign: 'left', padding: '25px', marginBottom: '25px', background: 'rgba(59, 130, 246, 0.05)' }}>
-          <h4 style={{ color: 'var(--primary)', marginBottom: '15px' }}>🚀 Akční plán pro tento týden:</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            <div><strong>Dnes:</strong> <span style={{ color: 'var(--text-dim)' }}>{res.actionPlan.today}</span></div>
-            <div><strong>Zítra:</strong> <span style={{ color: 'var(--text-dim)' }}>{res.actionPlan.tomorrow}</span></div>
-            <div><strong>Tento týden:</strong> <span style={{ color: 'var(--text-dim)' }}>{res.actionPlan.week}</span></div>
+        <section className="action-plan-box" aria-labelledby="plan-title">
+          <h4 id="plan-title">🚀 Akční plán pro tento týden:</h4>
+          <div className="plan-item"><strong>Dnes:</strong> <span>{res.actionPlan.today}</span></div>
+          <div className="plan-item"><strong>Zítra:</strong> <span>{res.actionPlan.tomorrow}</span></div>
+          <div className="plan-item"><strong>Tento týden:</strong> <span>{res.actionPlan.week}</span></div>
+        </section>
+
+        <footer className="result-footer">
+          <div className="button-group">
+            <button className="btn btn-primary" onClick={() => handleShare(false)}>Sdílet výsledek</button>
+            <button className="btn btn-secondary" onClick={() => window.print()}>Uložit PDF</button>
           </div>
-        </div>
-
-        {/* OSTATNÍ O MNĚ */}
-        <div style={{ marginBottom: '30px', padding: '20px', border: '1px dashed var(--glass-border)', borderRadius: '16px' }}>
-          <p style={{ marginBottom: '15px' }}><strong>🤔 Sedí to na tebe?</strong></p>
-          <button className="util-btn" style={{ margin: '0 auto' }} onClick={() => handleShare(true)}>
-             Zeptej se kolegů, jak tě vidí oni
+          
+          <button className="feedback-link" onClick={() => handleShare(true)}>
+            Pasuje to na tebe? Zeptej se kolegů, jak tě vidí oni ...
           </button>
-        </div>
+          
+          <div className="cta-section">
+            <span className="cta-label">Doporučený nástroj pro vás:</span>
+            <Link to={res.cta.link} className="btn btn-cta">
+   {res.cta.label}
+</Link>
+          </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center' }}>
-          <button className="btn" onClick={() => handleShare(false)}>Sdílet výsledek</button>
-          <button className="util-btn" onClick={() => window.print()}>Uložit PDF</button>
-        </div>
-        
-        <button className="footer-item" onClick={reset} style={{ width: '100%', textAlign: 'center', marginTop: '20px', opacity: 0.5 }}>
-          Restartovat kvíz
-        </button>
-
-        <div style={{ marginTop: '30px', padding: '20px', background: 'var(--bg-dark)', borderRadius: '16px' }}>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', marginBottom: '10px' }}>Nástroj pro tvůj typ:</p>
-          <button className="nav-item" style={{ margin: '0 auto', borderColor: 'var(--primary)' }} onClick={() => window.location.href=res.cta.link}>
-             {res.cta.label}
-          </button>
-        </div>
+          <button className="reset-quiz-btn" onClick={reset}>Restartovat kvíz</button>
+        </footer>
       </div>
     );
   }
 
+  // 2. Question View
   const progress = (current / quizQuestions.length) * 100;
+  const currentQuestion = quizQuestions[current];
 
   return (
-    <div className="glass-card fade-in" style={{ padding: '30px' }}>
-      <div style={{ marginBottom: '25px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '8px' }}>
-          <span>Postup testem</span>
+    <div className="quiz-container glass-card fade-in">
+      <div className="quiz-header">
+        <div className="progress-info" role="status">
+          <span>Otázka {current + 1} z {quizQuestions.length}</span>
           <span>{Math.round(progress)}%</span>
         </div>
-        <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px' }}>
-          <div style={{ width: `${progress}%`, height: '100%', background: 'var(--primary)', transition: '0.5s ease' }} />
+        <div className="progress-bar-bg">
+          <div 
+            className="progress-bar-fill" 
+            style={{ width: `${progress}%` }} 
+            aria-valuenow={Math.round(progress)} 
+            aria-valuemin={0} 
+            aria-valuemax={100}
+          />
         </div>
       </div>
 
-      <h3 style={{ marginBottom: '25px', color: 'var(--text-main)', fontSize: '1.4rem' }}>{quizQuestions[current].question}</h3>
+      <h3 className="quiz-question">{currentQuestion.question}</h3>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        {quizQuestions[current].answers.map((opt, i) => (
+      <div className="answers-list">
+        {currentQuestion.answers.map((opt, i) => (
           <button 
             key={i} 
-            className="nav-item" 
-            style={{ width: '100%', padding: '18px', justifyContent: 'flex-start', whiteSpace: 'normal', textAlign: 'left', background: 'rgba(255,255,255,0.02)' }}
+            className="answer-option" 
             onClick={() => handleAnswer(opt.weights)}
           >
-            {opt.label}
+            <span className="answer-index" aria-hidden="true">{String.fromCharCode(65 + i)}</span>
+            <span className="answer-text">{opt.label}</span>
           </button>
         ))}
       </div>

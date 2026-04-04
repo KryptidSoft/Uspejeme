@@ -152,11 +152,11 @@ const score = useMemo(() => {
 
       {/* --- HLOUBKOVÝ PRŮVODCE RIZIKY --- */}
       <div className="no-print">
-        <GlassCard style={{ padding: '40px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '30px' }}>
-            <BookOpen size={32} color="var(--primary)" />
-            <h2 style={{ margin: 0 }}>Jak vybudovat neprůstřelné podnikání</h2>
-          </div>
+        <GlassCard className="responsive-padding">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '30px', flexWrap: 'wrap' }}>
+      <BookOpen size={32} color="var(--primary)" />
+      <h2 style={{ margin: 0, fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' }}>Jak vybudovat neprůstřelné podnikání</h2>
+    </div>
 
           <div className="smart-grid">
             <div>

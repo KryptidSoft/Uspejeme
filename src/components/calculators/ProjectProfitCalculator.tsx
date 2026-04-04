@@ -127,8 +127,8 @@ export const ProjectProfitCalculator: React.FC = () => {
 
         {/* PROPOJENÁ SAZBA */}
         <div style={{ marginBottom: '35px', padding: '20px', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '15px', border: '1px solid rgba(59, 130, 246, 0.1)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, minWidth: '250px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <div style={{ width: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px' }}>
                 <Zap size={18} color="var(--primary)" />
                 <strong style={{ fontSize: '1rem' }}>S čím počítáme?</strong>
@@ -190,13 +190,15 @@ export const ProjectProfitCalculator: React.FC = () => {
                       </div>
                     </div>
                     <div style={{ padding: '15px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px' }}>
-                      <h4 style={{ margin: '0 0 15px 0', fontSize: '0.8rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Přímé náklady (Kč)</h4>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
-                        <InputGroup label="Materiál" value={p.materialCosts} onChange={(val) => handleChange(index, 'materialCosts', parseFloat(val) || 0)} />
-                        <InputGroup label="Software" value={p.softwareCosts} onChange={(val) => handleChange(index, 'softwareCosts', parseFloat(val) || 0)} />
-                        <InputGroup label="Energie/Jiné" value={p.energyCosts} onChange={(val) => handleChange(index, 'energyCosts', parseFloat(val) || 0)} />
-                      </div>
-                    </div>
+  <h4 style={{ margin: '0 0 15px 0', fontSize: '0.8rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Přímé náklady (Kč)</h4>
+  
+  {/* OPRAVENÝ ŘÁDEK NÍŽE - Pouze jeden div s auto-fit */}
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '10px' }}>
+    <InputGroup label="Materiál" value={p.materialCosts} onChange={(val) => handleChange(index, 'materialCosts', parseFloat(val) || 0)} />
+    <InputGroup label="Software" value={p.softwareCosts} onChange={(val) => handleChange(index, 'softwareCosts', parseFloat(val) || 0)} />
+    <InputGroup label="Energie/Jiné" value={p.energyCosts} onChange={(val) => handleChange(index, 'energyCosts', parseFloat(val) || 0)} />
+  </div>
+</div>
                   </div>
                 </div>
               )}

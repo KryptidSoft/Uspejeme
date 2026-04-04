@@ -13,6 +13,7 @@ import { useBusinessData } from '../hooks/useBusinessData';
 import { formatCZK } from '../utils/calculations/mathHelpers';
 import { calculateDashboardStats } from '../utils/calculations/businessLogic';
 import { exportToPDF } from '../utils/exportHelper';
+import { GuideModal } from './GuideModal'; // Uprav cestu podle potřeby
 
 const useMounted = () => {
   const [mounted, setMounted] = React.useState(false);
@@ -178,7 +179,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ stats }) => {
 
 export const Dashboard: React.FC = () => {
   const { data, updateData } = useBusinessData();
-  const [, setIsGuideOpen] = React.useState(false);
+  const [isGuideOpen, setIsGuideOpen] = React.useState(false);
   const stats = useMemo(() => calculateDashboardStats(data), [data]);
   const handlePdfExport = () => {
     const filename = `Report_${data.companyName || 'OSVC'}_2026`;
@@ -328,7 +329,7 @@ export const Dashboard: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <MetricRow label="Celkový příjem" value={formatCZK(stats.targetRevenue)} />
             <MetricRow label="Daňová povinnost" value={formatCZK(stats.taxLiability)} color="#ef4444" />
-            <MetricRow label="Měsíční náklady (upravit)" value={formatCZK(stats.exp)} link="/planner" />
+            <MetricRow label="Měsíční náklady (upravit)" value={formatCZK(stats.exp)} link="/planovac" />
 			<MetricRow label="Čistý měsíční přebytek" value={formatCZK(stats.disposableNet)} color="#22c55e" link="/investice" />
           </div>
         </div>
@@ -401,6 +402,10 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+	  <GuideModal 
+        isOpen={isGuideOpen} 
+        onClose={() => setIsGuideOpen(false)} 
+      />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React from 'react';
-/* OPRAVENO: Zpět na lucide-react */
 import { Facebook, Twitter, Linkedin, Mail, Send, Trash2 } from 'lucide-react'; 
 import { Link } from 'react-router-dom';
 import { clearAppStorage } from '../utils/localStorage';
@@ -25,10 +24,10 @@ export const Footer: React.FC<FooterProps> = ({ onShowDisclaimer }) => {
         {/* 1. PROJEKT */}
         <div className="footer-col">
           <h4>Projekt</h4>
-          <Link to="/about" className="footer-item">O nás</Link>
-          <Link to="/articles" className="footer-item">Vzdělávání</Link>
-          <Link to="/sitemap" className="footer-item">Mapa stránek</Link>
-          <Link to="/contact" className="footer-item">Kontakt</Link>
+          <Link to="/o-nas" className="footer-item">O nás</Link>
+          <Link to="/clanky" className="footer-item">Vzdělávání</Link>
+          <Link to="/mapa-stranek" className="footer-item">Mapa stránek</Link>
+          <Link to="/kontakt" className="footer-item">Kontakt</Link>
         </div>
 
         {/* 2. NÁSTROJE */}
@@ -38,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ onShowDisclaimer }) => {
           <Link to="/audit" className="footer-item">Audit stability</Link>
           <Link to="/strategie" className="footer-item">Strategie a růst</Link>
           <Link to="/investice" className="footer-item">Investice a ROI</Link>
-          <Link to="/calendar" className="footer-item">Termíny 2026</Link>
+          <Link to="/kalendar" className="footer-item">Termíny 2026</Link>
         </div>
 
         {/* 3. PRÁVNÍ & SPRÁVA */}

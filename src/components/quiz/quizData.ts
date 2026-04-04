@@ -75,7 +75,7 @@ export const quizResults: Record<string, QuizResult> = {
       tomorrow: "Napiš si 3 nejdůležitější úkoly hned ráno na papír.",
       week: "Vyzkoušej jeden digitální nástroj na správu úkolů (např. Trello)."
     },
-    cta: { label: "Spočítej si hodinovou sazbu", link: "/hodinova-sazba" },
+    cta: { label: "Spočítej si hodinovou sazbu", link: "/strategie/hodinovka" },
   },
   strategic: {
     type: "Strategický hráč",
@@ -86,7 +86,7 @@ export const quizResults: Record<string, QuizResult> = {
       tomorrow: "Deleguj nebo zruš jednu aktivitu, která ti nepřináší peníze.",
       week: "Naplánuj si strategickou hodinu bez e-mailu a telefonu."
     },
-    cta: { label: "Prověř svou ziskovost", link: "/zisk-projektu" },
+    cta: { label: "Prověř svou ziskovost", link: "/investice/roi" },
   },
   procrastinator: {
     type: "Prokrastinační ninja",
@@ -108,7 +108,7 @@ export const quizResults: Record<string, QuizResult> = {
       tomorrow: "Důležité maily klientům naplánuj k odeslání na 8:00 ráno.",
       week: "Zkus jeden den začít pracovat o hodinu dříve než obvykle."
     },
-    cta: { label: "Zkontroluj své rezervy", link: "/rezervy" },
+    cta: { label: "Zkontroluj své rezervy", link: "/audit/rezerva" },
   },
   perfectionist: {
     type: "Perfekcionista",
@@ -119,7 +119,7 @@ export const quizResults: Record<string, QuizResult> = {
       tomorrow: "U nového úkolu si stopni čas a po 60 minutách přestaň.",
       week: "Sleduj, kolik času trávíš opravami, které klient nevyžadoval."
     },
-    cta: { label: "Otestuj svou stabilitu", link: "/stabilita" },
+    cta: { label: "Otestuj svou stabilitu", link: "/audit/rizika" },
   },
   minimalist: {
     type: "Efektivní minimalista",
@@ -130,7 +130,7 @@ export const quizResults: Record<string, QuizResult> = {
       tomorrow: "Řekni 'ne' jedné schůzce, která nemá jasný program.",
       week: "Zvyš cenu své nejžádanější služby o 10 %."
     },
-    cta: { label: "Plánuj svou prosperitu", link: "/prosperita" },
+    cta: { label: "Plánuj svou prosperitu", link: "/planovac" },
   },
   workaholic: {
     type: "Přepálený workoholik",
@@ -141,6 +141,6 @@ export const quizResults: Record<string, QuizResult> = {
       tomorrow: "Smaž si pracovní e-mail z telefonu pro zbytek dne.",
       week: "Naplánuj si jeden celý den v týdnu bez jediné pracovní myšlenky."
     },
-    cta: { label: "Zkus kalkulačku vyhoření", link: "/energie" },
+    cta: { label: "Zkus kalkulačku vyhoření", link: "/audit/stabilita" },
   },
 };

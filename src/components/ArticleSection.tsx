@@ -15,7 +15,7 @@ export const ArticleSection: React.FC = () => {
     return (
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
         <button 
-          onClick={() => navigate('/articles')}
+          onClick={() => navigate('/clanky')}
           style={{
             marginBottom: '25px',
             background: 'none',
@@ -84,7 +84,7 @@ export const ArticleSection: React.FC = () => {
       {articles.map(article => (
         <GlassCard 
           key={article.id} 
-          onClick={() => navigate(`/articles/${article.id}`)}
+          onClick={() => navigate(`/clanky/${article.id}`)}
           className="hover-card"
           style={{
             cursor: 'pointer',

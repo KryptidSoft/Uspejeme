@@ -71,8 +71,8 @@ const result = useMemo(() => {
     <div className="fade-in app-container">
       
       {/* 1. HLAVNÍ PRODEJNÍ TEXT (SEO) */}
-      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-        <h1 style={{ color: 'white', fontSize: '2.2rem', marginBottom: '10px' }}>Chcete znát skutečnou návratnost investice?</h1>
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+		<h1 style={{ color: 'white', fontSize: '2.5rem', marginBottom: '15px', fontWeight: '800' }}>Chcete znát skutečnou návratnost investice?</h1>
         <p style={{ color: 'var(--text-dim)', fontSize: '1.1rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
           Tato kalkulačka ROI slouží jako váš <strong>hloubkový průvodce</strong>. Pokud chcete znát reálnou návratnost svých peněz bez příkras, použijte náš nástroj. Ukáže vám čísla, která rozhodnou o vašem dalším kroku.
         </p>
@@ -95,8 +95,13 @@ const result = useMemo(() => {
           </div>
         </div>
 
-        <div className="calculator-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', alignItems: 'start' }}>
-          <div className="inputs-section">
+        <div className="calculator-grid" style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', 
+  gap: '40px', 
+  alignItems: 'start' 
+}}>
+          <div className="inputs-section" style={{ minWidth: 0 }}>
             <div style={{ marginBottom: '20px', padding: '12px 15px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', borderLeft: '3px solid var(--primary)' }}>
               <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-dim)', lineHeight: '1.5' }}>
                 Vyplatí se vám ta investice – nebo to jen dobře zní? Tahle kalkulačka vám ukáže <strong>čísla bez emocí</strong>. Zadejte náklady a přínosy a uvidíte, jestli projekt skutečně dává smysl, nebo je to jen optimistický odhad.
@@ -104,7 +109,7 @@ const result = useMemo(() => {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '15px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: '15px' }}>
                 <InputGroup label="Investice" unit="Kč" value={investment} onChange={v => setInvestment(Number(v))}
 tooltip="Celková částka, kterou investujete na začátku projektu. Zahrňte technologie, marketing i vlastní zdroje."
 				/>
@@ -112,7 +117,7 @@ tooltip="Celková částka, kterou investujete na začátku projektu. Zahrňte t
 tooltip="Dodatečné náklady mimo hlavní investici – např. právní služby, školení nebo implementace."
 				/>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '15px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: '15px' }}>
                 <InputGroup label="Měsíční přínos" unit="Kč" value={monthlyBenefit} onChange={v => setMonthlyBenefit(Number(v))}
 tooltip="Odhadovaný čistý měsíční zisk nebo úspora. Buďte raději konzervativní než optimističtí."
 				/>
@@ -224,7 +229,7 @@ tooltip="Zohledňuje hodnotu peněz v čase a riziko. Obvykle 8–12 % ročně."
               Mnoho projektů vypadá na papíře skvěle, ale realita je často složitější.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', margin: '30px 0' }}>
+            <div className="info-grid" style={{ margin: '30px 0' }}>
               <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '15px', borderLeft: '4px solid var(--success)' }}>
                 <h4 style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '8px', marginTop: 0 }}>
                   <Target size={18} color="var(--success)" /> Kdy investovat?

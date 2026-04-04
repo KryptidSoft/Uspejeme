@@ -17,9 +17,37 @@ export const Header = ({ isMobileMenuOpen, setIsMobileMenuOpen, tools, subItems 
   return (
     <header className="main-header">
       <div className="header-wrapper">
-        {/* LOGO: Nyní používá vnitřní navigaci místo reloadu stránky */}
-        <div className="logo-section" onClick={() => handleNav('/')} style={{ cursor: 'pointer' }}>
-          <h1>Uspějeme<span>.cz</span></h1>
+        
+        {/* LOGO SEKCE S PŘÍMÝMI STYLY */}
+        <div 
+          className="logo-section" 
+          onClick={() => handleNav('/')} 
+          style={{ 
+            cursor: 'pointer', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'flex-start',
+            padding: '5px 0'
+          }}
+        >
+          <h1 style={{ 
+            fontSize: '2.1rem', 
+            margin: 2, 
+            lineHeight: '1.1', 
+            color: 'white',
+            fontWeight: 'bold'
+          }}>
+            Uspějeme<span style={{ color: 'var(--primary)' }}>.cz</span>
+          </h1>
+          <p style={{ 
+            fontSize: '0.9rem', 
+            margin: '12px 0 0 4px', 
+            color: 'var(--text-dim)', 
+            opacity: 0.8,
+            whiteSpace: 'nowrap'
+          }}>
+            Finanční nástroj pro OSVČ
+          </p>
         </div>
 
         <nav className={`header-nav ${isMobileMenuOpen ? 'mobile-active' : ''}`}>

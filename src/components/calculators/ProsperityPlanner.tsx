@@ -123,7 +123,7 @@ export const ProsperityPlanner: React.FC = () => {
               </div>
               <div className="no-print" style={{ display: 'flex', gap: '10px' }}>
                 <button onClick={() => window.print()} className="nav-item" style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', padding: '8px 15px', color: '#10b981' }}>
-                  <FileText size={14} /> TISK REPORTU
+                  <FileText size={14} /> TISK
                 </button>
               </div>
             </div>

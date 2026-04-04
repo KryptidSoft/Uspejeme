@@ -19,7 +19,7 @@ interface ToolItem {
 }
 
 const TOOLS_REGISTRY: ToolItem[] = [
-  { id: 'dashboard', label: 'Můj panel', icon: Activity, path: '/dashboard' },
+  { id: 'dashboard', label: 'Můj panel', icon: Activity, path: '/panel' },
   { id: 'finance', label: 'Faktury & platby', icon: FileText, path: '/faktury' },
   { id: 'stability', label: 'Audit stability', icon: ShieldAlert, path: '/audit' },
   { id: 'strategie', label: 'Strategie & růst', icon: Target, path: '/strategie' },
@@ -28,36 +28,36 @@ const TOOLS_REGISTRY: ToolItem[] = [
 ];
 
 const SUB_ITEMS: Record<string, { label: string, path: string }[]> = {
-  'finance': [
-    { label: 'Faktura', path: '/faktury/invoice' },
+  finance: [
+    { label: 'Faktura', path: '/faktury/faktura' },
     { label: 'QR Platba', path: '/faktury/qr' },
-    { label: 'Splatnost', path: '/faktury/dues' },
+    { label: 'Splatnost', path: '/faktury/upominky' },
   ],
-  'stability': [
-    { label: 'Index stability', path: '/audit/stability' },
-    { label: 'Rezerva', path: '/audit/reserves' },
+  stability: [
+    { label: 'Index stability', path: '/audit/stabilita' },
+    { label: 'Rezerva', path: '/audit/rezerva' },
     { label: 'Rizika', path: '/audit/rizika' },
-    { label: 'Energie', path: '/energy' },
+    { label: 'Energie', path: '/audit/energie' },
   ],
-  'strategie': [
-    { label: 'Plánovač', path: '/planner' },
-    { label: 'Hodinovka', path: '/strategie/hourly' },
-    { label: 'Zakázky', path: '/strategie/projects' },
+  strategie: [
+    { label: 'Plánovač', path: '/planovac' },
+    { label: 'Hodinovka', path: '/strategie/hodinovka' },
+    { label: 'Zakázky', path: '/strategie/projekt' },
   ],
-  'investice': [
-    { label: 'Návratnost', path: '/investice/roi_calc' },
-    { label: 'Inflace', path: '/investice/inflation' },
-    { label: 'Aktiva', path: '/investice/gold' },
-    { label: 'Nákupy', path: '/safe-buy' },
+  investice: [
+    { label: 'Návratnost', path: '/investice/roi' },
+    { label: 'Inflace', path: '/investice/inflace' },
+    { label: 'Aktiva', path: '/investice/aktiva' },
+    { label: 'Nákupy', path: '/investice/nakupy' },
   ],
-  'vzdelavani': [
-    { label: 'Články', path: '/articles' },
-    { label: 'Termíny 2026', path: '/calendar' },
+  vzdelavani: [
+    { label: 'Články', path: '/clanky' },
+    { label: 'Termíny 2026', path: '/kalendar' },
     { label: 'Poznej se', path: '/archetyp' },
   ]
 };
 
-// Vnitřní komponenta, která už má přístup k Routeru (díky tomu funguje location)
+// Vnitřní komponenta, která už má přístup k Routeru
 const AppInner = () => {
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -72,7 +72,6 @@ const AppInner = () => {
         subItems={SUB_ITEMS}
       />
 
-      {/* KEY={location.pathname} je lék na to zamrzání kalkulaček */}
       <main className="main-content" key={location.pathname}>
         <AppContent />
       </main>
@@ -83,7 +82,7 @@ const AppInner = () => {
   );
 };
 
-// Hlavní export, který vše obaluje
+// Hlavní export
 export const App = () => {
   return (
     <BusinessProvider>

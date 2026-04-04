@@ -119,7 +119,12 @@ const chartData = useMemo(() => {
           </button>
         </div>
 
-        <div className="calculator-grid" style={{ gap: '40px' }}>
+        <div className="calculator-grid" style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', 
+  gap: '40px', 
+  alignItems: 'start' 
+}}>
           <div className="inputs-section">
             <div style={{ marginBottom: '20px', padding: '15px', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '12px', borderLeft: '4px solid var(--primary)', fontSize: '0.9rem', color: 'var(--text)' }}>
                <Target size={16} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} color="var(--primary)" />
@@ -187,16 +192,17 @@ const chartData = useMemo(() => {
         </div>
       </GlassCard>
 
-      {/* --- EDUKATIVNÍ SEKCE: HLOUBKOVÝ PRŮVODCE --- */}
+{/* --- EDUKATIVNÍ SEKCE: HLOUBKOVÝ PRŮVODCE --- */}
       <div className="no-print">
-        <GlassCard style={{ padding: '40px' }}>
+        <GlassCard>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '35px' }}>
             <BookOpen size={32} color="var(--primary)" />
             <h2 style={{ margin: 0 }}>Strategie budování rezervy</h2>
           </div>
 
-          <div className="smart-grid">
-            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '25px', borderRadius: '20px', border: '1px solid var(--border)' }}>
+          <div className="info-grid">
+            {/* BOX 1 */}
+            <div className="info-box">
               <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <ShieldCheck size={22} color="#3b82f6" /> Úrovně bezpečí
               </h3>
@@ -206,7 +212,8 @@ const chartData = useMemo(() => {
               </ul>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '25px', borderRadius: '20px', border: '1px solid var(--border)' }}>
+            {/* BOX 2 */}
+            <div className="info-box">
               <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <HeartPulse size={22} color="#ef4444" /> Psychologický efekt
               </h3>
@@ -216,7 +223,8 @@ const chartData = useMemo(() => {
               </p>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '25px', borderRadius: '20px', border: '1px solid var(--border)' }}>
+            {/* BOX 3 */}
+            <div className="info-box">
               <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <TrendingUp size={22} color="#10b981" /> Kam s ní?
               </h3>
@@ -227,9 +235,19 @@ const chartData = useMemo(() => {
             </div>
           </div>
 
-          <div style={{ marginTop: '35px', padding: '20px', background: 'rgba(59, 130, 246, 0.03)', borderRadius: '15px', border: '1px dashed var(--primary)', display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <ArrowRightCircle size={30} color="var(--primary)" />
-            <p style={{ margin: 0, fontSize: '1rem', color: 'white' }}>
+          <div style={{ 
+            marginTop: '35px', 
+            padding: '20px', 
+            background: 'rgba(59, 130, 246, 0.03)', 
+            borderRadius: '15px', 
+            border: '1px dashed var(--primary)', 
+            display: 'flex', 
+            flexWrap: 'wrap',
+            alignItems: 'center', 
+            gap: '15px' 
+          }}>
+            <ArrowRightCircle size={30} color="var(--primary)" style={{ flexShrink: 0 }} />
+            <p style={{ margin: 0, fontSize: '0.95rem', color: 'white', flex: '1 1 250px' }}>
               <strong>Změnily se vaše náklady?</strong> Upravte je v <span style={{ color: 'var(--primary)', cursor: 'pointer', textDecoration: 'underline' }}>Hodinové sazbě</span> a tato kalkulačka se okamžitě přizpůsobí.
             </p>
           </div>
