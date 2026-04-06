@@ -2,10 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
 import { QRCodeSVG } from 'qrcode.react';
-import { exportToPDF } from "../../utils/exportHelper";
 import { 
   Trash2, Printer, Settings2
 } from 'lucide-react';
+
+const exportToPDF = async (...args: any[]) => {
+  const { exportToPDF: realExport } = await import("../../utils/exportHelper");
+  return (realExport as any)(...args);
+};
  
 interface InvoiceItem {
   id: string;
@@ -58,6 +62,8 @@ export const EliteInvoice: React.FC = () => {
   const [vatRate, setVatRate] = useState(21);
   const [currency, setCurrency] = useState('Kč');
   const [dueDays, setDueDays] = useState(14);
+  const [isExporting, setIsExporting] = useState(false);
+  const qrRef = React.useRef<SVGSVGElement | null>(null);
 
 const [invoice, setInvoice] = useState<InvoiceData>(() => {
     // 1. Pokus o načtení uloženého dodavatele
@@ -141,63 +147,67 @@ const subtotal = round(invoice.items.reduce((sum, item) => sum + (item.quantity 
   const vatAmount = isVatPayer ? round((subtotal * vatRate) / 100) : 0;
   const total = round(subtotal + vatAmount);
   
-const handlePdfExport = () => {
-  const filename = `Faktura_${invoice.number}`;
-  const title = isVatPayer 
-    ? (isForeign ? 'TAX INVOICE' : 'FAKTURA - DAŇOVÝ DOKLAD') 
-    : (isForeign ? 'INVOICE' : 'FAKTURA');
-  
-  // 1. ZÍSKÁNÍ QR KÓDU Z DOM (pokud se má zobrazit)
-  let qrBase64 = "";
-  if (showQR) {
-    // Hledáme SVG uvnitř kontejneru, kde se QR kód vykresluje
-    const svgElement = document.querySelector('.invoice-paper svg'); 
-    if (svgElement) {
-      const xml = new XMLSerializer().serializeToString(svgElement);
+const handlePdfExport = async () => {
+  if (isExporting) return;
+
+  setIsExporting(true);
+
+  try {
+    const filename = `Faktura_${invoice.number}`;
+    const title = isVatPayer 
+      ? (isForeign ? 'TAX INVOICE' : 'FAKTURA - DAŇOVÝ DOKLAD') 
+      : (isForeign ? 'INVOICE' : 'FAKTURA');
+
+    let qrBase64 = "";
+    // sem vlož kód pro generování QR kódu
+
+    if (showQR && qrRef.current) {
+      const xml = new XMLSerializer().serializeToString(qrRef.current);
       const svg64 = btoa(unescape(encodeURIComponent(xml)));
       qrBase64 = `data:image/svg+xml;base64,${svg64}`;
     }
+
+    const exportData = {
+      ...invoice,
+      variableSymbol: calculatedVS,
+      dueDate: formatDate(calculatedDueDate),
+      isForeign,
+      isVatPayer
+    };
+
+    const tableHead = isForeign 
+      ? ["Description", "Qty", "Unit", "Price/Unit", "Total"]
+      : ["Popis položky", "Mn.", "Jedn.", "Cena/j.", "Celkem"];
+
+    const tableRows = invoice.items.map(item => [
+      item.description,
+      item.quantity.toString(),
+      item.unit,
+      `${item.pricePerUnit.toLocaleString()} ${currency}`,
+      `${(item.quantity * item.pricePerUnit).toLocaleString()} ${currency}`
+    ]);
+
+    tableRows.push([
+      "", "", "", 
+      isForeign ? "TOTAL:" : "CELKEM:", 
+      `${total.toLocaleString()} ${currency}`
+    ]);
+
+    // ✅ KLÍČOVÉ: await uvnitř async try
+    await exportToPDF(
+      filename, 
+      `${title} #${invoice.number}`, 
+      tableRows, 
+      tableHead, 
+      exportData, 
+      qrBase64
+    );
+
+  } catch (error) {
+    console.error("Chyba při generování faktury nebo QR:", error);
+  } finally {
+    setIsExporting(false);
   }
-
-  // 2. PŘÍPRAVA DAT (vypočítané hodnoty)
-  const exportData = {
-    ...invoice,
-    variableSymbol: calculatedVS,           // Použije vyčištěné VS
-    dueDate: formatDate(calculatedDueDate),  // Použije vypočítané datum
-    isForeign,
-    isVatPayer
-  };
-
-  // 3. PŘÍPRAVA TABULKY
-  const tableHead = isForeign 
-    ? ["Description", "Qty", "Unit", "Price/Unit", "Total"]
-    : ["Popis položky", "Mn.", "Jedn.", "Cena/j.", "Celkem"];
-
-  const tableRows = invoice.items.map(item => [
-    item.description,
-    item.quantity.toString(),
-    item.unit,
-    `${item.pricePerUnit.toLocaleString()} ${currency}`,
-    `${(item.quantity * item.pricePerUnit).toLocaleString()} ${currency}`
-  ]);
-
-  // Přidáme řádek s celkovou sumou na konec tabulky
-  tableRows.push([
-    "", "", "", 
-    isForeign ? "TOTAL:" : "CELKEM:", 
-    `${total.toLocaleString()} ${currency}`
-  ]);
-
-  // 4. VOLÁNÍ EXPORTU
-  // Posíláme: název, titulek, řádky, hlavičku, extra data a QR kód
-  exportToPDF(
-    filename, 
-    `${title} #${invoice.number}`, 
-    tableRows, 
-    tableHead, 
-    exportData, 
-    qrBase64
-  );
 };
 
 // --- VÝPOČET QR KÓDU ---
@@ -285,7 +295,8 @@ return (
 
       {/* Tlačítko pro tisk / PDF */}
       <button 
-        onClick={handlePdfExport} 
+        onClick={handlePdfExport}
+		disabled={isExporting}
         className="calculate-btn" 
         style={{
           padding: '8px 20px', 
@@ -297,7 +308,7 @@ return (
           color: 'white',
         }}
       >
-        <Printer size={18} /> Tisk / PDF
+        <Printer size={18} /> {isExporting ? "Generuji..." : "Tisk / PDF"}
       </button>
 
     </GlassCard>
@@ -390,7 +401,7 @@ return (
     {showQR ? (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
         <div style={{ padding: '8px', background: 'white', border: '1px solid #eee', borderRadius: '4px' }}>
-          <QRCodeSVG value={qrValue} size={115} level="M" />
+          <QRCodeSVG ref={qrRef} value={qrValue} size={115} level="M" />
         </div>
         <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#666' }}>QR PLATBA</span>
       </div>
@@ -614,7 +625,7 @@ onClick={() => removeItem(item.id)}
       </div>
     ))}
 <button 
-                  onClick={() => setInvoice({...invoice, items: [...invoice.items, { id: Math.random().toString(), description: '', quantity: 1, unit: 'hod', pricePerUnit: 0 }]})} 
+                  onClick={() => setInvoice({...invoice, items: [...invoice.items, { id: crypto.randomUUID(), description: '', quantity: 1, unit: 'hod', pricePerUnit: 0 }]})} 
                   style={{ width: '100%', padding: '10px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '8px', marginTop: '10px' }}
                 >
                   + Přidat položku

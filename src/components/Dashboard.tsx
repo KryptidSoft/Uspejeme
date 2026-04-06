@@ -12,8 +12,12 @@ import {
 import { useBusinessData } from '../hooks/useBusinessData';
 import { formatCZK } from '../utils/calculations/mathHelpers';
 import { calculateDashboardStats } from '../utils/calculations/businessLogic';
-import { exportToPDF } from '../utils/exportHelper';
 import { GuideModal } from './GuideModal'; // Uprav cestu podle potřeby
+
+const exportToPDF = async (...args: any[]) => {
+  const { exportToPDF: realExport } = await import("../utils/exportHelper");
+  return (realExport as any)(...args);
+};
 
 const useMounted = () => {
   const [mounted, setMounted] = React.useState(false);

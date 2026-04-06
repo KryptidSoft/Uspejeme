@@ -1,55 +1,65 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
-import { robotoBase64, robotoBoldBase64 } from "./robotoFont";
 
-// --- EXPORT DO CSV (Beze změny) ---
+// Dynamická deklarace pro jsPDF, aby TypeScript věděl, co to je
+declare var jsPDF: any;
+
+// --- NOVÁ POMOCNÁ FUNKCE PRO STAHOVÁNÍ FONTŮ ---
+const addFontFromUrl = async (doc: typeof jsPDF, url: string, fontName: string, fontStyle: string) => {
+  try {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+    let binary = "";
+    for (let i = 0; i < uint8Array.length; i++) {
+      binary += String.fromCharCode(uint8Array[i]);
+    }
+    const base64 = btoa(binary);
+    doc.addFileToVFS(`${fontName}-${fontStyle}.ttf`, base64);
+    doc.addFont(`${fontName}-${fontStyle}.ttf`, fontName, fontStyle);
+  } catch (error) {
+    console.error(`Nepodařilo se načíst font: ${url}`, error);
+  }
+};
+
 export const exportToCSV = (filename: string, data: Record<string, any>[]) => {
   if (!data || data.length === 0) return;
-  const separator = ";";
-  const keys = Object.keys(data[0]);
-  const csvContent = [
-    keys.join(separator),
-    ...data.map(row => 
-      keys.map(key => {
-        const cell = row[key] ?? "";
-        if (typeof cell === "number") return cell.toString().replace(".", ",");
-        return `"${cell.toString().replace(/"/g, '""').replace(/\n|\r/g, " ")}"`;
-      }).join(separator)
-    )
-  ].join("\r\n");
 
-  const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
+  // Převod dat na CSV řetězec
+  const headers = Object.keys(data[0]);
+  const csvRows = [
+    headers.join(","), // hlavička
+    ...data.map(row => headers.map(h => `"${row[h] ?? ""}"`).join(",")) // hodnoty
+  ];
+  const csvContent = csvRows.join("\n");
+
+  // Vytvoření a stažení souboru
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", `${filename}.csv`);
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", filename);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 };
 
-// --- EXPORT DO PDF (KOMPATIBILNÍ VERZE S QR KÓDEM) ---
-export const exportToPDF = (
+// --- EXPORT DO PDF (UPRAVENÝ PRO DYNAMICKÉ FONTY) ---
+export const exportToPDF = async (
   filename: string, 
   title: string, 
   tableRows: string[][], 
   tableHead: string[], 
-  data?: any,           // Volitelná data pro fakturu
-  qrCodeDataUri?: string // Volitelný QR kód jako obrázek
+  data?: any, 
+  qrCodeDataUri?: string 
 ) => {
+  // Dynamic import těžkých knihoven
+  const { jsPDF } = await import('jspdf');
+  const autoTable = (await import('jspdf-autotable')).default;
+
   const doc = new jsPDF();
 
-  // 1. REGISTRACE FONTŮ
-  if (robotoBase64 && robotoBase64.length > 100) {
-    doc.addFileToVFS("Roboto-Regular.ttf", robotoBase64);
-    doc.addFont("Roboto-Regular.ttf", "Roboto", "normal");
-  }
-  if (robotoBoldBase64 && robotoBoldBase64.length > 100) {
-    doc.addFileToVFS("Roboto-Bold.ttf", robotoBoldBase64);
-    doc.addFont("Roboto-Bold.ttf", "Roboto", "bold");
-  }
-
+  // Dynamické fonty
+  await addFontFromUrl(doc, "/fonts/Roboto-Regular.ttf", "Roboto", "normal");
+  await addFontFromUrl(doc, "/fonts/Roboto-Bold.ttf", "Roboto", "bold");
   doc.setFont("Roboto", "normal");
 
   // --- SCÉNÁŘ A: STARÉ STRÁNKY (Bez dat) ---
@@ -57,7 +67,7 @@ export const exportToPDF = (
     doc.setFont("Roboto", "bold");
     doc.setFontSize(18);
     doc.text(title, 14, 20);
-    
+
     autoTable(doc, {
       startY: 30,
       head: [tableHead],
@@ -66,12 +76,12 @@ export const exportToPDF = (
       styles: { font: "Roboto", fontStyle: 'normal' },
       headStyles: { fillColor: [59, 130, 246], font: "Roboto", fontStyle: 'bold' },
     });
-    
+
     doc.save(`${filename}.pdf`);
-    return; 
+    return;
   }
 
-  // --- SCÉNÁŘ B: ELITE FAKTURA (S daty a QR kódem) ---
+  // --- SCÉNÁŘ B: ELITE FAKTURA (Vše zůstává stejné jako ve vašem kódu) ---
   doc.setFont("Roboto", "bold");
   doc.setFontSize(18);
   doc.setTextColor(37, 99, 235);
