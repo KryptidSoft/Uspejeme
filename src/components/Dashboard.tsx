@@ -342,7 +342,7 @@ export const Dashboard: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
 			<MetricRow label="Efektivní hod. sazba" value={formatCZK(stats.effectiveRate)} />
             <MetricRow label="Bod přežití" value={`${stats.survivalHours} h / měs.`} color="#ef4444" />
-            <MetricRow label="Riziko hl. klienta (upravit)" value={`${stats.singleClientRisk} %`} color={stats.singleClientRisk > 50 ? '#ef4444' : '#fbbf24'} link="/audit/rizika" />
+            <MetricRow label="Riziko hl. klienta (upravit)" value={`${stats.singleClientRisk} %`} color={stats.singleClientRisk > 50 ? '#ef4444' : '#fbbf24'} link="/rizika" />
             <MetricRow label="Bezpečná měs. investice" value={formatCZK(stats.investAmount)} color="#ec4899" link="/investice" />
           </div>
         </div>

@@ -35,7 +35,7 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
         {articles?.slice(0, 5).map((article: Article) => (
           <div 
             key={article.id}
-            onClick={() => navigate(`/articles/${article.id}`)}
+            onClick={() => navigate(`/clanky/${article.id}`)}
             style={{ 
               display: 'flex', alignItems: 'flex-start', // Změněno na flex-start pro víceřádkový text
               gap: '12px', padding: '12px', 

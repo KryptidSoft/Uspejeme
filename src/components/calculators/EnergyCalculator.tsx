@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { 
   Zap, 
@@ -18,18 +17,7 @@ import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
 import { calculateEnergy } from '../../utils/calculations/energy';
 import { formatCZK } from '../../utils/calculations/mathHelpers';
-
-interface EnergyResults {
-  consumedUnits: number;
-  targetUnitsPerDay: number;
-  predictedYearlyCost: number;
-  balance: number;
-  currentBalance: number;
-  costToDate: number;
-  depositsPaidSoFar: number;
-  daysPassed: number;
-  avgUnitsPerDay: number;
-}
+import type { EnergyInput, EnergyResult } from '../../utils/calculations/energy'
 
 export const EnergyCalculator: React.FC = () => {
   const [inputs, setInputs] = useState({
@@ -41,44 +29,68 @@ export const EnergyCalculator: React.FC = () => {
   });
 
   const [gasInM3, setGasInM3] = useState(false);
-  const [results, setResults] = useState<EnergyResults | null>(null);
+  const [isSeasonal, setIsSeasonal] = useState(false);
+  const [results, setResults] = useState<EnergyResult | null>(null);
 
   const profiles = [
     { label: 'Elektřina', id: 'ele', price: 6.5, icon: <Zap size={20} />, color: '#fbbf24', unit: 'kWh' },
     { label: 'Plyn', id: 'gas', price: 1.8, icon: <Flame size={20} />, color: '#ff7e33', unit: 'kWh', hasM3: true },
-    { label: 'Voda', id: 'wat', price: 110, icon: <Droplets size={20} />, color: '#3b82f6', unit: 'm³' },
+    { label: 'Voda', id: 'wat', price: 125, icon: <Droplets size={20} />, color: '#3b82f6', unit: 'm³' },
   ];
 
   const [activeProfileId, setActiveProfileId] = useState('ele');
   const currentProfile = profiles.find(p => p.id === activeProfileId) || profiles[0];
   const displayUnit = (currentProfile.hasM3 && gasInM3) ? "m³" : currentProfile.unit;
 
-  const handleCalculate = () => {
-    try {
-      const dataToCalculate = {
-        ...inputs,
-        lastReadingValue: Number(inputs.lastReadingValue),
-        currentReadingValue: Number(inputs.currentReadingValue),
-        monthlyDeposit: Number(inputs.monthlyDeposit),
-        pricePerUnit: Number(inputs.pricePerUnit)
-      };
+const handleCalculate = () => {
+  try {
+    const dataToCalculate: EnergyInput = {
+      ...inputs,
+      lastReadingValue: Number(inputs.lastReadingValue),
+      currentReadingValue: Number(inputs.currentReadingValue),
+      monthlyDeposit: Number(inputs.monthlyDeposit),
+      pricePerUnit: Number(inputs.pricePerUnit),
+      // DŮLEŽITÉ: Posíláme false, protože stavy už jsou v UI přepočítané 
+      // na jednotky, které odpovídají zadané ceně.
+      isGasInM3: false,
+      isSeasonal: activeProfileId === 'gas' ? isSeasonal : false	  
+    };
 
-      const calculated = calculateEnergy(dataToCalculate);
-      if (calculated) setResults({ ...calculated, avgUnitsPerDay: (calculated as any).avgUnitsPerDay || 0 });
-    } catch (error) {
-      console.error("Chyba při výpočtu:", error);
-    }
-  };
+    const calculated = calculateEnergy(dataToCalculate);
+    setResults(calculated);
+  } catch (error) {
+    console.error("Chyba při výpočtu:", error);
+  }
+};
 
   const handleValueChange = (field: string, val: string) => {
-    const num = field === 'lastReadingDate' ? val : (val === '' ? 0 : parseFloat(val));
-    setInputs(prev => ({ ...prev, [field]: num }));
+    setInputs(prev => {
+      let finalValue: string | number = val;
+      
+      // Pokud to není datum, převedeme na číslo a ošetříme NaN
+      if (field !== 'lastReadingDate') {
+        const parsed = parseFloat(val);
+        finalValue = isNaN(parsed) ? 0 : parsed;
+      }
+
+      return { ...prev, [field]: finalValue };
+    });
     if (results) setResults(null);
-  };
+  }
 
   const handleProfileChange = (p: { id: string; price: number; [key: string]: any }) => {
     setActiveProfileId(p.id);
     setGasInM3(false);
+	setIsSeasonal(false);
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const lastMarch = new Date(currentYear, 2, 1); // 1. března letošního roku
+  
+  // Pokud ještě březen letos nebyl, vezmeme loňský
+  if (today < lastMarch) {
+    lastMarch.setFullYear(currentYear - 1);
+  }
+  
     setInputs({
       ...inputs,
       pricePerUnit: p.price,
@@ -89,21 +101,24 @@ export const EnergyCalculator: React.FC = () => {
   };
 
   const toggleGasUnit = (toM3: boolean) => {
-    if (gasInM3 === toM3) return;
-    const KOEFICIENT = 10.55;
-    const newPrice = inputs.pricePerUnit * (toM3 ? KOEFICIENT : 1/KOEFICIENT);
-    const newLast = inputs.lastReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
-    const newCurr = inputs.currentReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
-    
-    setGasInM3(toM3);
-    setInputs(prev => ({ 
-      ...prev, 
-      pricePerUnit: Number(newPrice.toFixed(2)),
-      lastReadingValue: Number(newLast.toFixed(2)),
-      currentReadingValue: Number(newCurr.toFixed(2))
-    }));
-    setResults(null);
-  };
+  if (gasInM3 === toM3) return;
+  const KOEFICIENT = 10.55;
+  
+  // Přepočet ceny: m3 je dražší (10.55x) než kWh
+  const newPrice = inputs.pricePerUnit * (toM3 ? KOEFICIENT : 1/KOEFICIENT);
+  // Přepočet stavu: m3 je méně (1/10.55) než kWh
+  const newLast = inputs.lastReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
+  const newCurr = inputs.currentReadingValue * (toM3 ? 1/KOEFICIENT : KOEFICIENT);
+  
+  setGasInM3(toM3);
+  setInputs(prev => ({ 
+    ...prev, 
+    pricePerUnit: Number(newPrice.toFixed(4)), // Více desetinných míst pro cenu
+    lastReadingValue: Math.round(newLast),      // Stavy na plynoměru bývají celá čísla
+    currentReadingValue: Math.round(newCurr)
+  }));
+  setResults(null);
+};
 
   return (
     <div className="fade-in app-container" style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
@@ -180,10 +195,66 @@ export const EnergyCalculator: React.FC = () => {
                 <button onClick={() => toggleGasUnit(true)} style={{ flex: 1, padding: '8px', border: 'none', borderRadius: '7px', fontSize: '0.7rem', fontWeight: 'bold', cursor: 'pointer', background: gasInM3 ? currentProfile.color : 'transparent', color: gasInM3 ? '#000' : '#888' }}>m³ (Plynoměr)</button>
               </div>
             )}
+			
+			{/* --- SEM VLOŽIT TENTO BLOK --- */}
+            {activeProfileId === 'gas' && (
+              <div 
+                onClick={() => setIsSeasonal(!isSeasonal)}
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between',
+                  padding: '12px 15px', 
+                  background: isSeasonal ? `${currentProfile.color}15` : 'rgba(255,255,255,0.03)', 
+                  borderRadius: '12px', 
+                  marginBottom: '20px',
+                  cursor: 'pointer',
+                  border: `1px solid ${isSeasonal ? currentProfile.color : 'transparent'}`,
+                  transition: 'all 0.2s'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <History size={18} color={isSeasonal ? currentProfile.color : '#888'} />
+                  <span style={{ fontSize: '0.85rem', color: isSeasonal ? 'white' : '#888' }}>
+                    Zohlednit sezónní výkyvy (zima/léto)
+                  </span>
+                </div>
+                <div style={{
+                  width: '34px',
+                  height: '18px',
+                  background: isSeasonal ? currentProfile.color : '#444',
+                  borderRadius: '20px',
+                  position: 'relative',
+                  transition: 'background 0.3s'
+                }}>
+                  <div style={{
+                    width: '14px',
+                    height: '14px',
+                    background: 'white',
+                    borderRadius: '50%',
+                    position: 'absolute',
+                    top: '2px',
+                    left: isSeasonal ? '18px' : '2px',
+                    transition: 'left 0.2s'
+                  }} />
+                </div>
+              </div>
+            )}
+            {/* --- KONEC VLOŽENÉHO BLOKU --- */}
 
             <div className="input-grid">
-              <InputGroup label="Stav z minulé faktury" unit={displayUnit} value={inputs.lastReadingValue} onChange={(val) => handleValueChange('lastReadingValue', val)} />
-              <InputGroup label="Aktuální stav měřidla" unit={displayUnit} value={inputs.currentReadingValue} onChange={(val) => handleValueChange('currentReadingValue', val)} />
+              <InputGroup 
+  label="Stav z minulé faktury" 
+  unit={displayUnit} 
+  value={inputs.lastReadingValue} 
+  onChange={(val) => handleValueChange('lastReadingValue', val)} 
+/>
+<InputGroup 
+  label="Aktuální stav měřidla" 
+  unit={displayUnit} 
+  value={inputs.currentReadingValue} 
+  onChange={(val) => handleValueChange('currentReadingValue', val)} 
+/>
               <InputGroup label="Datum posledního odečtu" type="date" value={inputs.lastReadingDate} onChange={(val) => handleValueChange('lastReadingDate', val)} />
               <InputGroup label="Vaše měsíční záloha" unit="Kč" value={inputs.monthlyDeposit} onChange={(val) => handleValueChange('monthlyDeposit', val)} />
               <InputGroup label="Celková cena za jednotku" unit={`Kč/${displayUnit}`} value={inputs.pricePerUnit} onChange={(val) => handleValueChange('pricePerUnit', val)} />
@@ -227,16 +298,22 @@ export const EnergyCalculator: React.FC = () => {
 
                     <div style={{ padding: '15px', borderRadius: '15px', background: (results?.avgUnitsPerDay ?? 0) <= (results?.targetUnitsPerDay ?? 0) ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(255,255,255,0.05)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: (results?.avgUnitsPerDay ?? 0) <= (results?.targetUnitsPerDay ?? 0) ? '#10b981' : '#ef4444', fontSize: '0.75rem', marginBottom: '10px' }}>
-                        <TrendingUp size={16} /> KRITICKÉ TEMPO SPOTŘEBY
+                        <TrendingUp size={16} /> VAŠE PRŮMĚRNÉ TEMPO SPOTŘEBY ZA 24H JE ...
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ textAlign: 'center', flex: 1 }}>
-                          <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block' }}>REÁLNĚ PÁLÍTE</span>
-                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{(results?.avgUnitsPerDay ?? 0).toFixed(2)} {displayUnit}</span>
+                          <span style={{ fontSize: '0.65rem', color: (results.avgUnitsPerDay > results.targetUnitsPerDay ? '#ef4444' : '#10b981'), display: 'block', fontWeight: 'bold' }}>
+  {results.avgUnitsPerDay > results.targetUnitsPerDay
+    ? 'JSTE NAD LIMITEM'
+    : 'JSTE POD LIMITEM'}
+</span>
+                          <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+  {(results?.avgUnitsPerDay ?? 0).toFixed(2)} {currentProfile.hasM3 && gasInM3 ? 'm³' : currentProfile.unit}
+</span>
                         </div>
                         <ArrowRight size={16} color="rgba(255,255,255,0.2)" />
                         <div style={{ textAlign: 'center', flex: 1 }}>
-                          <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block' }}>MUSÍTE STÁHNOUT NA</span>
+                          <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block' }}>BEZPEČNÝ LIMIT</span>
                           <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#3b82f6' }}>{(results?.targetUnitsPerDay ?? 0).toFixed(2)} {displayUnit}</span>
                         </div>
                       </div>
@@ -285,16 +362,18 @@ export const EnergyCalculator: React.FC = () => {
               </p>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '25px', borderRadius: '20px', border: '1px solid var(--border)' }}>
-              <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <History size={22} color="#3b82f6" /> Sezónní výkyvy
-              </h3>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', lineHeight: '1.6' }}>
-                Kalkulačka počítá s lineární spotřebou. Nezapomeňte, že u plynu "propálíte" 
-                <strong> 70 % celoroční spotřeby</strong> během 4 zimních měsíců. Pokud vám teď v říjnu vychází 
-                mírný přeplatek, v lednu se může situace dramaticky změnit.
-              </p>
-            </div>
+            <div style={{ background: isSeasonal ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)', padding: '25px', borderRadius: '20px', border: isSeasonal ? '1px solid #3b82f6' : '1px solid var(--border)', transition: 'all 0.3s' }}>
+  <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <History size={22} color="#3b82f6" /> Sezónní výkyvy
+  </h3>
+  <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)', lineHeight: '1.6' }}>
+    {isSeasonal ? (
+      <strong>Nyní je aktivován sezónní model. Kalkulačka upravuje odhad podle toho, zda aktuálně "pálíte" zimní průměr nebo letní útlum.</strong>
+    ) : (
+      "Kalkulačka počítá s lineární spotřebou. U plynu na vytápění pamatujte, že 70 % spotřeby padne na zimu. Pro přesnější odhad v zimě/létě zapněte sezónní korekci."
+    )}
+  </p>
+</div>
           </div>
         </GlassCard>
       </div>
