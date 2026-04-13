@@ -87,7 +87,7 @@ const AppInner = () => {
 export const App = () => {
   return (
     <BusinessProvider>
-      <Router basename="/uspejeme">
+      <Router basename="/">
         <AppInner />
       </Router>
     </BusinessProvider>
