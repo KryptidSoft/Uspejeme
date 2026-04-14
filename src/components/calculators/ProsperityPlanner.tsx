@@ -9,6 +9,7 @@ import { InputGroup } from '../ui/InputGroup';
 import { formatCZK } from '../../utils/calculations/mathHelpers';
 import { useBusinessData } from '../../hooks/useBusinessData';
 import { calculateGrossFromNet } from '../../utils/calculations/businessLogic';
+import AadsBanner from '../AadsBanner'; // Importujeme komponentu reklamy
 
 type TaxMode = 'pausal_dan' | 'vydaje_60' | 'skutecne_vydaje';
 
@@ -113,8 +114,8 @@ export const ProsperityPlanner: React.FC = () => {
         </p>
       </div>
 
-      <div className="calculator-grid">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
+      <div className="calculator-grid" style={{ marginBottom: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
           <GlassCard>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -228,41 +229,90 @@ export const ProsperityPlanner: React.FC = () => {
           </GlassCard>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div style={{ background: 'linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%)', padding: 'var(--card-padding)', borderRadius: '24px', textAlign: 'center', color: 'white', boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.4)' }}>
-  <span style={{ fontSize: '0.8rem', opacity: 0.9, textTransform: 'uppercase', letterSpacing: '1px' }}>Cílová hodinovka</span>
-  <div style={{ fontSize: 'clamp(2rem, 8vw, 3.2rem)', fontWeight: 'bold', margin: '10px 0' }}>{formatCZK(analysis.hourlyRate)}</div>
-            <div style={{ fontSize: '0.75rem', opacity: 0.8 }}>{analysis.taxNote}</div>
-          </div>
-
-          <GlassCard>
-             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                 <span style={{ color: 'var(--text-dim)' }}>Měsíční obrat:</span>
-                 <span style={{ fontWeight: 'bold' }}>{formatCZK(analysis.grossNeeded)}</span>
-               </div>
-               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                 <span style={{ color: 'var(--text-dim)' }}>Cílová rezerva:</span>
-                 <span style={{ fontWeight: 'bold' }}>{formatCZK(analysis.totalReserveGoal)}</span>
-               </div>
-
-               <button 
-                onClick={handleSave} 
-                className={`btn no-print my-save-btn ${saved ? 'btn-success' : ''}`}
-               >
-                 {saved ? <><Check size={18} /> Propojeno se systémem</> : <><Save size={18} /> ULOŽIT DO MÉHO PANELU </>}
-               </button>
-             </div>
-          </GlassCard>
-        </div>
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+  
+  {/* HLAVNÍ KARTA S HODINOVKOU */}
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: '1fr auto',
+    alignItems: 'center',
+    padding: '20px',
+    borderRadius: '16px',
+    background: 'linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%)',
+    color: 'white'
+  }}>
+    <div>
+      <div style={{ fontSize: '0.75rem', opacity: 0.8, textTransform: 'uppercase', letterSpacing: '1px' }}>
+        Cílová hodinovka
       </div>
+      <div style={{ fontSize: '0.75rem', opacity: 0.7, marginTop: '4px' }}>
+        {analysis.taxNote}
+      </div>
+    </div>
+    <div style={{ fontSize: 'clamp(1.8rem, 6vw, 2.5rem)', fontWeight: 800 }}>
+      {formatCZK(analysis.hourlyRate)}
+    </div>
+  </div>
+
+  {/* TABULKA PODROBNOSTÍ */}
+  <div style={{ display: 'grid', gap: '8px' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '10px', background: 'rgba(255,255,255,0.03)' }}>
+      <span style={{ color: 'var(--text-dim)' }}>Měsíční obrat</span>
+      <strong style={{ color: 'white' }}>{formatCZK(analysis.grossNeeded)}</strong>
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '10px', background: 'rgba(255,255,255,0.03)' }}>
+      <span style={{ color: 'var(--text-dim)' }}>Čistý příjem</span>
+      <strong style={{ color: 'white' }}>{formatCZK(analysis.netNeeded)}</strong>
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '10px', background: 'rgba(255,255,255,0.03)' }}>
+      <span style={{ color: 'var(--text-dim)' }}>Cílová rezerva</span>
+      <strong style={{ color: 'white' }}>{formatCZK(analysis.totalReserveGoal)}</strong>
+    </div>
+  </div>
+
+  {/* TLAČÍTKO ULOŽIT - Nyní pevně spojené s pravým sloupcem */}
+  <button 
+    onClick={handleSave} 
+    className={`btn no-print my-save-btn ${saved ? 'btn-success' : ''}`}
+    style={{ 
+      width: '100%', 
+      marginTop: '8px',
+      padding: '16px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '10px',
+      fontSize: '1rem',
+      fontWeight: 'bold',
+      borderRadius: '12px'
+    }}
+  >
+    {saved 
+      ? <><Check size={20} /> Propojeno se systémem</> 
+      : <><Save size={20} /> ULOŽIT DO MÉHO PANELU</>}
+  </button>
+  
+  {/* REKLAMA: Vložení komponenty */}
+  <AadsBanner />
+</div>
+
+</div>
 
       {/* --- NOVÁ SEKCE: HLOUBKOVÝ PRŮVODCE PROSPERITOU --- */}
-      <div className="no-print">
+      <div className="no-print" style={{ marginTop: '20px' }}>
         <GlassCard>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '30px' }}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '15px', 
+            marginBottom: '30px',
+            paddingBottom: '20px',
+            borderBottom: '1px solid rgba(255,255,255,0.1)' 
+          }}>
             <BookOpen size={32} color="var(--primary)" />
-            <h2 style={{ margin: 0 }}>Hloubkový průvodce finančním plánováním</h2>
+            <h2 style={{ margin: 0, fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: '800' }}>
+              Hloubkový průvodce prosperitou
+            </h2>
           </div>
 
           <div className="smart-grid" style={{ color: 'var(--text-dim)', lineHeight: '1.8' }}>

@@ -41,7 +41,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     <div className="fade-in container-max" style={{ overflowX: 'hidden' }}>
       
       {/* 1. HERO SEKCE */}
-      <section style={{ textAlign: 'center', padding: '60px 0 40px' }}>
+      <section style={{ textAlign: 'center', padding: '40px 0 60px' }}>
         <div style={{ 
           display: 'inline-flex', alignItems: 'center', gap: '8px', 
           background: 'rgba(59, 130, 246, 0.1)', padding: '8px 16px', 
@@ -64,7 +64,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
 {/* 2. STATISTIKY */}
 {/* 2. STATISTIKY - OPRAVENO */}
-<section style={{ marginBottom: '60px' }}>
+<section style={{ marginBottom: '40px' }}>
   <div className="smart-grid">
     {MAIN_STATS.map((stat, i) => (
       <GlassCard key={i} style={{ padding: '24px 16px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -93,7 +93,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     <div style={{ flex: '1 1 320px', minWidth: '0' }}>
       {globalData.hourlyRate > 0 ? (
         <>
-          <h2 style={{ marginBottom: '12px' }}>Váš finanční panel je připraven</h2>
+          <h2 style={{ marginBottom: '12px', textAlign: "left" }}>Váš finanční panel je připraven</h2>
           <p style={{ color: 'var(--text-dim)', fontSize: '1rem', lineHeight: '1.6', margin: 0 }}>
             Aktuálně pracujete se sazbou <strong>{formatCZK(globalData.hourlyRate)}/h</strong>. 
             Podívejte se na celkový přehled vašeho podnikání a stabilitu v reálném čase.
@@ -101,7 +101,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </>
       ) : (
         <>
-          <h2 style={{ marginBottom: '12px' }}>Váš finanční přehled 2026</h2>
+          <h2 style={{ marginBottom: '12px', textAlign: "left" }}>Váš finanční přehled 2026</h2>
           <p style={{ color: 'var(--text-dim)', fontSize: '1rem', lineHeight: '1.6', margin: 0 }}>
             Zatím nemáte vyplněna žádná data. Začněte Plánovačem prosperity, abychom mohli 
             vypočítat vaši ideální hodinovou sazbu a stabilitu podnikání.
@@ -143,9 +143,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 {/* 5. FAQ SEKCE - PŘIZPŮSOBENO PODLE INDEX.CSS */}
 <section style={{ maxWidth: '800px', margin: '0 auto 80px' }}>
   <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-    <h2 style={{ fontWeight: '800' }}>Časté dotazy</h2>
-	<div style={{ width: '60px', height: '4px', background: 'var(--primary)', margin: '15px auto 15px', borderRadius: '2px' }} />
-    <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>Vše, co potřebujete vědět pro začátek</p>
+    <h2 style={{ fontWeight: '800', margin: '0 auto 10px' }}>Časté dotazy</h2>
+    <div style={{ width: '60px', height: '4px', background: 'var(--primary)', margin: '0 auto 15px', borderRadius: '2px' }} />
   </div>
 
   <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -188,9 +187,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
 {/* 5. REFERENCE & INFO - PŘIZPŮSOBENO PODLE INDEX.CSS */}
 <section style={{ margin: '0 auto 40px' }}>
-  <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-    <h2 style={{ fontWeight: '800', marginBottom: '10px' }}>Zkušenosti kolegů</h2>
-    <div style={{ width: '60px', height: '4px', background: 'var(--primary)', margin: '0 auto', borderRadius: '2px' }} />
+  <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+    <h2 style={{ fontWeight: '800', margin: '0 auto 10px' }}>Zkušenosti kolegů</h2>
+    <div style={{ width: '60px', height: '4px', background: 'var(--primary)', margin: '0 auto 15px', borderRadius: '2px' }} />
   </div>
 
   <div className="smart-grid">

@@ -1,17 +1,45 @@
 :root {
+  /* PRIMARY */
   --primary: #3b82f6;
   --primary-dark: #2563eb;
+
+  /* STAVY */
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --bg-dark: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --text-main: #f8fafc;
+
+  /* 🔵 HLAVNÍ BACKGROUND (nový) */
+  --bg-dark: #0b1f3a; /* hlubší modrá, pořád dark */
+
+  /* 🧊 KARTY (lepší kontrast vůči bg) */
+  --bg-card: rgba(15, 23, 42, 0.75);
+
+  /* TEXT */
+  --text-main: #f1f5f9; /* lehce jemnější než čistá bílá */
   --text-dim: #94a3b8;
-  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* BORDERY (jemnější než teď) */
+  --glass-border: rgba(148, 163, 184, 0.15);
+
+  /* AKCENT */
   --accent-orange: #f97316;
   --accent-orange-dark: #ea580c;
+
+  /* 🔥 NOVÉ (doporučené) */
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-active: rgba(255, 255, 255, 0.1);
 }
+
+/* ZAČÁTEK, ABY BARVY POSLOUCHALY PŘI PŘEPSÁNÍ NA CELÝCH STRÁNKÁCH */
+.app-bg {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    var(--bg-dark) 0%,
+    #0a1a2f 100%
+  );
+}
+/* KONEC, ABY BARVY POSLOUCHALY PŘI PŘEPSÁNÍ NA CELÝCH STRÁNKÁCH */
 
 /* OPRAVA MODRÝCH ODKAZŮ. - UŽ ŽÁDNÁ MODRÁ */
 a {
@@ -117,7 +145,7 @@ a:hover {
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-hover);
   color: var(--text-main);
 }
 
@@ -405,7 +433,7 @@ section {
 @media (min-width: 1025px) {
   .calculator-grid {
     display: grid;
-    grid-template-columns: 1fr 350px;
+    grid-template-columns: 1fr minmax(320px, 420px);
     gap: 25px;
     align-items: start;
   }

@@ -27,6 +27,7 @@ import { ScrollToTop } from './ScrollToTop'; // Import hooku
 import { NotFound } from './NotFound'; // Import fallbacku
 import { SmartOffer } from './generators/SmartOffer';
 import QuizPage from './QuizPage';
+import AadsBanner from './AadsBanner'; // Importujeme komponentu reklamy
 import { 
   FileText, Activity, Zap, ShieldAlert, Briefcase, Coins, QrCode, FileWarning, Target, 
   TrendingUp, TrendingDown, PiggyBank, Calendar, GraduationCap
@@ -43,6 +44,9 @@ const FakturyNav = () => (
 	  <MiniCard title="Nabídka" desc="Cenovka pro klienty" icon={FileText} to="/nabidka" />
       <MiniCard title="Splatnost" desc="Hlídač termínů" icon={FileWarning} to="/upominky" />
     </div>
+
+    {/* Zde vložíme reklamu */}
+    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}
   </div>
 );
 
@@ -66,6 +70,9 @@ const StrategieNav = () => (
       <MiniCard title="Hodinovka" desc="Ideální sazba" icon={Coins} to="/hodinovka" />
       <MiniCard title="Zakázky" desc="Ziskovost projektů" icon={Briefcase} to="/projekt" />
     </div>
+	
+    {/* Zde vložíme reklamu */}
+    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}	
   </div>
 );
 
@@ -78,6 +85,9 @@ const InvesticeNav = () => (
       <MiniCard title="Aktiva" desc="Zlato a drahé kovy" icon={Coins} to="/aktiva" />
 	  <MiniCard title="Nákupy" desc="Dobrá investice" icon={Coins} to="/nakupy" />
     </div>
+	
+	{/* Zde vložíme reklamu */}
+    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}
   </div>
 );
 
@@ -89,6 +99,9 @@ const VzdelavaniNav = () => (
 	  <MiniCard title="Termíny" desc="Hlídací pes podnikatele" icon={Calendar} to="/kalendar" />
       <MiniCard title="Kvízy" desc="Poznejte se lépe" icon={Target} to="/kviz" />
     </div>
+	
+	{/* Zde vložíme reklamu */}
+    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}
   </div>
 );
 

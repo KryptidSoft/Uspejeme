@@ -7,6 +7,7 @@ import { calculateOfferTotals } from '../../utils/calculations/smartOffer';
 import type { OfferItem } from '../../types';
 // Očištěné ikony (odebrány Copy a CheckCircle2)
 import { Plus, Trash2, Download } from 'lucide-react';
+import AadsBanner from '../AadsBanner'; // Importujeme komponentu reklamy
 
 export const SmartOffer: React.FC = () => {
   const { data: businessData, updateData } = useBusinessData();
@@ -124,6 +125,9 @@ tableRows.push([
 
 return (
     <div className="app-container fade-in" style={{ paddingTop: '1rem' }}>
+	      {/* Zde vložíme reklamu */}
+      <AadsBanner />  {/* Tady se zobrazí reklama */}
+	  
       {/* NADPISY */}
       <div style={{ marginBottom: '40px' }}>
         <h1>{t.title}</h1>

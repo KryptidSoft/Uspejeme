@@ -4,9 +4,9 @@ import type { Article } from '../data/articles';
 import { useNavigate } from "react-router-dom";
 
 interface StrategyWidgetProps {
-  articles: Article[];           // Pole článků
-  onNavigate?: (id: string) => void;  // Volitelně, pokud ho potřebuješ
-  onViewAll?: () => void;             // Volitelně
+  articles: Article[];
+  onNavigate?: (id: string) => void;
+  onViewAll?: () => void;
 }
 
 export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
@@ -14,7 +14,7 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
 
   return (
     <div style={{ 
-      padding: '16px', // Sníženo z 24px pro více místa
+      padding: '16px',
       display: 'flex', 
       flexDirection: 'column', 
       height: '100%',
@@ -37,15 +37,32 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
             key={article.id}
             onClick={() => navigate(`/clanky/${article.id}`)}
             style={{ 
-              display: 'flex', alignItems: 'flex-start', // Změněno na flex-start pro víceřádkový text
-              gap: '12px', padding: '12px', 
-              borderRadius: '14px', background: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer',
-              borderLeft: '4px solid var(--primary)', transition: '0.2s'
+              display: 'flex', 
+              alignItems: 'flex-start', 
+              gap: '12px', 
+              padding: '12px', 
+              borderRadius: '14px', 
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid rgba(255, 255, 255, 0.05)', 
+              cursor: 'pointer',
+              borderLeft: '4px solid var(--primary)', 
+              transition: 'all 0.2s ease-in-out' // Plynulý přechod efektu
             }}
+            // --- EFEKT PRO KARTU ČLÁNKU ---
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+              e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+              e.currentTarget.style.transform = 'translateX(4px)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+              e.currentTarget.style.transform = 'translateX(0px)';
+            }}
+            // -----------------------------
           >
             <div style={{ 
-              minWidth: '32px', height: '32px', borderRadius: '8px', // Zmenšeno
+              minWidth: '32px', height: '32px', borderRadius: '8px', 
               background: 'rgba(59, 130, 246, 0.1)', display: 'flex', 
               alignItems: 'center', justifyContent: 'center', color: 'var(--primary)',
               flexShrink: 0
@@ -63,7 +80,6 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
               <div style={{ 
                 fontSize: '0.9rem', fontWeight: 'bold', color: '#fff', 
                 lineHeight: '1.2', marginTop: '2px',
-                // Odstraněn nowrap, přidáno zalamování (max 2 řádky)
                 display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden'
               }}>
                 {article.title}
@@ -76,12 +92,28 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
       <button 
         onClick={() => navigate('/clanky')}
         style={{ 
-          width: '100%', marginTop: '16px', padding: '12px', borderRadius: '12px',
-          background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.1)',
-          color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.85rem'
+          width: '100%', 
+          marginTop: '16px', 
+          padding: '12px', 
+          borderRadius: '12px',
+          background: 'rgba(59, 130, 246, 0.05)', 
+          border: '1px solid rgba(59, 130, 246, 0.1)',
+          color: 'var(--primary)', 
+          fontWeight: 'bold', 
+          cursor: 'pointer', 
+          fontSize: '0.85rem',
+          transition: 'all 0.2s ease-in-out' 
+        }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+          e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.background = 'rgba(59, 130, 246, 0.05)';
+          e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.1)';
         }}
       >
-        Zobrazit vše
+        Zobrazit články
       </button>
     </div>
   );

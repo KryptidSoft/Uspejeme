@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
+import AadsBanner from '../AadsBanner'; // Importujeme komponentu reklamy
 import { QrCode, Copy, CheckCircle2, AlertCircle, Wallet, Globe, Landmark } from 'lucide-react';
 
 export const QRGenerator: React.FC = () => {
@@ -99,7 +100,7 @@ const qrValue = mode === 'CZ'
 
 const t = {
     title: 'Smart QR Pay',
-    badge: mode === 'CZ' ? '(CZ)' : '(EUR)',
+    badge: mode === 'CZ' ? '(CZK)' : '(EUR)',
     subtitle: mode === 'CZ' 
       ? (isLocal 
           ? 'Bleskové platby bez překlepů. Standard 2026 pro moderní OSVČ. QR kód se generuje okamžitě v reálném čase – stačí zadat údaje, zkopírovat a poslat. Platí pro platby v ČR.' 
@@ -124,6 +125,9 @@ const t = {
 
 return (
   <div className="fade-in app-container">
+      {/* Zde vložíme reklamu */}
+      <AadsBanner />  {/* Tady se zobrazí reklama */}
+
     <div style={{ textAlign: 'center', marginBottom: '25px' }}>
       <h1>Smart <span style={{ color: 'var(--primary)' }}>QR Pay</span> {t.badge}</h1>
       <h2 style={{ opacity: 0.7, marginBottom: '20px' }}>{t.subtitle}</h2>

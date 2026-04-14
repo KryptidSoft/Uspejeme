@@ -65,7 +65,8 @@ const AppInner = () => {
   const location = useLocation();
 
   return (
-    <div className="container-max">
+    <div className="app-bg">
+      <div className="container-max">
       <Header 
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
@@ -80,6 +81,7 @@ const AppInner = () => {
       <Footer onShowDisclaimer={() => setIsDisclaimerOpen(true)} />
       <DisclaimerModal isOpen={isDisclaimerOpen} onClose={() => setIsDisclaimerOpen(false)} />
     </div>
+  </div>
   );
 };
 

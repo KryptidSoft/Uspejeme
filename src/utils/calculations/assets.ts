@@ -1,8 +1,8 @@
 export const RATES = {
-  GOLD_G: 3195,
-  SILVER_G: 50,
-  BTC: 1486520,
-  CHF: 26.34
+  GOLD_G: 3171,
+  SILVER_G: 51,
+  BTC: 1538520,
+  CHF: 26.46
 };
 
 export const convertFiatToAssets = (czk: number) => {
