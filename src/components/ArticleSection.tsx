@@ -4,6 +4,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { GlassCard } from './ui/GlassCard';
 import { articles } from '../data/articles';
 
+const categoryLabels: Record<string, string> = {
+  productivity: 'Produktivita',
+  finance: 'Finance',
+  strategy: 'Strategie',
+};
+
 export const ArticleSection: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,7 +33,7 @@ export const ArticleSection: React.FC = () => {
           <h1 className="article-title">{article.title}</h1>
 
           <div className="article-meta">
-            <span className="category-badge">{article.category}</span>
+            <span className="category-badge">{categoryLabels[article.category] || article.category}</span>
             <span><Clock size={12} /> {article.readTime}</span>
             <span>{article.date}</span>
           </div>
@@ -71,7 +77,7 @@ export const ArticleSection: React.FC = () => {
             <div className="list-card-content">
               <div className="list-card-header">
                 <BookOpen size={16} color="var(--primary)" />
-                <span className="list-category">{a.category}</span>
+                <span className="list-category">{categoryLabels[a.category] || a.category}</span>
               </div>
 
               <h3 className="list-title">{a.title}</h3>

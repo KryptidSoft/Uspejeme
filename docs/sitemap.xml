@@ -110,5 +110,22 @@
   <url>
     <loc>https://uspejeme.cz/mapa-stranek</loc>
   </url>
+  
+   <!-- Články -->
+  <url>
+    <loc>https://uspejeme.cz/clanky/1</loc>
+  </url>
+  <url>
+    <loc>https://uspejeme.cz/clanky/2</loc>
+  </url>
+  <url>
+    <loc>https://uspejeme.cz/clanky/3</loc>
+  </url>
+  <url>
+    <loc>https://uspejeme.cz/clanky/4</loc>
+  </url>
+  <url>
+    <loc>https://uspejeme.cz/clanky/5</loc>
+  </url>
 
 </urlset>

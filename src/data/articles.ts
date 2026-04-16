@@ -156,6 +156,15 @@ id: '1',
 
     <p>Úspěch v podnikání není jen o tvrdé práci, ale především o <strong>sebepoznání</strong>. Když pochopíte, jak funguje váš vnitřní motor, můžete přestat bojovat s vlastní přirozeností a začít ji využívat ve svůj prospěch.</p>
 
+<!-- 🔥 REKLAMA AADS -->
+<div style="text-align:center; margin:30px 0;">
+  <iframe 
+    data-aa="2434286"
+    src="https://acceptable.a-ads.com/2434286/?size=Adaptive"
+    style="border:0; padding:0; width:100%; height:150px; overflow:hidden;"
+  ></iframe>
+</div>
+
     <h3>Proč si udělat náš kvíz archetypů?</h3>
     <p>Náš interaktivní kvíz na <a href="https://uspejeme.cz" target="_blank" rel="noopener noreferrer">uspejeme.cz</a> vám během dvou minut ukáže vaši unikátní mapu podnikatelských vlastností. Nejde o suchou teorii, ale o praktický nástroj, který vám pomůže identifikovat:</p>
 
@@ -173,6 +182,15 @@ id: '1',
     <blockquote>
       "Podnikání by nemělo být o neustálém vyhoření, ale o systému, který pracuje pro vás."
     </blockquote>
+
+<!-- 🔥 REKLAMA AADS -->
+<div style="text-align:center; margin:30px 0;">
+  <iframe 
+    data-aa="2434286"
+    src="https://acceptable.a-ads.com/2434286/?size=Adaptive"
+    style="border:0; padding:0; width:100%; height:150px; overflow:hidden;"
+  ></iframe>
+</div>
 
     <p>Chcete vědět, jak jste na tom vy? Klikněte na tlačítko níže, vyplňte pár otázek a získejte svůj personalizovaný plán pro lepší výsledky bez zbytečného stresu.</p>
 

@@ -9,6 +9,12 @@ interface StrategyWidgetProps {
   onViewAll?: () => void;
 }
 
+const categoryLabels: Record<string, string> = {
+  productivity: 'Produktivita',
+  finance: 'Finance',
+  strategy: 'Strategie',
+};
+
 export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
   const navigate = useNavigate();
 
@@ -73,7 +79,7 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.6rem', color: 'var(--primary)', fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  {article.category}
+                  {categoryLabels[article.category] || article.category}
                 </span>
                 <ChevronRight size={14} color="var(--text-dim)" />
               </div>
