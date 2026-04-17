@@ -40,9 +40,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="fade-in container-max" style={{ overflowX: 'hidden' }}>
-	
-	<AadsBanner />
-      
       {/* 1. HERO SEKCE */}
       <section style={{ textAlign: 'center', padding: '40px 0 60px' }}>
         <div style={{ 
@@ -257,6 +254,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     </p>
   </div>
 </section>
+
+<div style={{
+  margin: '80px auto 40px',
+  minHeight: '100px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}}>
+  <AadsBanner />
+</div>
 
     </div>
   );
