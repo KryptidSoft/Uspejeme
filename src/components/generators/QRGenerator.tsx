@@ -125,8 +125,8 @@ const t = {
 
 return (
   <div className="fade-in app-container">
-      {/* Zde vložíme reklamu */}
-      <AadsBanner />  {/* Tady se zobrazí reklama */}
+
+<AadsBanner />
 
     <div style={{ textAlign: 'center', marginBottom: '25px' }}>
       <h1>Smart <span style={{ color: 'var(--primary)' }}>QR Pay</span> {t.badge}</h1>

@@ -7,6 +7,7 @@ import { articles } from '../data/articles';
 import { useNavigate } from "react-router-dom";
 import { useBusinessData } from '../hooks/useBusinessData';
 import { formatCZK } from '../utils/calculations/mathHelpers';
+import AadsBanner from './AadsBanner'; // Importujeme komponentu reklamy
 import type { BusinessType } from '../types/index';
 
 interface LandingPageProps {
@@ -39,6 +40,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="fade-in container-max" style={{ overflowX: 'hidden' }}>
+	
+	<AadsBanner />
       
       {/* 1. HERO SEKCE */}
       <section style={{ textAlign: 'center', padding: '40px 0 60px' }}>
