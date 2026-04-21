@@ -1,7 +1,27 @@
+# Závislostí (knihovny)
 node_modules/
+
+# Lokální buildy (vše, co se generuje automaticky)
 dist/
 build/
+docs/
+
+# Lokální proměnné prostředí (citlivá data)
 .env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Systémové soubory
 .DS_Store
+Thumbs.db
+
+# Nastavení editoru
 .vscode/
+.idea/
+
+# Logy chyb
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
