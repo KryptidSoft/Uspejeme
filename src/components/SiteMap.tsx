@@ -94,7 +94,7 @@ export const Sitemap: React.FC = () => {
       </div>
 
       <footer className="footer text-center text-gray-500 text-sm mt-16 pt-8 border-t border-white/5">
-        Uspejeme.cz — Poslední aktualizace mapy: Duben 2026
+        Uspejeme.cz — Poslední aktualizace mapy: květen 2026
       </footer>
     </div>
   );

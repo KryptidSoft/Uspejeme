@@ -7,7 +7,6 @@ import { articles } from '../data/articles';
 import { useNavigate } from "react-router-dom";
 import { useBusinessData } from '../hooks/useBusinessData';
 import { formatCZK } from '../utils/calculations/mathHelpers';
-import AadsBanner from './AadsBanner'; // Importujeme komponentu reklamy
 import type { BusinessType } from '../types/index';
 
 interface LandingPageProps {
@@ -27,9 +26,14 @@ const testimonials = [
     text: "Díky kalkulačce hodinové sazby jsem zjistil, že jsem roky pracoval pod cenou. Tohle by měl mít každý freelancer."
   },
   {
-    name: "Jana Nováková",
-    role: "Copywriterka",
-    text: "Konečně nástroj, který počítá s inflací. Pomohlo mi to rozhodnout se, jestli investovat do nového vybavení."
+    name: "Ing. Marek Volný",
+    role: "Grafik",
+    text: "Ukazatel 'Runway' mi změnil spaní :-) Mnoho jsem věděl už předtím, ale teď to mám černé na bílém."
+  },
+  {
+    name: "Lucie Blažková",
+    role: "Konzultantka",
+    text: "QR a faktury používám skoro denně. Klienti platí dřív a já vypadám jako firma, jsem totiž na všechno sama."
   }
 ];
 
@@ -262,7 +266,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   justifyContent: 'center',
   alignItems: 'center'
 }}>
-  <AadsBanner />
 </div>
 
     </div>

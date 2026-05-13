@@ -41,7 +41,7 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
         {articles?.slice(0, 5).map((article: Article) => (
           <div 
             key={article.id}
-            onClick={() => navigate(`/clanky/${article.id}`)}
+            onClick={() => navigate(`/clanky/${article.slug}`)}
             style={{ 
               display: 'flex', 
               alignItems: 'flex-start', 

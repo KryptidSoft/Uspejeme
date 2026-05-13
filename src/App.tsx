@@ -10,6 +10,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { DisclaimerModal } from './components/DisclaimerModal';
 import { AppContent } from './components/AppContent';
+import CookieConsent from './components/ui/CookieConsent';
 
 interface ToolItem {
   id: string;
@@ -67,21 +68,28 @@ const AppInner = () => {
   return (
     <div className="app-bg">
       <div className="container-max">
-      <Header 
-        isMobileMenuOpen={isMobileMenuOpen}
-        setIsMobileMenuOpen={setIsMobileMenuOpen}
-        tools={TOOLS_REGISTRY}
-        subItems={SUB_ITEMS}
-      />
+        <Header 
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+          tools={TOOLS_REGISTRY}
+          subItems={SUB_ITEMS}
+        />
 
-      <main className="main-content" key={location.pathname}>
-        <AppContent />
-      </main>
+        <main className="main-content" key={location.pathname}>
+          <AppContent />
+        </main>
 
-      <Footer onShowDisclaimer={() => setIsDisclaimerOpen(true)} />
-      <DisclaimerModal isOpen={isDisclaimerOpen} onClose={() => setIsDisclaimerOpen(false)} />
+        <Footer onShowDisclaimer={() => setIsDisclaimerOpen(true)} />
+        
+        <DisclaimerModal 
+          isOpen={isDisclaimerOpen} 
+          onClose={() => setIsDisclaimerOpen(false)} 
+        />
+
+        {/* COOKIE LIŠTA - marketingově optimalizovaná */}
+        <CookieConsent />
+      </div>
     </div>
-  </div>
   );
 };
 

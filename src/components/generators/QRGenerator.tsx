@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { GlassCard } from '../ui/GlassCard';
 import { InputGroup } from '../ui/InputGroup';
-import AadsBanner from '../AadsBanner'; // Importujeme komponentu reklamy
 import { QrCode, Copy, CheckCircle2, AlertCircle, Wallet, Globe, Landmark } from 'lucide-react';
 
 export const QRGenerator: React.FC = () => {
@@ -125,8 +124,6 @@ const t = {
 
 return (
   <div className="fade-in app-container">
-
-<AadsBanner />
 
     <div style={{ textAlign: 'center', marginBottom: '25px' }}>
       <h1>Smart <span style={{ color: 'var(--primary)' }}>QR Pay</span> {t.badge}</h1>

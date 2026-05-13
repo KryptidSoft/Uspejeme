@@ -16,7 +16,6 @@ import { calculateHourlyRate } from '../../utils/calculations/hourly';
 import type { HourlyInputs } from '../../utils/calculations/hourly';
 import { formatCZK } from '../../utils/calculations/mathHelpers';
 import { useBusinessData } from '../../hooks/useBusinessData';
-import AadsBanner from '../AadsBanner'; // Importujeme komponentu reklamy
 
 const safeParse = (val: string | number, max: number = Infinity) => {
   const num = parseFloat(String(val));
@@ -176,7 +175,6 @@ const handleCalculate = () => {
                   <ShieldAlert size={18} style={{ color: '#10b981', flexShrink: 0 }} />
                   <span style={{ color: '#10b981', fontWeight: '600' }}>Sazba byla úspěšně uložena do globální strategie.</span>
                 </div>
-                <AadsBanner />
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
@@ -184,7 +182,6 @@ const handleCalculate = () => {
                   <TrendingUp size={48} style={{ marginBottom: '15px' }} />
                   <p>Zadejte své cíle vlevo a zjistěte, jaká hodinovka vás dovede k prosperitě.</p>
                 </div>
-                <AadsBanner />
               </div>
             )}
           </div>

@@ -9,7 +9,6 @@ import { InputGroup } from '../ui/InputGroup';
 import { formatCZK } from '../../utils/calculations/mathHelpers';
 import { useBusinessData } from '../../hooks/useBusinessData';
 import { calculateGrossFromNet } from '../../utils/calculations/businessLogic';
-import AadsBanner from '../AadsBanner'; // Importujeme komponentu reklamy
 
 type TaxMode = 'pausal_dan' | 'vydaje_60' | 'skutecne_vydaje';
 
@@ -291,9 +290,7 @@ export const ProsperityPlanner: React.FC = () => {
       ? <><Check size={20} /> Propojeno se systémem</> 
       : <><Save size={20} /> ULOŽIT DO MÉHO PANELU</>}
   </button>
-  
-  {/* REKLAMA: Vložení komponenty */}
-  <AadsBanner />
+
 </div>
 
 </div>

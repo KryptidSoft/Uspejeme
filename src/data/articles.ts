@@ -1,5 +1,6 @@
 export interface Article {
   id: string;
+  slug: string;    // Přidáme "nazev-clanku" pro Google a SEO
   title: string;
   excerpt: string;
   content: string;
@@ -12,6 +13,7 @@ export const articles: Article[] = [
 {
 id: '1',
   title: 'Vítejte na Uspějeme.cz!',
+  slug: 'manifest-osvc-vitejte',
   excerpt: 'OSVČ tvoří páteř ekonomiky, přesto většina z nás riskuje svou budoucnost špatným naceňováním.',
   readTime: '2 min',
   category: 'finance',
@@ -33,6 +35,7 @@ id: '1',
 {
   id: '2',
   title: 'OSVČ Navigátor 2026 – Váš finanční rentgen',
+  slug: 'osvc-navigator-financni-rentgen',
   excerpt: 'Jak funguje váš nový panel na Uspějeme.cz? Naučte se číst data, která rozhodují o vaší svobodě.',
   readTime: '5 min',
   category: 'finance',
@@ -82,6 +85,7 @@ id: '1',
 },
 {
   id: '3',
+  slug: 'moderni-nastroje-pro-podnikani',
   title: 'Moderní nástroje pro OSVČ: Uspějeme.cz jako váš denní asistent',
   excerpt: 'Rychlé QR platby, správa faktur a upomínek – to všechno na jednom místě pro OSVČ v ČR.',
   readTime: '3 min',
@@ -115,6 +119,7 @@ id: '1',
 },
 {
   id: '4',
+  slug: 'smart-nastroje-platby-kontrola',
   title: 'Smart nástroje pro OSVČ: Platby, kontrola a klid na duši',
   excerpt: 'Získejte přehled, bezpečné platby a snadné upomínky – Uspějeme.cz vám pomůže mít podnikání pod kontrolou.',
   readTime: '3 min',
@@ -146,6 +151,7 @@ id: '1',
 },
 {
   id: '5',
+  slug: 'kviz-typ-podnikatele',
   title: 'Kvíz: Jaký jste typ podnikatele? Odhalte své silné stránky i brzdy',
   excerpt: 'Pracujete do noci, nebo vše odkládáte na poslední chvíli? Zjistěte, který podnikatelský archetyp sedí na vás, a získejte akční plán na tento týden.',
   readTime: '3 min',
@@ -155,15 +161,6 @@ id: '1',
     <p>Každý OSVČ bojuje s jinými démony. Někdo nedokáže vypnout počítač ani u večeře, jiný bojuje s nekonečným odkládáním fakturace a další se utápí v detailech, které mu nikdo nezaplatí. Poznáváte se v tom?</p>
 
     <p>Úspěch v podnikání není jen o tvrdé práci, ale především o <strong>sebepoznání</strong>. Když pochopíte, jak funguje váš vnitřní motor, můžete přestat bojovat s vlastní přirozeností a začít ji využívat ve svůj prospěch.</p>
-
-<!-- 🔥 REKLAMA AADS -->
-<div style="text-align:center; margin:30px 0;">
-  <iframe 
-    data-aa="2434286"
-    src="https://acceptable.a-ads.com/2434286/?size=Adaptive"
-    style="border:0; padding:0; width:100%; height:150px; overflow:hidden;"
-  ></iframe>
-</div>
 
     <h3>Proč si udělat náš kvíz archetypů?</h3>
     <p>Náš interaktivní kvíz na <a href="https://uspejeme.cz" target="_blank" rel="noopener noreferrer">uspejeme.cz</a> vám během dvou minut ukáže vaši unikátní mapu podnikatelských vlastností. Nejde o suchou teorii, ale o praktický nástroj, který vám pomůže identifikovat:</p>
@@ -183,15 +180,6 @@ id: '1',
       "Podnikání by nemělo být o neustálém vyhoření, ale o systému, který pracuje pro vás."
     </blockquote>
 
-<!-- 🔥 REKLAMA AADS -->
-<div style="text-align:center; margin:30px 0;">
-  <iframe 
-    data-aa="2434286"
-    src="https://acceptable.a-ads.com/2434286/?size=Adaptive"
-    style="border:0; padding:0; width:100%; height:150px; overflow:hidden;"
-  ></iframe>
-</div>
-
     <p>Chcete vědět, jak jste na tom vy? Klikněte na tlačítko níže, vyplňte pár otázek a získejte svůj personalizovaný plán pro lepší výsledky bez zbytečného stresu.</p>
 
     <div style="text-align: center; margin: 30px 0;">
@@ -201,6 +189,38 @@ id: '1',
     </div>
 
     <p>Po skončení kvízu můžete svůj výsledek rovnou sdílet s kolegy nebo si ho uložit jako PDF, abyste se k němu mohli kdykoliv vrátit a sledovat svůj pokrok.</p>
+  `
+},
+{
+  id: '6',
+  slug: 'odvody-osvc-2026-senat-stopka',
+  title: 'Špatná zpráva pro OSVČ: Senát zablokoval snížení odvodů pro rok 2026',
+  excerpt: 'Naděje na nižší sociální a zdravotní pojištění se rozplynula. Senát vrátil vládní návrh k přepracování a změna v roce 2026 nenastane.',
+  readTime: '4 min',
+  category: 'finance',
+  date: '13. 05. 2026',
+  content: `
+    <p>Čeští podnikatelé a živnostníci, kteří v posledních měsících s napětím sledovali vládní sliby o ulehčení administrativní a finanční zátěže, dostali studenou sprchu. Návrh na snížení minimálních vyměřovacích základů a úpravu paušální daně pro rok 2026 neprošel horní komorou Parlamentu.</p>
+
+    <h3>Senátní veto: Proč se nebude zlevňovat?</h3>
+    <p>Ačkoliv vládní koalice prezentovala balíček jako klíčový krok k podpoře drobného podnikání, Senát vyjádřil vážné obavy o stabilitu důchodového systému. Podle senátních výborů by radikální snížení odvodů mohlo v budoucnu vést k extrémně nízkým důchodům u generace dnešních třicátníků a čtyřicátníků podnikajících jako OSVČ.</p>
+
+    <h3>Co to znamená pro vaši peněženku?</h3>
+    <p>Původní návrh počítal s úsporou v řádu stovek až tisíců korun měsíčně (v závislosti na pásmu). Realita pro rok 2026 je však nyní následující:</p>
+    <ul>
+      <li><strong>Zálohy na sociální pojištění:</strong> Budou pokračovat v plánovaném růstu navázaném na průměrnou mzdu (navýšení o 5 % oproti roku 2025).</li>
+      <li><strong>Zdravotní pojištění:</strong> Minimální záloha se opět zvýší v souladu s valorizačním mechanismem.</li>
+      <li><strong>Paušální daň:</strong> Částky pro jednotlivá pásma zůstávají na horní hranici původních predikcí bez avizovaných slev.</li>
+    </ul>
+
+    <h3>Strategie pro OSVČ: Jak reagovat?</h3>
+    <p>V situaci, kdy státní úlevy nepřicházejí, je jediným řešením optimalizace na vlastní straně. Naše kalkulačka <strong>Hodinová sazba</strong> již byla aktualizována o tyto finální hodnoty pro rok 2026. Doporučujeme všem uživatelům provést revizi svých cen.</p>
+
+    <blockquote>
+      "Spoléhat se na vládní úlevy je v roce 2026 riskantní strategie. Jedinou jistotou je vaše vlastní efektivita a správně nastavený finanční polštář."
+    </blockquote>
+
+    <p>Situaci budeme nadále sledovat. Pokud dojde k novému projednávání v Poslanecké sněmovně, budeme vás informovat prostřednictvím našeho panelu.</p>
   `
 }
 ];

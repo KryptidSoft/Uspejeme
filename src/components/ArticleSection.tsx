@@ -11,10 +11,12 @@ const categoryLabels: Record<string, string> = {
 };
 
 export const ArticleSection: React.FC = () => {
-  const { id } = useParams();
+  // 1. Změna z id na slug, aby odpovídalo URL /clanky/:slug
+  const { slug } = useParams(); 
   const navigate = useNavigate();
 
-  const article = articles.find(a => String(a.id) === id);
+  // 2. Hledáme v datech podle slugu, ne podle id
+  const article = articles.find(a => a.slug === slug);
 
   // DETAIL ČLÁNKU
   if (article) {
@@ -29,7 +31,6 @@ export const ArticleSection: React.FC = () => {
         </button>
 
         <GlassCard className="article-card">
-          {/* Tady h1 sedí na tvůj globální styl automaticky */}
           <h1 className="article-title">{article.title}</h1>
 
           <div className="article-meta">
@@ -60,8 +61,6 @@ export const ArticleSection: React.FC = () => {
   // SEZNAM ČLÁNKŮ (LIST)
   return (
     <div className="container-max fade-in" style={{ paddingBottom: '60px', overflowX: 'clip' }}>
-      
-      {/* --- VYČIŠTĚNÝ ÚVOD SEZNAMU --- */}
       <div>
         <h1>Vzdělávání a strategie</h1>
         <h2>Tipy pro vaše podnikání v roce 2026</h2>
@@ -71,22 +70,22 @@ export const ArticleSection: React.FC = () => {
         {articles.map(a => (
           <GlassCard
             key={a.id}
-            onClick={() => navigate(`/clanky/${a.id}`)}
+            // 3. Při kliku navigujeme na SLUG, ne na ID
+            onClick={() => navigate(`/clanky/${a.slug}`)} 
             className="list-card"
           >
+            {/* ... zbytek obsahu karty zůstává stejný ... */}
             <div className="list-card-content">
-              <div className="list-card-header">
-                <BookOpen size={16} color="var(--primary)" />
-                <span className="list-category">{categoryLabels[a.category] || a.category}</span>
-              </div>
-
-              <h3 className="list-title">{a.title}</h3>
-              <p className="list-excerpt">{a.excerpt}</p>
-            </div>
-
-            <div className="list-card-footer">
-              {a.readTime} • {a.date}
-            </div>
+               <div className="list-card-header">
+                 <BookOpen size={16} color="var(--primary)" />
+                 <span className="list-category">{categoryLabels[a.category] || a.category}</span>
+               </div>
+               <h3 className="list-title">{a.title}</h3>
+               <p className="list-excerpt">{a.excerpt}</p>
+             </div>
+             <div className="list-card-footer">
+               {a.readTime} • {a.date}
+             </div>
           </GlassCard>
         ))}
       </div>

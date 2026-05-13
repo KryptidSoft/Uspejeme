@@ -27,7 +27,6 @@ import { ScrollToTop } from './ScrollToTop'; // Import hooku
 import { NotFound } from './NotFound'; // Import fallbacku
 import { SmartOffer } from './generators/SmartOffer';
 import QuizPage from './QuizPage';
-import AadsBanner from './AadsBanner'; // Importujeme komponentu reklamy
 import { 
   FileText, Activity, Zap, ShieldAlert, Briefcase, Coins, QrCode, FileWarning, Target, 
   TrendingUp, TrendingDown, PiggyBank, Calendar, GraduationCap
@@ -44,9 +43,6 @@ const FakturyNav = () => (
 	  <MiniCard title="Nabídka" desc="Cenovka pro klienty" icon={FileText} to="/nabidka" />
       <MiniCard title="Splatnost" desc="Hlídač termínů" icon={FileWarning} to="/upominky" />
     </div>
-
-    {/* Zde vložíme reklamu */}
-    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}
   </div>
 );
 
@@ -70,9 +66,6 @@ const StrategieNav = () => (
       <MiniCard title="Hodinovka" desc="Ideální sazba" icon={Coins} to="/hodinovka" />
       <MiniCard title="Zakázky" desc="Ziskovost projektů" icon={Briefcase} to="/projekt" />
     </div>
-	
-    {/* Zde vložíme reklamu */}
-    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}	
   </div>
 );
 
@@ -85,9 +78,6 @@ const InvesticeNav = () => (
       <MiniCard title="Aktiva" desc="Zlato a drahé kovy" icon={Coins} to="/aktiva" />
 	  <MiniCard title="Nákupy" desc="Dobrá investice" icon={Coins} to="/nakupy" />
     </div>
-	
-	{/* Zde vložíme reklamu */}
-    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}
   </div>
 );
 
@@ -99,9 +89,6 @@ const VzdelavaniNav = () => (
 	  <MiniCard title="Termíny" desc="Hlídací pes podnikatele" icon={Calendar} to="/kalendar" />
       <MiniCard title="Kvízy" desc="Poznejte se lépe" icon={Target} to="/kviz" />
     </div>
-	
-	{/* Zde vložíme reklamu */}
-    <AadsBanner />  {/* Reklama se zobrazí pod tímto rozcestníkem */}
   </div>
 );
 
@@ -110,7 +97,7 @@ const VzdelavaniNav = () => (
 export const AppContent = () => {
   const navigate = useNavigate();
 
-  const handleNavigate = (view: string, articleId?: string) => {
+  const handleNavigate = (view: string, articleSlug?: string) => {
     const routes: Record<string, string> = {
       dashboard: '/panel',
 	  prosperita: '/planovac',
@@ -126,7 +113,8 @@ export const AppContent = () => {
 	  kviz: '/kviz'
     };
     const targetPath = routes[view] || view;
-    navigate(articleId ? `${targetPath}/${articleId}` : targetPath);
+    // Tady posíláme na /clanky/nazev-clanku místo ID
+    navigate(articleSlug ? `${targetPath}/${articleSlug}` : targetPath);
   };
 
   return (
@@ -167,7 +155,7 @@ export const AppContent = () => {
       {/* Ostatní */}
 	  <Route path="/vzdelavani" element={<VzdelavaniNav />} />
       <Route path="/clanky" element={<ArticleSection />} />
-      <Route path="/clanky/:id" element={<ArticleSection />} />
+      <Route path="/clanky/:slug" element={<ArticleSection />} />
 	  <Route path="/kalendar" element={<CalendarPage userType="vse" />} />
 	  <Route path="/kviz" element={<QuizPage />} />
 	  

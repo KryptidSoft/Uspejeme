@@ -112,20 +112,23 @@
   </url>
   
    <!-- Články -->
-  <url>
-    <loc>https://uspejeme.cz/clanky/1</loc>
+<url>
+    <loc>https://uspejeme.cz/clanky/manifest-osvc-vitejte</loc>
   </url>
   <url>
-    <loc>https://uspejeme.cz/clanky/2</loc>
+    <loc>https://uspejeme.cz/clanky/osvc-navigator-financni-rentgen</loc>
   </url>
   <url>
-    <loc>https://uspejeme.cz/clanky/3</loc>
+    <loc>https://uspejeme.cz/clanky/moderni-nastroje-pro-podnikani</loc>
   </url>
   <url>
-    <loc>https://uspejeme.cz/clanky/4</loc>
+    <loc>https://uspejeme.cz/clanky/smart-nastroje-platby-kontrola</loc>
   </url>
   <url>
-    <loc>https://uspejeme.cz/clanky/5</loc>
+    <loc>https://uspejeme.cz/clanky/kviz-typ-podnikatele</loc>
+  </url>
+  <url>
+    <loc>https://uspejeme.cz/clanky/odvody-osvc-2026-senat-stopka</loc>
   </url>
 
 </urlset>

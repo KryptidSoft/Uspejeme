@@ -8,7 +8,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onShowDisclaimer }) => {
-  const lastUpdate = "04/2026";
+  const lastUpdate = "05/2026";
 
   const handleReset = () => {
     if (window.confirm("Opravdu chcete smazat všechna uložená data? Tato akce je nevratná.")) {
