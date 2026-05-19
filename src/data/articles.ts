@@ -222,5 +222,53 @@ id: '1',
 
     <p>Situaci budeme nadále sledovat. Pokud dojde k novému projednávání v Poslanecké sněmovně, budeme vás informovat prostřednictvím našeho panelu.</p>
   `
+},
+{
+  id: '7',
+  slug: 'ico-revoluce-svarcsystem-zmeny-2026',
+  title: 'Konec honu na živnostníky: Stát kapituluje před švarcsystémem a my vyhráváme. Ale nepředbíhejme!',
+  excerpt: 'Vláda chystá radikální revizi zákoníku práce, která uvolňuje pravidla pro spolupráci na IČO. Zjistěte, jaké konkrétní změny nás čekají a na co si dát pozor.',
+  readTime: '4 min',
+  category: 'strategy',
+  date: '19. 05. 2026',
+  content: `
+    <p>Tři desetiletí s námi úřady vedly neúprosnou válku kvůli takzvanému švarcsystému. Nyní se však zdá, že tato éra represe končí a my, OSVČ, z tohoto střetu vycházíme jako vítězové.</p>
+
+    <p>Naše Ministerstvo práce a sociálních věcí (MPSV) pod tlakem moderních trendů představilo přelomový zákon o platformové práci s plánovanou účinností od <strong>2. prosince 2026</strong>. Vláda do této legislativy skryla radikální revizi zákoníku práce, která nám všem na volné noze může definitivně rozvázat ruce.</p>
+
+    <p>Říkáme ale záměrně <em>může</em>. Do prosince zbývá hodně času a jak všichni víme, v českém legislativním procesu se ďábel skrývá v detailu. Pojďme se podívat na realitu bez růžových brýlí.</p>
+
+    <h3>4 konkrétní změny: Jak se pro nás přepisují pravidla</h3>
+    <p>Navrhovaná legislativa zavádí upravený test samostatnosti, který staví dosavadní praxi soudů a inspektorů na hlavu. Pokud si organizujeme čas sami, stát ztrácí možnost nás jakkoliv postihovat.</p>
+
+    <ol>
+      <li><strong>Absolutní abolice – už žádné pokuty pro lidi:</strong> Hrozba pokuty pro samotné kontraktory (dosud až 100 000 Kč) z legislativy definitivně mizí. MPSV v důvodové zprávě otevřeně přiznává, že společenská škodlivost práce na IČO je v těchto případech „bagatelní“. Finanční postihy (až do výše 10 milionů Kč) zůstanou pouze firmám.</li>
+      <li><strong>Konec paradoxu jednoho klienta:</strong> Dlouhodobá ekonomická závislost na jediném zadavateli už nebude pro inspektory určujícím znakem nelegálního švarcsystému. Naši IT specialisté, designéři nebo projektoví manažeři mohou zcela legálně a bez obav pracovat na exkluzivní kontrakt pro jednu jedinou společnost.</li>
+      <li><strong>Benefity jsou legální i pro nás na IČO:</strong> Pokud nám partnerská firma chtěla poskytnout příspěvky na penzijní připojištění, doplňkové pojištění nebo třeba stravenky, inspektoři to dosud u soudů používali jako jasný důkaz skrytého zaměstnání. Nově jsou tyto benefity legální a nikdo je proti nám nesmí použít jako zbraň.</li>
+      <li><strong>Striktní osekání definice závislé práce:</strong> Aby mohl stát naši externí spolupráci označit za nelegální, bude muset nově prokázat současné splnění velmi přísných znaků: vztah nadřízenosti a podřízenosti, přímé operativní řízení a striktní rozvrhování pracovní doby. Pokud si čas a místo výkonu práce řídíme sami, stát nemá šanci uspět.</li>
+    </ol>
+
+    <h3>Kontroverze pod povrchem: Na co si musíme dát pozor?</h3>
+    <p>Nesmíme křičet „hop“, dokud nepřeskočíme. Do prosince se může na stole poslanců objevit řada pozměňovacích návrhů. Tady jsou tři hlavní třecí plochy, které mohou s textem zákona ještě zásadně zamíchat:</p>
+
+    <blockquote>
+      <p><strong>1. Past jménem „Algoritmy a AI“:</strong> Nový zákon zavádí extrémně přísná pravidla pro firmy, které k řízení lidí používají automatizované systémy. Pokud vás aplikace nebo firemní software monitoruje, hodnotí nebo vám automaticky přiděluje zakázky, firma bude muset splnit obří balík nové byrokracie (včetně posuzování psychosociálních rizik a lidského dohledu). Hrozia obavy, že se firmy ze strachu před těmito povinnostmi raději některých externistů zbaví.</p>
+      <p><strong>2. Přejmenování místo osvobození:</strong> Novela zákona o zaměstnanosti sice uvolňuje pravidla pro čistý švarcsystém, ale zároveň zavádí nový termín – „nehlášená práce“ (závislá práce bez registrace). A tady pozor: pokuta pro firmy za tento prohřešek činí až 3 000 000 Kč. Hranice mezi tím, co je nově legální volnost a co už je nehlášená práce, bude v praxi velmi tenká a určí ji až první reálné kontroly.</p>
+      <p><strong>3. Veto Ministerstva financí:</strong> Ministerstvo financí drží prst na rozpočtovém spouštěči. Pokud se ukáže, že uvolnění švarcsystému začne masivně odsávat lidi z klasického zaměstnaneckého poměru a stát přijde o desítky miliard na odvodech, může v Parlamentu dojít k tvrdému zatažení za záchrannou brzdu. Ve hře je stále i zavedení hybridního statusu (tzv. flexiworkera), který by nás sice zlegalizoval, ale donutil platit vyšší paušální daně.</p>
+    </blockquote>
+	
+    <h3>Jak se na změny připravit už teď?</h3>
+    <p>Spoléhat se na to, jak přesně legislativní bitva v prosinci dopadne, je riskantní. Jako OSVČ musíme mít jistotu ve vlastních číslech a krytá záda za každé situace. Doporučujeme vám využít dva klíčové nástroje přímo zde na naší platformě:</p>
+
+    <ul>
+      <li><strong>Chcete přejít na IČO, nebo si ověřit svou současnou cenu?</strong> Spočítejte si reálné náklady, rezervy na dovolenou i nemocenskou a nastavte si neprůstřelnou odměnu v naší <a href="/hodinovka">Kalkulačce hodinové sazby</a>.</li>
+      <li><strong>Chcete mít jistotu, že vaše spolupráce nebalancuje na hraně rizika?</strong> Otestujte si stabilitu svého podnikání a odhalte slabá místa v modulu pro <a href="/rizika">Hodnocení rizik</a>.</li>
+    </ul>
+
+    <h3>Výhled do budoucna</h3>
+    <p>Zatímco odbory varují, že se naše republika promění v „zemi živnostníků“ bez právní ochrany, byznys i samotní pracující mluví o nutném narovnání s digitální realitou roku 2026.</p>
+
+    <p>Stát poprvé v historii oficiálně vzkazuje úřadům a soudům: <em>„Přibrzděte, těmto lidem už do jejich svobodné formy obživy mluvit nebudeme.“</em> Je to obrovský krok správným směrem. Zda nám ho ale politická reprezentace do prosince ještě trochu neotráví, budeme bedlivě sledovat na <a href="https://uspejeme.cz">Uspějeme.cz</a>. Držíme si palce.</p>
+  `
 }
 ];
