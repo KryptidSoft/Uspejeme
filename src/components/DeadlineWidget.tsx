@@ -2,14 +2,17 @@ import React from 'react';
 import { Calendar } from 'lucide-react';
 import { ALL_DEADLINES } from '../data/deadlines';
 import type { BusinessType } from '../types/index';
+import { useNavigate } from 'react-router-dom'; // 1. KROK: Importovali jsme router
 
 interface DeadlineWidgetProps {
   userType: BusinessType;
   setUserType: React.Dispatch<React.SetStateAction<BusinessType>>;
-  onNavigate?: (view: string) => void;
+  // onNavigate prop už vůbec nepotřebujeme, smazán z interface
 }
 
-export const DeadlineWidget: React.FC<DeadlineWidgetProps> = ({ userType, setUserType, onNavigate }) => {  
+export const DeadlineWidget: React.FC<DeadlineWidgetProps> = ({ userType, setUserType }) => {  
+  const navigate = useNavigate(); // 2. KROK: Vytvořili jsme interní router uvnitř widgetu
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -33,7 +36,6 @@ export const DeadlineWidget: React.FC<DeadlineWidgetProps> = ({ userType, setUse
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 4);
 
-  // SYNCHRONIZOVANÉ BARVY A ŠTÍTKY
   const getStyles = (type: string) => {
     switch (type) {
       case 'dan': 
@@ -56,7 +58,7 @@ export const DeadlineWidget: React.FC<DeadlineWidgetProps> = ({ userType, setUse
       borderRadius: '24px',
       display: 'flex', 
       flexDirection: 'column',
-      background: 'rgba(30, 41, 59, 0.5)', // Tmavší pozadí pro lepší kontrast
+      background: 'rgba(30, 41, 59, 0.5)',
       backdropFilter: 'blur(10px)'
     }}>
       {/* HLAVIČKA */}
@@ -149,8 +151,9 @@ export const DeadlineWidget: React.FC<DeadlineWidgetProps> = ({ userType, setUse
         })}
       </div>
 
+      {/* 3. KROK: Tlačítko teď používá přímo interní navigate na cestu '/kalendar' */}
       <button 
-        onClick={() => onNavigate?.('kalendar')}
+        onClick={() => navigate('/kalendar')}
         style={{ 
           width: '100%', marginTop: '16px', padding: '12px', borderRadius: '14px',
           background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)',

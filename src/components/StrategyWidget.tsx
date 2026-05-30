@@ -18,6 +18,12 @@ const categoryLabels: Record<string, string> = {
 export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
   const navigate = useNavigate();
 
+  // Seřazení článků: Vyšší ID = novější článek (b.id - a.id)
+  // Používáme Number(), pokud by náhodou byla ID ukládaná jako string.
+  const latestArticles = articles
+    ? [...articles].sort((a, b) => Number(b.id) - Number(a.id)).slice(0, 5)
+    : [];
+
   return (
     <div style={{ 
       padding: '16px',
@@ -38,7 +44,8 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
-        {articles?.slice(0, 5).map((article: Article) => (
+        {/* Mapujeme už bezpečně seřazené a oříznuté pole nejnovějších článků */}
+        {latestArticles.map((article: Article) => (
           <div 
             key={article.id}
             onClick={() => navigate(`/clanky/${article.slug}`)}
@@ -52,9 +59,8 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
               border: '1px solid rgba(255, 255, 255, 0.05)', 
               cursor: 'pointer',
               borderLeft: '4px solid var(--primary)', 
-              transition: 'all 0.2s ease-in-out' // Plynulý přechod efektu
+              transition: 'all 0.2s ease-in-out'
             }}
-            // --- EFEKT PRO KARTU ČLÁNKU ---
             onMouseOver={(e) => {
               e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
               e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
@@ -65,7 +71,6 @@ export const StrategyWidget: React.FC<StrategyWidgetProps> = ({ articles }) => {
               e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
               e.currentTarget.style.transform = 'translateX(0px)';
             }}
-            // -----------------------------
           >
             <div style={{ 
               minWidth: '32px', height: '32px', borderRadius: '8px', 

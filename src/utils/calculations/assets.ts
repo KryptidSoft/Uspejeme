@@ -1,8 +1,8 @@
 export const RATES = {
-  GOLD_G: 3133,
-  SILVER_G: 57,
-  BTC: 1690246,
-  CHF: 26.59
+  GOLD_G: 3029,     // Cena za 1 gram zlata v CZK (cca 94 211 Kč / trojská unce)
+  SILVER_G: 50,     // Cena za 1 gram stříbra v CZK (cca 1 567 Kč / trojská unce)
+  BTC: 1530907,     // Aktuální kurz Bitcoinu v CZK
+  CHF: 26.67        // Kurz švýcarského franku podle ČNB / online středu
 };
 
 export const convertFiatToAssets = (czk: number) => {

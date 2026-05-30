@@ -4,7 +4,6 @@ import { GlassCard } from './ui/GlassCard';
 import { StrategyWidget } from './StrategyWidget';
 import { DeadlineWidget } from './DeadlineWidget';
 import { articles } from '../data/articles';
-import { useNavigate } from "react-router-dom";
 import { useBusinessData } from '../hooks/useBusinessData';
 import { formatCZK } from '../utils/calculations/mathHelpers';
 import type { BusinessType } from '../types/index';
@@ -40,7 +39,6 @@ const testimonials = [
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const { data: globalData } = useBusinessData();
   const [userType, setUserType] = useState<BusinessType>('all');
-  const navigate = useNavigate();
 
   return (
     <div className="fade-in container-max" style={{ overflowX: 'hidden' }}>
@@ -128,17 +126,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   <div className="info-grid">
     
     {/* LEVÝ PANEL: NEJNOVĚJŠÍ STRATEGIE */}
-    <StrategyWidget 
-      articles={articles} 
-      onNavigate={(id) => navigate(`/clanky/${id}`)}
-      onViewAll={() => navigate('/clanky')}
-    />
+    <StrategyWidget articles={articles} />
 
     {/* PRAVÝ PANEL: TERMÍNY S FILTREM */}
     <DeadlineWidget 
       userType={userType} 
       setUserType={setUserType}
-      onNavigate={() => onNavigate('kalendar')}
     />
 
   </div>

@@ -270,5 +270,143 @@ id: '1',
 
     <p>Stát poprvé v historii oficiálně vzkazuje úřadům a soudům: <em>„Přibrzděte, těmto lidem už do jejich svobodné formy obživy mluvit nebudeme.“</em> Je to obrovský krok správným směrem. Zda nám ho ale politická reprezentace do prosince ještě trochu neotráví, budeme bedlivě sledovat na <a href="https://uspejeme.cz">Uspějeme.cz</a>. Držíme si palce.</p>
   `
+},
+{
+  "id": "8",
+  "slug": "snizeni-minimalnich-odvodov-osvc-2026",
+  "title": "Úleva pro OSVČ: Minimální odvody na sociální pojištění klesají zpětně o 715 Kč měsíčně!",
+  "excerpt": "Poslanecká sněmovna definitivně schválila snížení minimálních záloh na sociální pojištění. Uleví se i lidem v paušálním režimu. Tady je přehled, jak získat přeplatky zpět.",
+  "readTime": "3 min",
+  "category": "finance",
+  "date": "30. 05. 2026",
+  "content": `
+    <p>Máme skvělou zprávu pro stovky tisíc českých živnostníků. Poslanecká sněmovna v květnu 2026 definitivně přehlasovala veto Senátu a schválila novelu zákona, která vrací minimální vyměřovací základ pro sociální pojištění OSVČ ze 40 % zpět na <strong>35 % průměrné mzdy</strong>. To v praxi znamená okamžité snížení povinných měsíčních výdajů.</p>
+    
+    <h3>O kolik přesně zaplatíte méně?</h3>
+    <p>Změna se dotkne všech OSVČ na hlavní činnost, které platí minimální zálohy, a také podnikatelů v prvním pásmu paušální daně. Částky se mění následovně:</p>
+    <ul>
+      <li><strong>Minimální záloha na sociální pojištění:</strong> Klesá z původních 5 720 Kč na <strong>5 005 Kč měsíčně</strong> (úspora <strong>715 Kč</strong>).</li>
+      <li><strong>Paušální daň (1. pásmo):</strong> Klesá z původních 9 984 Kč na <strong>9 162 Kč měsíčně</strong> (úspora <strong>822 Kč</strong>).</li>
+      <li><strong>Zdravotní pojištění:</strong> Zde se nic nemění, minimální záloha pro rok 2026 zůstává na částce <strong>3 306 Kč</strong>.</li>
+    </ul>
+
+    <h3>Pozor: Změna platí zpětně od 1. ledna 2026!</h3>
+    <p>Protože zákon vstupuje v účinnost během června 2026, ale platí retroaktivně od začátku roku, vznikl vám za měsíce leden až květen na zálohách <strong>přeplatek</strong> (u sociálního pojištění činí 3 575 Kč, u paušální daně dokonce 4 110 Kč). Jak tyto peníze dostanete zpět?</p>
+    
+    <h3>Jak postupovat a získat peníze zpět?</h3>
+    <p>Postup se liší podle toho, v jakém daňovém režimu podnikáte:</p>
+    <ul>
+      <li><strong>OSVČ v klasickém režimu (podávají daňové přiznání):</strong> Novou nižší zálohu 5 005 Kč začněte platit od měsíce, kdy zákon vyjde ve Sbírce zákonů (předpoklad od červnové zálohy). Nastřádaný přeplatek za první měsíce roku vám ČSSZ standardně zúčtuje na jaře 2027 v Přehledu o příjmech a výdajích, případně můžete po nabytí účinnosti zákona OSSZ písemně požádat o předčasné vrácení přeplatku.</li>
+      <li><strong>OSVČ v paušálním režimu (1. pásmo):</strong> Zde je proces jednodušší. Hned po účinnosti zákona můžete své měsíční platby dočasně ponížit o vzniklý přeplatek, čímž se vám peníze vrátí přímo během roku 2026. Pokud trvalý příkaz neupravíte, Finanční správa vám přeplatek vrátí v rámci ročního vyúčtování.</li>
+    </ul>
+    <p>Nezapomeňte si proto včas (nejlépe během června) upravit své trvalé příkazy v bance, abyste státu neposílali peníze navíc.</p>
+  `
+},
+{
+  "id": "9",
+  "slug": "klicovy-termin-pro-osvc-2026",
+  "title": "Pozor OSVČ! Blíží se nejzazší termín pro přehledy na sociální a zdravotní pojištění",
+  "excerpt": "Pokud jste podávali daňové přiznání elektronicky v prodloužené lhůtě, na začátku června vám vyprší čas pro odevzdání přehledů pro ČSSZ a pojišťovnu. Navíc letos platí přísný zákaz papíru.",
+  "readTime": "2 min",
+  "category": "finance",
+  "date": "30. 05. 2026",
+  "content": `
+    <p>Pro ty OSVČ, které nevyužily služeb daňového poradce a podávaly daňové přiznání za rok 2025 elektronicky v prodlouženém termínu (do 4. května 2026), nastává klíčový den. Podle zákona musíte podat Přehled o příjmech a výdajích nejpozději do jednoho měsíce od podání přiznání.</p>
+    
+    <h3>Kdy jsou přesné nejzazší termíny?</h3>
+    <ul>
+      <li><strong>Česká správa sociálního zabezpečení (ČSSZ):</strong> Termín pro odevzdání přehledu za rok 2025 je pondělí <strong>1. června 2026</strong>.</li>
+      <li><strong>Zdravotní pojišťovny (např. VZP, OZP, ZPMV):</strong> Termín pro odevzdání přehledu je čtvrtek <strong>4. června 2026</strong>.</li>
+    </ul>
+    <p><em>Poznámka: Pokud vaše daňové přiznání zpracovává daňový poradce, termín pro podání přiznání máte do 1. července 2026 a přehledy musíte pojišťovnám a ČSSZ odeslat až do 3. srpna 2026.</em></p>
+
+    <h3>Zásadní novinka: Papírové formuláře už úřady nepřijmou!</h3>
+    <p>Od 1. ledna 2026 došlo k legislativní změně – <strong>přehledy pro zdravotní pojišťovny i ČSSZ je nově možné podávat výhradně elektronicky</strong>. Klasické papírové tiskopisy podané osobně na pobočce nebo zaslané poštou jsou již neplatné. Sběrné boxy na pobočkách pojišťoven byly zrušeny. Pokud pošlete přehled papírově, úřad ho bude považovat za nepodaný a hrozí vám pokuta až do výše 50 000 Kč.</p>
+
+    <h3>Jak podat přehledy elektronicky a bez chyb?</h3>
+    <p>Nejjednodušší cestou je využít oficiální online portály státní správy, které vás vyplněním provedou krok za krokem a automaticky dopočítají správné částky:</p>
+    <ul>
+      <li><strong>Pro sociální pojištění:</strong> Přihlaste se na <a href="https://eportal.cssz.cz">E-portál ČSSZ</a> pomocí své Identity občana nebo datové schránky. Systém do formuláře automaticky načte vaše identifikační údaje.</li>
+      <li><strong>Pro zdravotní pojištění:</strong> Využijte online aplikaci vaší konkrétní pojišťovny (např. Moje VZP, Portál ZP apod.).</li>
+    </ul>
+    <p><strong>Doplatek pojistného:</strong> Pokud vám z přehledů vyjde nedoplatek na pojistném za rok 2025, musíte jej uhradit (peníze musí být připsány na účet instituce) nejpozději <strong>do 8 dnů</strong> od podání daného přehledu. Zároveň pamatujte, že od měsíce podání přehledu musíte začít platit nově vypočítané zálohy na další období.</p>
+  `
+},
+{
+  "id": "10",
+  "slug": "velky-navrat-eet-2027",
+  "title": "EET se vrací pod názvem 2.0! Vláda schválila start od ledna 2027. Co to znamená pro nás?",
+  "excerpt": "Je to oficiální. Vláda poslala do schvalovacího procesu novou verzi elektronické evidence tržeb. Tentokrát ale v tichosti dopadne i na ty, co berou karty a QR kódy. Tady je rychlý přehled, jak se na to připravit bez stresu.",
+  "readTime": "3 min",
+  "category": "finance",
+  "date": "30. 05. 2026",
+  "content": `
+    <p>Možná už k vám ta zpráva dorazila: elektronická evidence tržeb, kterou jsme před lety všichni s úlevou vyprovodili ze dveří, se vrací oknem zpět pod názvem <strong>EET 2.0</strong>. Vláda na konci května 2026 schválila finální návrh zákona a poslala ho do Sněmovny. Ostrý start je naplánovaný na <strong>1. ledna 2027</strong>. Pojďme se podívat, jak to tentokrát zvládnout s chladnou hlavou a bez zbytečných výdajů.</p>
+    
+    <h3>Největší změna? Karty a QR kódy už neutečou</h3>
+    <p>Zatímco stará EET šla hlavně po hotovosti, verze 2.0 míří na moderní dobu. Pokud na provozovně nebo v terénu přijímáte <strong>hotovost, karty přes terminál nebo bleskové QR kódy</strong>, nová povinnost se vás dotkne. Dobrou zprávou je, že pokud vystavujete klasické faktury s převodem z účtu na účet, nebo provozujete čistokrevný e-shop s online platební bránou, máte od evidování úplný klid.</p>
+
+    <h3>Ulevilo se nám v papírování: Stát slibuje méně byrokracie</h3>
+    <p>Naštěstí se zdá, že se ministerstvo poučilo z minulé kritiky a systém bude o něco lidštější:</p>
+    <ul>
+      <li><strong>Žádné podrobné položky:</strong> Nikdo nebude zkoumat, co přesně prodáváte, ani kontrolovat sazby DPH u každého rohlíku. Finanční správu zajímá jen celková částka, čas a místo.</li>
+      <li><strong>Konec zbytečného tisku:</strong> Už žádné stohy papíru. Účtenku vytisknete jen tehdy, když si o ni zákazník sám řekne. Jinak stačí poslat ji elektronicky (např. e-mailem nebo ukázat QR kód na displeji).</li>
+      <li><strong>Aplikace zdarma:</strong> Stát slibuje, že od prosince vydá oficiální bezplatnou aplikaci „Moje EET“ pro mobily a tablety, takže nebudete muset hned kupovat drahý hardware.</li>
+    </ul>
+
+    <h3>Pozor na past jménem „EET OFF“</h3>
+    <p>Pro nejmenší živnostníky v 1. pásmu paušální daně stát nabízí zdánlivě lákavou možnost: nemusíte evidovat vůbec nic, pokud vstoupíte do režimu EET OFF. Má to ale háček. Za tenhle „klid od technologií“ si stát vyžádá daň – měsíční daňová složka v paušálu by vám totiž vyskočila ze současných 100 Kč na <strong>1 500 Kč</strong>.</p>
+    <p>Pro většinu z nás bude mnohem výhodnější pořídit si jednoduchý terminál nebo využít slibovanou aplikaci zdarma. Stát navíc plánuje zavést jednorázovou slevu na daň až do výše 5 000 Kč jako kompenzaci za nákup techniky. Už v polovině června 2026 vyjdou technické specifikace, takže vaši poskytovatelé pokladních systémů budou mít dost času vše připravit. Sledujte náš web, budeme to hlídat za vás!</p>
+  `
+},
+{
+  "id": "11",
+  "slug": "zmeny-zdravotni-pojisteni-deti-2026",
+  "title": "Podnikáte při péči o děti? Pozor na tiché zpřísnění pravidel u zdravotního pojištění!",
+  "excerpt": "Pokud máte podnikání jako vedlejší činnost a spoléháte na to, že za vás zdravotní pojištění platí stát z důvodu péče o děti, zbystři. Pravidla se od letoška výrazně změnila v neprospěch rodičů.",
+  "readTime": "2 min",
+  "category": "legislativa",
+  "date": "01. 06. 2026",
+  "content": `
+    <p>Skloubit rodinný život s podnikáním je samo o sobě umění. Pokud berete své OSVČ jako vedlejšák při péči o děti, měli byste právě teď zpozornět. Zdravotní pojišťovny totiž začaly velmi přísně kontrolovat nová pravidla pro tzv. <strong>státní pojištěnce</strong> (kategorie L). Starý, benevolentnější systém skončil a je potřeba si pohlídat detaily, abyste pojišťovně zbytečně neplatili penále.</p>
+    
+    <h3>Jak se škrtaly věkové limity?</h3>
+    <p>Doposud platilo, že stát za vás platil zdravotní pojištění, pokud jste se starali o jedno dítě do 7 let, nebo o dvě a více dětí do 15 let. Právě ta patnáctiletá hranice, která dávala spoustě podnikajících rodičů jistotu, je bohužel pryč.</p>
+    <ul>
+      <li><strong>Nové pravidlo:</strong> Stát zůstává plátcem pojistného už jen za rodiče, který osobně a celodenně pečuje alespoň o jedno dítě <strong>do 7 let věku</strong>. Jakmile vaše nejmladší dítě oslaví sedmé narozeniny, status státního pojištěnce automaticky zaniká bez ohledu na to, kolik sourozenců doma máte.</li>
+      <li><strong>Jedno malé plus:</strong> Abychom státu jen nekřivdili, zrušilo se aspoň nesmyslné časové omezení pro školky. Dříve tam dítě mohlo strávit jen 4 hodiny denně, jinak jste o status přišli. Nově už délka pobytu dítěte ve školce nerozhoduje – může tam být klidně celý den, zatímco vy pracujete.</li>
+    </ul>
+
+    <h3>Pohlídejte si 8 dní, pojišťovny neodpouští</h3>
+    <p>Pokud vaše děti už překročily nový věkový limit a vy v podnikání pokračujete, vaše OSVČ se automaticky překlápí na **hlavní činnost**. To znamená jediné: musíte začít sami platit minimální měsíční zálohy (které po čerstvé červnové úlevě činí 3 306 Kč na zdravotní pojištění).</p>
+    <p><strong>Nenechte se nachytat:</strong> Pojišťovny zavedly přísné pravidlo, že tento status nelze nahlásit zpětně. Jakoukoli změnu jim musíte oznámit <strong>do 8 dnů</strong> od chvíle, kdy nastala. Doporučujeme se co nejdříve přihlásit do online klientské aplikace vaší pojišťovny (např. Moje VZP) a zkontrolovat si, jak vás systém eviduje. Pár minut kontroly vám může ušetřit tisíce na případném penále.</p>
+  `
+},
+{
+  "id": "12",
+  "slug": "dotace-technologie-osvc-2026",
+  "title": "Chcete nový e-shop nebo software? Stát v září rozdá peníze, ale projekt musíme nachystat už v létě",
+  "excerpt": "Modernizace podnikání nemusí bolet vaši peněženku. Na podzim se otevírají štědré technologické dotace určené výhradně pro malé živnostníky a OSVČ. Tady je návod, jak získat náskok a peníze ulovit.",
+  "readTime": "3 min",
+  "category": "finance",
+  "date": "01. 06. 2026",
+  "content": `
+    <p>Když se řekne slovo „dotace“, většina z nás si představí nekonečné papírování, které nakonec stejně shrábne nějaká obří korporace. Tentokrát je to ale jinak a pro nás, běžné živnostníky, se otevírá skvělá příležitost. Nový dotační balík na digitalizaci a IT totiž nepůjde přes ministerstva v Praze, ale bude se rozdělovat lokálně přes <strong>Místní akční skupiny (MAS)</strong> přímo ve vašem regionu. Šance na úspěch je díky tomu obrovská.</p>
+    
+    <h3>Na co všechno vám stát přispěje?</h3>
+    <p>Peníze jsou určené na to, aby vaše podnikání drželo krok s dobou. Dotaci můžete využít na věci, které byste stejně dříve či později museli zaplatit ze svého:</p>
+    <ul>
+      <li>Tvorbu nebo zásadní modernizaci firemního webu a e-shopu.</li>
+      <li>Pořízení nových licencí pro účetní, skladové, rezervační nebo CRM systémy.</li>
+      <li>Zabezpečení vaší sítě a klientských dat před internetovými útočníky.</li>
+      <li>Nezbytný hardware (servery, síťové prvky), pokud přímo souvisí s digitalizací vaší praxe.</li>
+    </ul>
+
+    <h3>Proč o tom píšeme už na začátku června?</h3>
+    <p>Příjem žádostí sice odstartuje až <strong>1. září 2026</strong>, ale v tomhle světě platí nekompromisní pravidlo: „kdo dřív přijde, ten dřív mele“. Tyto výzvy bývají často vyčerpané během prvních dní, někdy i hodin. Pokud začnete projekt vymýšlet v srpnu, už vlak nestihnete.</p>
+    
+    <h3>Využijte léto k získání náskoku</h3>
+    <p>Než se rozjedete na letní dovolené, udělejte pro své podnikání dva jednoduché kroky. Nejdříve si vyhledejte Místní akční skupinu (MAS) podle adresy svého sídla. Hned poté se spojte s jejich projektovým manažerem. Tito lidé jsou velmi vstřícní, jsou placení za to, aby vám pomohli, a přesně vám řeknou, kolik peněz můžete ve vašem kraji získat. Během července si v klidu nechte vystavit cenové nabídky od ajťáků nebo programátorů a v září jen s úsměvem kliknete na tlačítko 'odeslat'. Pojďme do toho, ty peníze si zasloužíme!</p>
+  `
 }
 ];

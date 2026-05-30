@@ -113,25 +113,69 @@
   
    <!-- Články -->
 <url>
-    <loc>https://uspejeme.cz/clanky/manifest-osvc-vitejte</loc>
-  </url>
-  <url>
-    <loc>https://uspejeme.cz/clanky/osvc-navigator-financni-rentgen</loc>
-  </url>
-  <url>
-    <loc>https://uspejeme.cz/clanky/moderni-nastroje-pro-podnikani</loc>
-  </url>
-  <url>
-    <loc>https://uspejeme.cz/clanky/smart-nastroje-platby-kontrola</loc>
-  </url>
-  <url>
-    <loc>https://uspejeme.cz/clanky/kviz-typ-podnikatele</loc>
-  </url>
-  <url>
-    <loc>https://uspejeme.cz/clanky/odvody-osvc-2026-senat-stopka</loc>
-  </url>
-  <url>
-    <loc>https://uspejeme.cz/clanky/ico-revoluce-svarcsystem-zmeny-2026</loc>
-  </url>
+  <loc>https://uspejeme.cz/clanky/manifest-osvc-vitejte</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/osvc-navigator-financni-rentgen</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/moderni-nastroje-pro-podnikani</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/smart-nastroje-platby-kontrola</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/kviz-typ-podnikatele</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/odvody-osvc-2026-senat-stopka</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/ico-revoluce-svarcsystem-zmeny-2026</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/snizeni-minimalnich-odvodov-osvc-2026</loc>
+  <lastmod>2026-05-30</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/klicovy-termin-pro-osvc-2026</loc>
+  <lastmod>2026-05-30</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/velky-navrat-eet-2027</loc>
+  <lastmod>2026-05-30</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/zmeny-zdravotni-pojisteni-deti-2026</loc>
+  <lastmod>2026-06-01</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/dotace-technologie-osvc-2026</loc>
+  <lastmod>2026-06-01</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
 
 </urlset>
