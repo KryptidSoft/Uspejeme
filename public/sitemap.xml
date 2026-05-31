@@ -148,7 +148,7 @@
   <priority>0.5</priority>
 </url>
 <url>
-  <loc>https://uspejeme.cz/clanky/snizeni-minimalnich-odvodov-osvc-2026</loc>
+  <loc>https://uspejeme.cz/clanky/snizeni-minimalnich-odvodu-osvc-2026</loc>
   <lastmod>2026-05-30</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
@@ -173,6 +173,12 @@
 </url>
 <url>
   <loc>https://uspejeme.cz/clanky/dotace-technologie-osvc-2026</loc>
+  <lastmod>2026-06-01</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+<url>
+  <loc>https://uspejeme.cz/clanky/vladni-balicek-zjednoduseni-dani-2026</loc>
   <lastmod>2026-06-01</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>

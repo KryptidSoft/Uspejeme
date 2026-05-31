@@ -2,9 +2,9 @@ import type { BusinessData } from '../../hooks/useBusinessData';
 
 // Pomocná funkce pro dynamické určení paušální daně podle příjmu (2026)
 const getDynamicPausalAmount = (annualRevenue: number): number => {
-  if (annualRevenue <= 1584440) return 9984;  // Pasmo 1
-  if (annualRevenue <= 2000000) return 16745; // Pasmo 2
-  return 27139;                               // Pasmo 3
+  if (annualRevenue <= 1500000) return 9162;  // Změněn limit na 1.5M a částka na 9162
+  if (annualRevenue <= 2000000) return 16745; 
+  return 27139;                                
 };
 
 export const calculateGrossFromNet = (
@@ -29,7 +29,7 @@ export const calculateDashboardStats = (data: BusinessData) => {
   const netGoal = data.desiredNetIncome || 0; 
   const res = data.reserves || 0;
   const taxRate = data.taxReservePercent || 25; 
-  const pausal = data.pausalAmount || 9984;
+  const pausal = data.pausalAmount || 9162; // Změněno z 9984
 
   // 1. EKONOMICKÁ ROVAHA
   const targetRevenue = calculateGrossFromNet(netGoal, data.taxMode, taxRate, pausal);

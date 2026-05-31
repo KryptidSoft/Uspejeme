@@ -58,14 +58,14 @@ const BusinessContext = createContext<BusinessContextType | undefined>(undefined
 
 // Paušální daň 2026 podle pásma
 export const PAUSALNI_DAN_PASMA = {
-  pasmo1: 9984,
+  pasmo1: 9162,
   pasmo2: 16745,
   pasmo3: 27139
 };
 
 export const OSVC_MINIMALNI_ODVOZY = {
-  social: 6723,
-  health: 3161
+  social: 5005,
+  health: 3306
 };
 
 export const BusinessProvider = ({ children }: { children: ReactNode }) => {
@@ -76,11 +76,11 @@ export const BusinessProvider = ({ children }: { children: ReactNode }) => {
     reserves: 0,
     taxMode: 'pausal_dan',
     pausalBand: 'pasmo1',
-    pausalAmount: 9984,
+    pausalAmount: 9162,
     vatMode: 'neplatce',
     businessType: 'hlavni',
-    socialMin: 6723,
-    healthMin: 3161,
+    socialMin: 5005,
+    healthMin: 3306,
     topClientShare: 0,
     incomeStability: 100,
     taxReservePercent: 25,
@@ -118,15 +118,19 @@ export const BusinessProvider = ({ children }: { children: ReactNode }) => {
     });
   }, [setData]);
 
-  // JEDNORÁZOVÁ MIGRACE (z roku 2025 na 2026)
-  useEffect(() => {
-    const isOldAmount = data.pausalAmount === 8916 || data.pausalAmount === 8914;
-    if (isOldAmount) {
-      updateData({ 
-        pausalAmount: PAUSALNI_DAN_PASMA[data.pausalBand || 'pasmo1'] 
-      });
-    }
-  }, [data.pausalAmount, data.pausalBand, updateData]);
+// JEDNORÁZOVÁ MIGRACE NA AKTUÁLNÍ DATA K 1. 6. 2026
+useEffect(() => {
+  const isOldAmount = data.pausalAmount === 8916 || data.pausalAmount === 8914 || data.pausalAmount === 9984;
+  const isOldSocial = data.socialMin === 6723;
+
+  if (isOldAmount || isOldSocial) {
+    updateData({ 
+      pausalAmount: data.taxMode === 'pausal_dan' ? PAUSALNI_DAN_PASMA[data.pausalBand || 'pasmo1'] : data.pausalAmount,
+      socialMin: OSVC_MINIMALNI_ODVOZY.social,
+      healthMin: OSVC_MINIMALNI_ODVOZY.health
+    });
+  }
+}, [data.pausalAmount, data.pausalBand, data.socialMin, data.taxMode, updateData]);
 
   // Debug logování v dev režimu
   useEffect(() => {

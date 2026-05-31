@@ -273,7 +273,7 @@ id: '1',
 },
 {
   "id": "8",
-  "slug": "snizeni-minimalnich-odvodov-osvc-2026",
+  "slug": "snizeni-minimalnich-odvodu-osvc-2026",
   "title": "Úleva pro OSVČ: Minimální odvody na sociální pojištění klesají zpětně o 715 Kč měsíčně!",
   "excerpt": "Poslanecká sněmovna definitivně schválila snížení minimálních záloh na sociální pojištění. Uleví se i lidem v paušálním režimu. Tady je přehled, jak získat přeplatky zpět.",
   "readTime": "3 min",
@@ -407,6 +407,52 @@ id: '1',
     
     <h3>Využijte léto k získání náskoku</h3>
     <p>Než se rozjedete na letní dovolené, udělejte pro své podnikání dva jednoduché kroky. Nejdříve si vyhledejte Místní akční skupinu (MAS) podle adresy svého sídla. Hned poté se spojte s jejich projektovým manažerem. Tito lidé jsou velmi vstřícní, jsou placení za to, aby vám pomohli, a přesně vám řeknou, kolik peněz můžete ve vašem kraji získat. Během července si v klidu nechte vystavit cenové nabídky od ajťáků nebo programátorů a v září jen s úsměvem kliknete na tlačítko 'odeslat'. Pojďme do toho, ty peníze si zasloužíme!</p>
+  `
+},
+{
+  "id": "13",
+  "slug": "jak-upravit-platby-osvc-cerven-2026",
+  "title": "Cvrkot v bankovnictví: Jak si od června legálně snížit zálohy a neposílat státu ani korunu navíc",
+  "excerpt": "Snížení minimálních odvodů pro OSVČ je schváleno. Co musíte udělat ve svém internetovém bankovnictví během června, abyste nepřicházeli o peníze? Přinášíme přesný návod.",
+  "readTime": "3 min",
+  "category": "finance",
+  "date": "01. 06. 2026",
+  "content": `
+    <p>Je neděle 31. května 2026 a uplynulých 48 hodin přineslo pro OSVČ největší finanční zvrat tohoto roku. Poslanecká sněmovna definitivně přehlasovala Senát a schválila retroaktivní snížení minimálního sociálního pojištění a paušální daně. Už od zítřka, tedy od června, se mění pravidla hry v bankovnictví.</p>
+
+    <p>Stát vám sice slevil, ale bankovní trvalé příkazy za vás nikdo nezmění. Pokud necháte věci setrvačností, budete státu posílat bezúročnou půjčku. Pojďme se podívat, jak přesně v červnu postupovat.</p>
+
+    <h3>Krok 1: Sociální pojištění – Kdy změnit trvalý příkaz?</h3>
+    <p>Minimální záloha na sociální pojištění klesá z 5 720 Kč na <strong>5 005 Kč</strong> (úspora 715 Kč měsíčně). Nová pravidla platí pro zálohu za měsíc, ve kterém zákon vyjde ve Sbírce zákonů – což se očekává během června.</p>
+    <ul>
+      <li><strong>Co udělat:</strong> Záloha za červen je splatná od 1. do posledního dne kalendářního měsíce (tedy do 30. června). Jakmile se v médiích objeví zpráva o vydání zákona, okamžitě snižte trvalý příkaz na 5 005 Kč.</li>
+      <li><strong>Co s přeplatkem za leden-květen?</strong> Vznikl vám přeplatek 3 575 Kč. ČSSZ ho primárně vrátí až při vyúčtování v roce 2027. Pokud ale peníze potřebujete hned, můžete po oficiální účinnosti zákona poslat na OSSZ přes datovou schránku jednoduchou žádost o vrácení přeplatku.</li>
+    </ul>
+
+    <h3>Krok 2: Paušální daň (1. pásmo) – Zde můžete snižovat ihned!</h3>
+    <p>Pro paušalisty v prvním pásmu je zpráva ještě veselejší. Částka klesá z 9 984 Kč na <strong>9 162 Kč</strong> (úspora 822 Kč měsíčně). Protože Finanční správa má flexibilnější pravidla pro započtení, na kumulovaný přeplatek za leden až květen (celkem 4 110 Kč) nemusíte čekat do příštího roku.</p>
+    <ul>
+      <li><strong>💡 Smart trik pro červen:</strong> Místo červnové platby 9 162 Kč můžete jednorázově poslat méně, nebo trvalý příkaz na červen úplně pozastavit a vyčerpat tak přeplatek hned. Finanční úřad si to spáruje automaticky. Od července pak nastavte trvalý příkaz na novou fixní částku 9 162 Kč.</li>
+    </ul>
+
+    <h3>Krok 3: Zdravotní pojištění – Na to nesahejte</h3>
+    <p>Pozor na častou chybu! Snížení odvodů se týká <strong>pouze sociálního pojištění a paušální daně</strong>. Minimální záloha na zdravotní pojištění pro rok 2026 zůstává na částce <strong>3 306 Kč</strong>. Zde trvalé příkazy rozhodně neměňte, hrozily by vám sankce a penále.</p>
+
+    <h3>Co udělat s ušetřenými penězi?</h3>
+    <p>Pokud platíte minimální zálohy, v peněžence vám díky této změně zůstane do konce roku zhruba 5 000 až 6 000 Kč k dobru. Nenechávejte je ležet na běžném účtu, kde je sežere inflace. Použijte je strategicky.</p>
+
+    <p>Doporučujeme navštívit náš panel a prohnat nová čísla našimi nástroji:</p>
+    <ul>
+      <li>Zadejte nové, nižší pevné náklady do naší <a href="/hodinovka">Kalkulačky hodinové sazby</a> a podívejte se, jak se změnil váš čistý zisk z jedné hodiny práce.</li>
+      <li>Ušetřené peníze rovnou nasměrujte do stabilizačního fondu – spočítejte si optimální finanční polštář v <a href="/rezervy">Kalkulačce rezerv (Runway)</a>, abyste přesně věděli, kolik měsíců přežijete v případě nečekaného výpadku.</li>
+    </ul>
+
+    <p>Situaci kolem legislativní smrště pro vás budeme na Uspějeme.cz dál bedlivě sledovat. Upravte si příkazy včas, ať vaše peníze pracují pro vás, a ne pro státní rozpočet!</p>
+	
+	<h3>Přepočítejte si svou hodinovku: Stát vám snížil režii!</h3>
+    <p>Každá stovka, kterou ušetříte na povinných odvodech, snižuje vaše fixní náklady na podnikání. To znamená, že vaše dosavadní hodinová sazba vám nově vygeneruje o něco vyšší čistý zisk. Nebo naopak – můžete odpracovat o pár hodin méně, abyste si vydělali stejně.</p>
+
+    <p>Nehádejte čísla od boku. Využijte naši interní <a href="/hodinovka">Kalkulačku hodinové sazby</a>, kam zadáte nové, nižší částky odvodů. Během minuty uvidíte, jak tato drobná legislativní změna posunula reálnou hodnotu vašeho času a jak by měl vypadat váš nový ceník pro klienty na léto 2026.</p>
   `
 }
 ];

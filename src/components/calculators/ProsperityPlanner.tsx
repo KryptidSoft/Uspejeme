@@ -37,7 +37,7 @@ export const ProsperityPlanner: React.FC = () => {
         safetyBufferMonths: Number(params.get('buf')),
         taxMode: params.get('tax') || 'pausal_dan',
         customTaxRate: Number(params.get('rate')) || 25,
-        pausalAmount: Number(params.get('pamt')) || 9984,
+        pausalAmount: Number(params.get('pamt')) || 9162,
       };
     }
 
@@ -53,7 +53,7 @@ export const ProsperityPlanner: React.FC = () => {
       safetyBufferMonths: 6,
       taxMode: 'pausal_dan',
       customTaxRate: 25,
-      pausalAmount: 9984,
+      pausalAmount: 9162,
     };
   });
 

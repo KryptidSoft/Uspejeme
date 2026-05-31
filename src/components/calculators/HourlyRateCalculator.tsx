@@ -32,11 +32,11 @@ const [inputs, setInputs] = useState<HourlyInputs>({
   vacationWeeks: globalData.vacationWeeks ?? 4,
   bufferDays: globalData.bufferDays ?? 10,
   nonBillableHours: globalData.nonBillableHours ?? 20,
-  costs: {
-    taxes: globalData.taxMode === 'pausal_dan' ? (globalData.pausalAmount ?? 9984) : 15000,
-    overhead: globalData.monthlyExpenses ?? 30000,
-    reserves: globalData.reserves ?? 0
-  }
+costs: {
+  taxes: globalData.taxMode === 'pausal_dan' ? (globalData.pausalAmount ?? 9162) : 15000, // Změněno z 9984
+  overhead: globalData.monthlyExpenses ?? 30000,
+  reserves: globalData.reserves ?? 0
+}
 });
 
   const [results, setResults] = useState<ReturnType<typeof calculateHourlyRate> | null>(null);
