@@ -10,7 +10,6 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { DisclaimerModal } from './components/DisclaimerModal';
 import { AppContent } from './components/AppContent';
-import CookieConsent from './components/ui/CookieConsent';
 
 interface ToolItem {
   id: string;
@@ -86,8 +85,6 @@ const AppInner = () => {
           onClose={() => setIsDisclaimerOpen(false)} 
         />
 
-        {/* COOKIE LIŠTA - marketingově optimalizovaná */}
-        <CookieConsent />
       </div>
     </div>
   );

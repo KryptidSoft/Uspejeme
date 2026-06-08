@@ -365,7 +365,7 @@ id: '1',
   "title": "Podnikáte při péči o děti? Pozor na tiché zpřísnění pravidel u zdravotního pojištění!",
   "excerpt": "Pokud máte podnikání jako vedlejší činnost a spoléháte na to, že za vás zdravotní pojištění platí stát z důvodu péče o děti, zbystři. Pravidla se od letoška výrazně změnila v neprospěch rodičů.",
   "readTime": "2 min",
-  "category": "legislativa",
+  "category": "strategy",
   "date": "01. 06. 2026",
   "content": `
     <p>Skloubit rodinný život s podnikáním je samo o sobě umění. Pokud berete své OSVČ jako vedlejšák při péči o děti, měli byste právě teď zpozornět. Zdravotní pojišťovny totiž začaly velmi přísně kontrolovat nová pravidla pro tzv. <strong>státní pojištěnce</strong> (kategorie L). Starý, benevolentnější systém skončil a je potřeba si pohlídat detaily, abyste pojišťovně zbytečně neplatili penále.</p>
