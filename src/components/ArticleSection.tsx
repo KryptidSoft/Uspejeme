@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Clock, BookOpen } from 'lucide-react';
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from 'react-helmet-async'; // <-- 1. PŘIDÁNO
 import { GlassCard } from './ui/GlassCard';
 import { articles } from '../data/articles';
 
@@ -20,8 +21,16 @@ export const ArticleSection: React.FC = () => {
 
   // DETAIL ČLÁNKU
   if (article) {
+    // 2. PŘIDÁNO: Dynamická kanonická URL pro tento konkrétní článek
+    const currentUrl = `https://uspejeme.cz/clanky/${article.slug}`;
+
     return (
       <div className="article-container fade-in" style={{ overflowX: 'clip' }}>
+        {/* 3. PŘIDÁNO: Vložíme neviditelnou informaci pro Google */}
+        <Helmet>
+          <link rel="canonical" href={currentUrl} />
+        </Helmet>
+
         <button
           onClick={() => navigate('/clanky')}
           className="back-button"
