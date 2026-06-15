@@ -454,5 +454,51 @@ id: '1',
 
     <p>Nehádejte čísla od boku. Využijte naši interní <a href="/hodinovka">Kalkulačku hodinové sazby</a>, kam zadáte nové, nižší částky odvodů. Během minuty uvidíte, jak tato drobná legislativní změna posunula reálnou hodnotu vašeho času a jak by měl vypadat váš nový ceník pro klienty na léto 2026.</p>
   `
+},
+{
+  "id": "14",
+  "slug": "cssz-vratka-odvodu-osvc-cervenec-2026",
+  "title": "Oficiálně potvrzeno: ČSSZ v červenci spouští vratky přeplatků. Jak dostat zpět až 9 000 Kč?",
+  "excerpt": "Chaos kolem snižování minimálních odvodů pro OSVČ má konečně jasná pravidla. ČSSZ a Finanční správa vydaly pokyny k vracení přeplatků za první polovinu roku 2026. Zjistěte, jak si vzít své peníze zpět.",
+  "readTime": "4 min",
+  "category": "finance",
+  "date": "15. 06. 2026",
+  "content": `
+    <p>Polovina června 2026 přinesla definitivní rozuzlení největší daňové telenovely letošního roku. Retroaktivní snížení odvodů pro OSVČ je černé na bílém a úřady konečně zveřejnily technický manuál, jak se dostat k penězům, které jste státu od ledna posílali navíc. Nejde o drobné – ř řadě živnostníků stát dluží kolem 4 000 až 9 000 Kč.</p>
+
+    <p>Přinášíme aktuální přehled schválených termínů a přesný návod, jak od července postupovat v internetovém bankovnictví a komunikaci s úřady.</p>
+
+    <h3>Kdy se mění trvalé příkazy? Červen doplaťte postaru</h3>
+    <p>Ačkoliv je snížení odvodů schválené a podepsané prezidentem, novela zákona nabývá oficiální účinnosti až <strong>1. července 2026</strong>. Z toho plyne zásadní varování pro vaše trvalé příkazy:</p>
+    <ul>
+      <li><strong>Zálohu za červen</strong> (splatnou do 30. června) musíte stále odeslat v původní vysoké částce (5 720 Kč pro sociální pojištění, resp. 9 984 Kč pro první pásmo paušální daně).</li>
+      <li><strong>Trvalé příkazy snižte až na začátku července.</strong> Pokud byste platby zkrátili už v červnu, systémy vás automaticky zaevidují jako dlužníky a začnou vám naskakovat penalizace.</li>
+    </ul>
+
+    <h3>Sociální pojištění: Od července za 5 005 Kč a rychlá vratka</h3>
+    <p>Od července klesá minimální záloha na sociální pojištění na <strong>5 005 Kč</strong>. V první polovině července uvidíte tuto novou částku nastavenou i ve svém ePortálu ČSSZ.</p>
+    <p>Protože jste od ledna do června platili původních 5 720 Kč, vznikl vám u ČSSZ **přeplatek ve výši 4 290 Kč**. Jak ho získat zpět?</p>
+    <ol>
+      <li><strong>Možnost A (Rychlé peníze):</strong> Během července pošlete na svou OSSZ (ideálně přes datovou schránku) jednoduchou písemnou žádost o vrácení přeplatku. ČSSZ potvrdila, že peníze vám v takovém případě vrátí na účet do 2 měsíců.</li>
+      <li><strong>Možnost B (Bezstarostná jízda):</strong> Nemusíte dělat nic. Přeplatek necháte na svém účtu u ČSSZ a on se automaticky použije jako „předplatné“ na budoucí zálohy, nebo se zúčtuje až v přehledu na začátku roku 2027.</li>
+    </ol>
+
+    <h3>Paušální daň: Vratka dosáhne bezmála 5 000 Kč</h3>
+    <p>Pro živnostníky v 1. pásmu paušálního režimu klesá měsíční částka od července na <strong>9 162 Kč</strong>. Za první polovinu roku vám na Finančním úřadě vznikl **přeplatek 4 932 Kč**.</p>
+    <p>Finanční správa nicméně varuje před unáhleným krácením plateb na vlastní pěst. Červencovou platbu (splatnou do 20. 7.) už sice pošlete v nové výši 9 162 Kč, ale vzniklý přeplatek nelze jen tak svévolně „nechat propadnout“. Vyčkejte na spuštění speciálního formuláře v portálu MOJE daně, přes který bude možné o vratku během léta oficiálně požádat.</p>
+
+    <h3>Zdravotní pojištění se nemění!</h3>
+    <p>Opakování je matka moudrosti: vládní balíček zlevnil pouze sociální pojištění a paušální daň. Minimální záloha na zdravotní pojištění pro rok 2026 zůstává pevně na částce <strong>3 306 Kč</strong> a s tou v bance vůbec nehýbejte.</p>
+
+    <h3>Nenechte peníze ležet skladem, promítněte je do byznysu</h3>
+    <p>Kombinace vrácených přeplatků a nižších měsíčních výdajů vám do konce roku 2026 zachrání v rozpočtu zhruba 10 000 Kč. To je ideální příležitost pro optimalizaci vašeho podnikání.</p>
+    <p>Skočte rovno do našeho panelu nástrojů na Uspějeme.cz:</p>
+    <ul>
+      <li>Zadejte nové, nižší fixní odvody do naší <a href="/hodinovka">Kalkulačky hodinové sazby</a>. Nižší režie znamená, že vaše hodina práce má odteď vyšší čistou hodnotu – podívejte se, jak se změnil váš reálný zisk.</li>
+      <li>Získanou vratku od státu nenechávejte na běžném účtu. Přesměrujte ji do rezerv. V naší <a href="/rezervy">Kalkulačce finančního polštáře (Runway)</a> si spočítejte, o kolik dní či měsíců se díky těmto ušetřeným tisícovkám prodloužila bezpečná provozní doba vašeho podnikání v případě výpadku zakázek.</li>
+    </ul>
+
+    <p>Změny v bankovnictví doporučujeme nastavit hned v prvních dnech července, ať máte čistou hlavu na letní sezónu a vaše peníze pracují pro vás, nikoliv pro státní aparát!</p>
+  `
 }
 ];
