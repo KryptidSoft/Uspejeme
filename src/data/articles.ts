@@ -507,7 +507,7 @@ id: '1',
   "title": "Zaměstnání budoucnosti neexistuje. Jak přežít jako OSVČ ve věku AI a velkých dat?",
   "excerpt": "Zapomeňte na mainstreamové články o tom, které profese zaniknou. Pro OSVČ platí jediné pravidlo: buď budete technologie ovládat, nebo vás korporace nahradí efektivnějším algoritmem. Tady jsou tvrdá data o tom, co se musíte naučit.",
   "readTime": "5 min",
-  "category": "technologie",
+  "category": "strategy",
   "date": "16. 06. 2026",
   "content": `
 <p>Mainstreamová média jsou plná predikcí o tom, která „zaměstnání“ v příštích deseti letech zaniknou a která vzniknou. Pro nás, co podnikáme na vlastní triko jako OSVČ, jsou ale tyto debaty irelevantní. My nehledáme teplé místo v korporátu.</p>
@@ -552,7 +552,7 @@ id: '1',
   "title": "Miliardy ve fúzi, vesmíru a biotechnologiích: Jak se jako OSVČ dostat k zakázkám v hard-techu?",
   "excerpt": "Vesmírný průmysl, genomika a nová energetika už nejsou doménou sci-fi. Stávají se z nich masivní subdodavatelské ekosystémy. Analýza příležitostí pro konzultanty, projektové manažery a specialisty na volné noze.",
   "readTime": "6 min",
-  "category": "technologie",
+  "category": "strategy",
   "date": "17. 06. 2026",
   "content": `
 <p>Když se v médiích mluví o jaderné fúzi, komercializaci vesmíru nebo genetickém inženýrství CRISPR, většina lidí si představí vědce v bílých pláštích nebo nadnárodní korporace s miliardovými rozpočty. Jako OSVČ máte tendenci tyto zprávy ignorovat s tím, že se vás to netýká. To je ale zásadní strategická chyba.</p>

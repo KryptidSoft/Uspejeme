@@ -134,7 +134,7 @@ export const AssetsCalculator: React.FC = () => {
                 </div>
               </div>
               <div style={{ marginTop: 'auto', paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '0.8rem', color: 'var(--text-dim)' }}>
-                Kurz: 1 {asset.unit} = {asset.price.toLocaleString()} Kč
+                Kurz (online / aktuální): 1 {asset.unit} = {asset.price.toLocaleString()} Kč
               </div>
             </div>
           </div>
