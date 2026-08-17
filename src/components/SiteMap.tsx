@@ -73,9 +73,7 @@ export const Sitemap: React.FC = () => {
         {/* 5. Ostatní */}
         <section>
           <p className="section-title font-semibold">Vzdělávání</p>
-          <ul className="link-list">
-		    <li className="link-item"><Link to="/clanky">Články</Link></li>
-            <li className="link-item"><Link to="/kalendar">Kalendář</Link></li>
+          <ul className="link-list">		               
             <li className="link-item"><Link to="/kviz">Poznej se (Kvíz)</Link></li>
           </ul>
         </section>

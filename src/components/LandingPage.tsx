@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Zap, Quote, Activity, ChevronRight } from 'lucide-react';
 import { GlassCard } from './ui/GlassCard';
-import { StrategyWidget } from './StrategyWidget';
-import { DeadlineWidget } from './DeadlineWidget';
-import { articles } from '../data/articles';
 import { useBusinessData } from '../hooks/useBusinessData';
 import { formatCZK } from '../utils/calculations/mathHelpers';
-import type { BusinessType } from '../types/index';
 
 interface LandingPageProps {
   onNavigate: (view: string, param?: string) => void;
@@ -38,7 +34,6 @@ const testimonials = [
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const { data: globalData } = useBusinessData();
-  const [userType, setUserType] = useState<BusinessType>('all');
 
   return (
     <div className="fade-in container-max" style={{ overflowX: 'hidden' }}>
@@ -119,22 +114,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       {globalData.hourlyRate > 0 ? 'Zobrazit panel' : 'Nastavit profil'} <ChevronRight size={18} />
     </button>
   </GlassCard>
-</section>
-
-{/* 4. ČLÁNKY A TERMÍNY - KOMPAKTNÍ DASHBOARD VZHLED */}
-<section style={{ marginBottom: '60px' }}>
-  <div className="info-grid">
-    
-    {/* LEVÝ PANEL: NEJNOVĚJŠÍ STRATEGIE */}
-    <StrategyWidget articles={articles} />
-
-    {/* PRAVÝ PANEL: TERMÍNY S FILTREM */}
-    <DeadlineWidget 
-      userType={userType} 
-      setUserType={setUserType}
-    />
-
-  </div>
 </section>
 
 {/* 5. FAQ SEKCE - PŘIZPŮSOBENO PODLE INDEX.CSS */}

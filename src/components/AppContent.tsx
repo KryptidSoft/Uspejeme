@@ -1,8 +1,6 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { LandingPage } from './LandingPage';
-import { Dashboard } from './Dashboard'; // Předpokládám, že Dashboard.tsx je ve stejné složce, jinak upravte cestu
-import { ArticleSection } from './ArticleSection';
-import { CalendarPage } from './CalendarPage';
+import { Dashboard } from './Dashboard';
 import { ProsperityPlanner } from './calculators/ProsperityPlanner';
 import { ROICalculator } from './calculators/ROICalculator';
 import { EnergyCalculator } from './calculators/EnergyCalculator';
@@ -29,7 +27,7 @@ import { SmartOffer } from './generators/SmartOffer';
 import QuizPage from './QuizPage';
 import { 
   FileText, Activity, Zap, ShieldAlert, Briefcase, Coins, QrCode, FileWarning, Target, 
-  TrendingUp, TrendingDown, PiggyBank, Calendar, GraduationCap
+  TrendingUp, TrendingDown, PiggyBank
 } from 'lucide-react';
 
 // --- ROZCESTNÍKY (Musí být definovány mimo hlavní komponentu) ---
@@ -85,8 +83,6 @@ const VzdelavaniNav = () => (
   <div className="nav-container">
     <h2>Vzdělávání & přehledy</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: '15px' }}>
-      <MiniCard title="Akademie" desc="Články a návody" icon={GraduationCap} to="/clanky" />
-	  <MiniCard title="Termíny" desc="Hlídací pes podnikatele" icon={Calendar} to="/kalendar" />
       <MiniCard title="Kvízy" desc="Poznejte se lépe" icon={Target} to="/kviz" />
     </div>
   </div>
@@ -154,9 +150,6 @@ export const AppContent = () => {
 
       {/* Ostatní */}
 	  <Route path="/vzdelavani" element={<VzdelavaniNav />} />
-      <Route path="/clanky" element={<ArticleSection />} />
-      <Route path="/clanky/:slug" element={<ArticleSection />} />
-	  <Route path="/kalendar" element={<CalendarPage userType="vse" />} />
 	  <Route path="/kviz" element={<QuizPage />} />
 	  
 {/* --- Footer & Info --- */}
